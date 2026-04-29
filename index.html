@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AUGUST — User Flow Diagram</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+:root {
+  --navy:#0F2340; --navy2:#1B3A5C; --gold:#C9A84C; --gold2:#E8C96A;
+  --cream:#F7F3ED; --blue-light:#D8EAF8; --blue-mid:#5B9EC9;
+  --green:#2D7A52; --green-light:#E0F5EA;
+  --red:#B33A3A; --red-light:#FDEAEA;
+  --amber:#B07820; --amber-light:#FEF3DC;
+  --text:#1A1A2E; --muted:#6B7A8F;
+}
+body { font-family:'DM Sans',sans-serif; background:var(--cream); color:var(--text); min-height:100vh; }
+
+/* HEADER */
+.header { background:var(--navy); padding:24px 40px; display:flex; align-items:center; justify-content:space-between; position:sticky; top:0; z-index:100; box-shadow:0 4px 32px rgba(0,0,0,.25); }
+.logo { font-family:'Playfair Display',serif; font-size:26px; color:var(--gold); letter-spacing:4px; font-weight:900; }
+.tagline { font-size:11px; color:#8AAEC8; letter-spacing:2px; text-transform:uppercase; margin-top:2px; }
+.header-badge { background:rgba(201,168,76,.15); border:1px solid var(--gold); color:var(--gold); font-size:11px; letter-spacing:2px; text-transform:uppercase; padding:6px 14px; border-radius:4px; font-weight:600; }
+
+/* LEGEND */
+.legend { display:flex; gap:20px; padding:14px 40px; background:white; border-bottom:1px solid #E0E8F0; flex-wrap:wrap; align-items:center; }
+.legend-label { font-size:11px; color:var(--muted); letter-spacing:1.5px; text-transform:uppercase; font-weight:600; }
+.legend-item { display:flex; align-items:center; gap:7px; font-size:12px; color:var(--text); font-weight:500; }
+.legend-dot { width:13px; height:13px; border-radius:50%; flex-shrink:0; }
+.l-client{background:var(--navy2);} .l-action{background:var(--gold);} .l-admin{background:var(--green);} .l-decision{background:var(--amber);} .l-system{background:var(--blue-mid);}
+
+/* SWITCHER */
+.switcher { display:flex; padding:20px 40px 0; }
+.switch-btn { padding:10px 26px; font-family:'DM Sans',sans-serif; font-size:13px; font-weight:600; letter-spacing:1px; text-transform:uppercase; border:2px solid var(--navy2); background:white; color:var(--navy2); cursor:pointer; transition:all .2s; }
+.switch-btn:first-child{border-radius:6px 0 0 6px;} .switch-btn:last-child{border-radius:0 6px 6px 0;}
+.switch-btn.active{background:var(--navy);color:var(--gold);border-color:var(--navy);}
+
+/* CANVAS */
+.canvas { padding:32px 40px 60px; display:none; animation:fadeIn .4s ease; }
+.canvas.visible { display:block; }
+@keyframes fadeIn { from{opacity:0;transform:translateY(10px);} to{opacity:1;transform:translateY(0);} }
+
+/* SUMMARY BANNER */
+.summary-banner { background:linear-gradient(135deg,var(--navy) 0%,var(--navy2) 100%); border-radius:14px; padding:22px 28px; margin-bottom:32px; display:flex; align-items:center; gap:14px; flex-wrap:wrap; }
+.summary-step { display:flex; flex-direction:column; align-items:center; gap:4px; }
+.summary-step-icon { font-size:20px; }
+.summary-step-label { font-size:10px; letter-spacing:1px; text-transform:uppercase; color:rgba(255,255,255,.6); text-align:center; max-width:60px; line-height:1.3; }
+.summary-arrow { color:var(--gold); font-size:16px; }
+
+/* SECTION INTRO */
+.section-intro { display:flex; align-items:center; gap:16px; margin-bottom:28px; }
+.section-icon { width:48px; height:48px; border-radius:12px; display:flex; align-items:center; justify-content:center; font-size:22px; flex-shrink:0; }
+.si-client{background:var(--navy2);} .si-admin{background:var(--green);}
+.section-title { font-family:'Playfair Display',serif; font-size:21px; color:var(--navy); font-weight:700; }
+.section-sub { font-size:13px; color:var(--muted); margin-top:3px; }
+
+/* PHASE HEADER */
+.phase-header { display:flex; align-items:center; gap:12px; margin:28px 0 16px; }
+.phase-pill { background:var(--navy); color:var(--gold); font-size:10px; font-weight:700; letter-spacing:2px; text-transform:uppercase; padding:4px 12px; border-radius:20px; white-space:nowrap; }
+.phase-pill.green{background:var(--green);color:white;} .phase-pill.blue{background:var(--blue-mid);color:white;}
+.phase-line { flex:1; height:1px; background:linear-gradient(to right,#CBD5E0,transparent); }
+
+/* STEP ROW */
+.step-row { display:flex; align-items:stretch; gap:0; }
+.spine { display:flex; flex-direction:column; align-items:center; flex-shrink:0; width:56px; }
+.spine-dot { width:36px; height:36px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:13px; font-weight:700; color:white; flex-shrink:0; z-index:1; box-shadow:0 0 0 4px var(--cream); }
+.spine-line { width:2px; flex:1; min-height:20px; background:linear-gradient(to bottom,#B8CDE0,#D8E8F0); }
+.sd-navy{background:var(--navy2);} .sd-gold{background:var(--gold);} .sd-blue{background:var(--blue-mid);} .sd-green{background:var(--green);} .sd-amber{background:var(--amber);}
+
+/* STEP CARD */
+.step-card { flex:1; background:white; border-radius:12px; border:1.5px solid #E0ECF5; padding:18px 22px; margin-bottom:12px; box-shadow:0 2px 12px rgba(0,0,0,.04); transition:box-shadow .2s,transform .2s; position:relative; overflow:hidden; }
+.step-card::before { content:''; position:absolute; left:0;top:0;bottom:0; width:4px; border-radius:12px 0 0 12px; }
+.step-card.client::before{background:var(--navy2);} .step-card.action::before{background:var(--gold);} .step-card.system::before{background:var(--blue-mid);} .step-card.admin::before{background:var(--green);}
+.step-card:hover { box-shadow:0 6px 24px rgba(0,0,0,.10); transform:translateX(3px); }
+.step-header { display:flex; align-items:flex-start; justify-content:space-between; gap:12px; }
+.step-title { font-size:15px; font-weight:700; color:var(--navy); line-height:1.3; }
+.step-emoji { font-size:22px; flex-shrink:0; }
+.step-desc { font-size:13px; color:var(--muted); margin-top:6px; line-height:1.6; }
+.step-tags { display:flex; flex-wrap:wrap; gap:6px; margin-top:10px; }
+.tag { font-size:11px; font-weight:600; padding:3px 10px; border-radius:20px; letter-spacing:.5px; }
+.tag-navy{background:#EBF0F8;color:var(--navy2);} .tag-gold{background:#FBF3DC;color:#8A6800;}
+.tag-green{background:var(--green-light);color:var(--green);} .tag-blue{background:#E2F0FA;color:#2B6FA0;}
+.tag-amber{background:var(--amber-light);color:var(--amber);}
+
+/* ARROW CONNECTOR */
+.arrow-connector { display:flex; align-items:center; gap:10px; padding:4px 0 4px 56px; margin-bottom:4px; }
+.arrow-line { width:36px; height:1.5px; background:linear-gradient(to right,#B8CDE0,#D8E8F0); }
+.arrow-label { font-size:11px; color:var(--muted); font-weight:600; letter-spacing:1px; text-transform:uppercase; display:flex; align-items:center; gap:6px; }
+.arrow-label::after { content:'↓'; font-size:14px; color:var(--gold); }
+
+/* DECISION BLOCK */
+.decision-block { background:var(--amber-light); border:2px dashed var(--amber); border-radius:12px; padding:14px 20px; margin-bottom:12px; margin-left:56px; }
+.decision-title { font-size:13px; font-weight:700; color:var(--amber); margin-bottom:8px; }
+.decision-paths { display:flex; gap:10px; flex-wrap:wrap; }
+.decision-path { flex:1; min-width:140px; border-radius:8px; padding:10px 14px; font-size:12px; font-weight:600; display:flex; align-items:center; gap:8px; }
+.path-yes{background:var(--green-light);color:var(--green);border:1.5px solid #A8DBC0;}
+.path-no{background:var(--red-light);color:var(--red);border:1.5px solid #F0B8B8;}
+
+/* PARALLEL BLOCK */
+.parallel-block { display:flex; gap:14px; margin-bottom:12px; margin-left:56px; flex-wrap:wrap; }
+.parallel-card { flex:1; min-width:180px; background:white; border:1.5px solid #E0ECF5; border-radius:10px; padding:14px 16px; position:relative; overflow:hidden; box-shadow:0 2px 8px rgba(0,0,0,.04); }
+.parallel-card::before { content:''; position:absolute; top:0;left:0;right:0; height:3px; border-radius:10px 10px 0 0; }
+.pc-gold::before{background:var(--gold);} .pc-blue::before{background:var(--blue-mid);} .pc-green::before{background:var(--green);}
+.parallel-title { font-size:13px; font-weight:700; color:var(--navy); margin-bottom:6px; }
+.parallel-desc { font-size:12px; color:var(--muted); line-height:1.5; }
+
+/* END BLOCK */
+.end-block { background:var(--navy); border-radius:12px; padding:20px 28px; margin-left:56px; display:flex; align-items:center; gap:16px; }
+.end-icon { font-size:28px; }
+.end-title { font-family:'Playfair Display',serif; font-size:18px; color:var(--gold); font-weight:700; }
+.end-sub { font-size:12px; color:#8AAEC8; margin-top:3px; }
+
+/* ADMIN HEADER */
+.admin-header { background:linear-gradient(135deg,var(--green) 0%,#1E5A3C 100%); border-radius:12px; padding:20px 24px; margin-bottom:28px; display:flex; align-items:center; gap:16px; }
+.admin-header-icon { font-size:32px; }
+.admin-header-title { font-family:'Playfair Display',serif; font-size:19px; color:white; font-weight:700; }
+.admin-header-sub { font-size:13px; color:rgba(255,255,255,.7); margin-top:3px; }
+
+/* STATUS ROW */
+.status-row { display:flex; align-items:center; flex-wrap:wrap; gap:6px; margin-top:8px; }
+.status-node { font-size:11px; font-weight:700; padding:5px 12px; border-radius:20px; white-space:nowrap; }
+.status-arrow { color:var(--muted); font-size:14px; }
+
+@media(max-width:600px){
+  .header{padding:16px 20px;} .legend{padding:12px 20px;gap:10px;} .switcher{padding:14px 20px 0;} .canvas{padding:20px 20px 40px;}
+  .switch-btn{padding:8px 12px;font-size:11px;} .summary-banner{gap:8px;} .logo{font-size:20px;}
+}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="header">
+  <div>
+    <div class="logo">AUGUST</div>
+    <div class="tagline">Property Visualization &amp; Lead Management</div>
+  </div>
+  <div class="header-badge">User Flow Diagram</div>
+</div>
+
+<!-- LEGEND -->
+<div class="legend">
+  <span class="legend-label">Legend:</span>
+  <div class="legend-item"><div class="legend-dot l-client"></div> Client Action</div>
+  <div class="legend-item"><div class="legend-dot l-action"></div> Key Moment / Choice</div>
+  <div class="legend-item"><div class="legend-dot l-admin"></div> Admin Action</div>
+  <div class="legend-item"><div class="legend-dot l-system"></div> System / Automatic</div>
+  <div class="legend-item"><div class="legend-dot l-decision"></div> Decision Point</div>
+</div>
+
+<!-- SWITCHER -->
+<div class="switcher">
+  <button class="switch-btn active" onclick="showFlow('client',this)">🏠 Client Journey</button>
+  <button class="switch-btn" onclick="showFlow('admin',this)">📊 Admin Journey</button>
+</div>
+
+<!-- ═══════════════ CLIENT FLOW ═══════════════ -->
+<div class="canvas visible" id="flow-client">
+
+  <div class="summary-banner">
+    <div class="summary-step"><div class="summary-step-icon">🔗</div><div class="summary-step-label">Receive Link</div></div>
+    <div class="summary-arrow">→</div>
+    <div class="summary-step"><div class="summary-step-icon">🔐</div><div class="summary-step-label">OTP Login</div></div>
+    <div class="summary-arrow">→</div>
+    <div class="summary-step"><div class="summary-step-icon">🗺️</div><div class="summary-step-label">Explore Map</div></div>
+    <div class="summary-arrow">→</div>
+    <div class="summary-step"><div class="summary-step-icon">📍</div><div class="summary-step-label">Pick Project</div></div>
+    <div class="summary-arrow">→</div>
+    <div class="summary-step"><div class="summary-step-icon">🏙️</div><div class="summary-step-label">Choose Plot</div></div>
+    <div class="summary-arrow">→</div>
+    <div class="summary-step"><div class="summary-step-icon">🏠</div><div class="summary-step-label">Preview House</div></div>
+    <div class="summary-arrow">→</div>
+    <div class="summary-step"><div class="summary-step-icon">📩</div><div class="summary-step-label">Submit Inquiry</div></div>
+    <div class="summary-arrow">→</div>
+    <div class="summary-step"><div class="summary-step-icon">⭐</div><div class="summary-step-label">Leave Feedback</div></div>
+  </div>
+
+  <div class="section-intro">
+    <div class="section-icon si-client">🏠</div>
+    <div>
+      <div class="section-title">Client's Journey — Step by Step</div>
+      <div class="section-sub">How a client goes from receiving a link → to submitting an inquiry for their dream plot</div>
+    </div>
+  </div>
+
+  <!-- PHASE 1 -->
+  <div class="phase-header"><div class="phase-pill">Phase 1 — Entry &amp; Access</div><div class="phase-line"></div></div>
+
+  <div class="step-row">
+    <div class="spine"><div class="spine-dot sd-navy">1</div><div class="spine-line"></div></div>
+    <div class="step-card client">
+      <div class="step-header"><div class="step-title">Client Receives the Platform Link</div><div class="step-emoji">🔗</div></div>
+      <div class="step-desc">AUGUST sends a personalised link to the client via WhatsApp, SMS, or Email. The client taps the link on their phone or tablet — no app download needed. It opens instantly in the browser.</div>
+      <div class="step-tags"><span class="tag tag-navy">WhatsApp</span><span class="tag tag-navy">SMS</span><span class="tag tag-navy">Email</span><span class="tag tag-gold">Mobile &amp; Tablet</span></div>
+    </div>
+  </div>
+
+  <div class="arrow-connector"><div class="arrow-line"></div><div class="arrow-label">Link Opens</div></div>
+
+  <div class="step-row">
+    <div class="spine"><div class="spine-dot sd-navy">2</div><div class="spine-line"></div></div>
+    <div class="step-card client">
+      <div class="step-header"><div class="step-title">Enter Mobile Number → Request OTP</div><div class="step-emoji">📱</div></div>
+      <div class="step-desc">Client sees a clean login screen. They enter their mobile number and tap "Get OTP". The system sends a request to the AUGUST admin to approve the access. No password needed — just a one-time code.</div>
+      <div class="step-tags"><span class="tag tag-blue">System Sends OTP Request</span><span class="tag tag-amber">Awaiting Admin Approval</span></div>
+    </div>
+  </div>
+
+  <div class="arrow-connector"><div class="arrow-line"></div><div class="arrow-label">Admin Reviews Request</div></div>
+
+  <div class="decision-block">
+    <div class="decision-title">⚖️ Admin Decision — Approve or Reject Client Access?</div>
+    <div class="decision-paths">
+      <div class="decision-path path-yes">✅ Approved → Client receives OTP on their phone, enters it, and gains full access to the platform</div>
+      <div class="decision-path path-no">❌ Rejected → Client is notified. Access is blocked. AUGUST team can follow up directly.</div>
+    </div>
+  </div>
+
+  <div class="arrow-connector"><div class="arrow-line"></div><div class="arrow-label">Access Granted</div></div>
+
+  <!-- PHASE 2 -->
+  <div class="phase-header"><div class="phase-pill">Phase 2 — Exploration</div><div class="phase-line"></div></div>
+
+  <div class="step-row">
+    <div class="spine"><div class="spine-dot sd-blue">3</div><div class="spine-line"></div></div>
+    <div class="step-card system">
+      <div class="step-header"><div class="step-title">See Raipur City Map — 3 Township Locations Pinned</div><div class="step-emoji">🗺️</div></div>
+      <div class="step-desc">Client lands on an interactive city map of Raipur. Three colourful pins mark the township locations. Tapping any pin shows a quick preview card with the project name, photo, and a "Explore" button. The AI chatbot is available in the corner to answer any questions.</div>
+      <div class="step-tags"><span class="tag tag-navy">📍 Water Lilly — Kachna</span><span class="tag tag-navy">📍 Silver Stone — Labhandi</span><span class="tag tag-navy">📍 White Lotus — VIP Road</span><span class="tag tag-blue">🤖 AI Chatbot Available</span></div>
+    </div>
+  </div>
+
+  <div class="arrow-connector"><div class="arrow-line"></div><div class="arrow-label">Client Taps a Project Pin</div></div>
+
+  <div class="step-row">
+    <div class="spine"><div class="spine-dot sd-blue">4</div><div class="spine-line"></div></div>
+    <div class="step-card system">
+      <div class="step-header"><div class="step-title">Zoom into the Township — See All Plot Cutouts</div><div class="step-emoji">🏙️</div></div>
+      <div class="step-desc">The map smoothly zooms into the selected township. Client sees the full geo-coded layout with roads, zones, and every individual plot drawn to scale. Each plot is colour-coded so the client instantly knows what's available.</div>
+      <div class="step-tags">
+        <span class="tag tag-green">🟢 Available Plots</span>
+        <span class="tag tag-amber">🟡 Reserved</span>
+        <span class="tag" style="background:#FDEAEA;color:#B33A3A;">🔴 Booked / Sold</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="arrow-connector"><div class="arrow-line"></div><div class="arrow-label">Client Taps a Plot</div></div>
+
+  <!-- PHASE 3 -->
+  <div class="phase-header"><div class="phase-pill">Phase 3 — Plot Discovery</div><div class="phase-line"></div></div>
+
+  <div class="step-row">
+    <div class="spine"><div class="spine-dot sd-gold">5</div><div class="spine-line"></div></div>
+    <div class="step-card action">
+      <div class="step-header"><div class="step-title">View Detailed Plot Information</div><div class="step-emoji">📐</div></div>
+      <div class="step-desc">A detail panel slides up showing everything about the selected plot — visually presented with icons and clean layout. The client doesn't need to ask any questions. All the key info they'd care about is right there.</div>
+      <div class="step-tags">
+        <span class="tag tag-navy">📏 Plot Size (sq.ft / sq.yards)</span>
+        <span class="tag tag-navy">🧭 Facing Direction</span>
+        <span class="tag tag-navy">🪷 Vastu Details &amp; Score</span>
+        <span class="tag tag-navy">🌳 Nearby Amenities</span>
+        <span class="tag tag-navy">🏘️ Neighbour Plot Availability</span>
+        <span class="tag tag-gold">💰 Price (if admin enabled)</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="arrow-connector"><div class="arrow-line"></div><div class="arrow-label">Client Wants to Visualise</div></div>
+
+  <!-- PHASE 4 -->
+  <div class="phase-header"><div class="phase-pill">Phase 4 — 3D House Visualisation</div><div class="phase-line"></div></div>
+
+  <div class="step-row">
+    <div class="spine"><div class="spine-dot sd-gold">6</div><div class="spine-line"></div></div>
+    <div class="step-card action">
+      <div class="step-header"><div class="step-title">Pick a House Design &amp; See it on the Plot</div><div class="step-emoji">🏠</div></div>
+      <div class="step-desc">Client browses a gallery of 5–10 pre-loaded house designs. They tap one — and instantly see a 3D model of that house sitting right on their selected plot. They can rotate, zoom in, and switch between day and night lighting. If they love how it looks, they can share a screenshot via WhatsApp.</div>
+      <div class="step-tags">
+        <span class="tag tag-gold">5–10 House Designs</span>
+        <span class="tag tag-gold">Modern / Traditional / Contemporary</span>
+        <span class="tag tag-gold">Rotate &amp; Zoom</span>
+        <span class="tag tag-gold">🌙 Day / Night Toggle</span>
+        <span class="tag tag-blue">Share Screenshot</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="arrow-connector"><div class="arrow-line"></div><div class="arrow-label">Client is Interested — Ready to Enquire</div></div>
+
+  <!-- PHASE 5 -->
+  <div class="phase-header"><div class="phase-pill">Phase 5 — Inquiry Submission</div><div class="phase-line"></div></div>
+
+  <div class="decision-block">
+    <div class="decision-title">📩 Client chooses how they want to connect with AUGUST:</div>
+    <div class="decision-paths">
+      <div class="decision-path path-yes">📞 Request a Call — "Call me at my preferred time"</div>
+      <div class="decision-path" style="background:#EBF0F8;color:var(--navy2);border:1.5px solid #B8CDE0;flex:1;min-width:140px;border-radius:8px;padding:10px 14px;font-size:12px;font-weight:600;">💰 Get a Quote — "Send me a price breakdown"</div>
+      <div class="decision-path" style="background:#FBF3DC;color:#8A6800;border:1.5px solid #E8C96A;flex:1;min-width:140px;border-radius:8px;padding:10px 14px;font-size:12px;font-weight:600;">🏗️ Book Site Visit — "I want to visit in person"</div>
+    </div>
+  </div>
+
+  <div class="arrow-connector"><div class="arrow-line"></div><div class="arrow-label">Short Form Submitted</div></div>
+
+  <div class="step-row">
+    <div class="spine"><div class="spine-dot sd-blue">7</div><div class="spine-line"></div></div>
+    <div class="step-card system">
+      <div class="step-header"><div class="step-title">System Automatically Creates a Lead &amp; Alerts Admin</div><div class="step-emoji">⚡</div></div>
+      <div class="step-desc">The moment the client submits, the system does everything automatically — a new lead card appears in the AUGUST admin dashboard, tagged with the client's name, plot ID, project, inquiry type, and timestamp. Admin is notified instantly. Client receives a confirmation message.</div>
+      <div class="step-tags">
+        <span class="tag tag-blue">Auto Lead Created in Dashboard</span>
+        <span class="tag tag-green">Admin Notified Instantly</span>
+        <span class="tag tag-blue">Client Gets Confirmation</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="arrow-connector"><div class="arrow-line"></div><div class="arrow-label">After Submission</div></div>
+
+  <!-- PHASE 6 -->
+  <div class="phase-header"><div class="phase-pill">Phase 6 — Feedback &amp; Continued Use</div><div class="phase-line"></div></div>
+
+  <div class="parallel-block">
+    <div class="parallel-card pc-gold">
+      <div class="parallel-title">⭐ Rate This Plot</div>
+      <div class="parallel-desc">Client gives 1–5 stars and selects feedback tags (Vastu, Size, Location, Price…). Optional short comment. All of this goes into the admin's feedback analytics — helping AUGUST understand what clients love and what they don't.</div>
+    </div>
+    <div class="parallel-card pc-blue">
+      <div class="parallel-title">🤖 Ask the AI Chatbot</div>
+      <div class="parallel-desc">Available throughout the entire journey. Client can ask: "Which project is closer to my office?", "Which project has a park nearby?", "What's the largest plot in Silver Stone?", "Tell me about Vastu compliance here."</div>
+    </div>
+    <div class="parallel-card pc-green">
+      <div class="parallel-title">🔁 Keep Exploring</div>
+      <div class="parallel-desc">Client can go back to the map at any time, explore other plots or other projects, switch between townships, and submit multiple inquiries — all in one session without losing their place.</div>
+    </div>
+  </div>
+
+  <div class="end-block">
+    <div class="end-icon">🎯</div>
+    <div>
+      <div class="end-title">Client Journey Complete</div>
+      <div class="end-sub">From a link on their phone → to a personalised plot inquiry → in under 10 minutes, no confusion</div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ═══════════════ ADMIN FLOW ═══════════════ -->
+<div class="canvas" id="flow-admin">
+
+  <div class="admin-header">
+    <div class="admin-header-icon">📊</div>
+    <div>
+      <div class="admin-header-title">Admin's Internal Dashboard — How AUGUST Manages Everything</div>
+      <div class="admin-header-sub">The complete daily workflow of the AUGUST team — from approving clients to closing deals, all in one place</div>
+    </div>
+  </div>
+
+  <!-- PHASE 1 -->
+  <div class="phase-header"><div class="phase-pill green">Phase 1 — Access Control</div><div class="phase-line"></div></div>
+
+  <div class="step-row">
+    <div class="spine"><div class="spine-dot sd-green">A1</div><div class="spine-line"></div></div>
+    <div class="step-card admin">
+      <div class="step-header"><div class="step-title">Admin Logs into the Dashboard</div><div class="step-emoji">🖥️</div></div>
+      <div class="step-desc">Admin opens the internal dashboard on any device — desktop, tablet, or phone. The home screen shows a live overview of everything happening: new leads today, active client sessions right now, and which project is getting the most attention this week.</div>
+      <div class="step-tags"><span class="tag tag-green">Desktop / Tablet / Phone</span><span class="tag tag-green">Live Summary Cards</span><span class="tag tag-blue">Real-Time Updates</span></div>
+    </div>
+  </div>
+
+  <div class="arrow-connector"><div class="arrow-line"></div><div class="arrow-label">First Thing Each Day</div></div>
+
+  <div class="step-row">
+    <div class="spine"><div class="spine-dot sd-green">A2</div><div class="spine-line"></div></div>
+    <div class="step-card admin">
+      <div class="step-header"><div class="step-title">Review &amp; Approve OTP Login Requests</div><div class="step-emoji">🔐</div></div>
+      <div class="step-desc">The admin sees a list of clients who are waiting for approval before they can enter the platform. One tap approves or rejects each request. Approved clients immediately receive their OTP and gain access — the admin is always in full control of who enters.</div>
+      <div class="step-tags">
+        <span class="tag tag-green">✅ One-Tap Approve</span>
+        <span class="tag" style="background:#FDEAEA;color:#B33A3A;">❌ Reject &amp; Block</span>
+        <span class="tag tag-amber">Revoke Access Anytime</span>
+        <span class="tag tag-navy">Bulk Invite Clients via Link</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="arrow-connector"><div class="arrow-line"></div><div class="arrow-label">Clients Now Exploring</div></div>
+
+  <!-- PHASE 2 -->
+  <div class="phase-header"><div class="phase-pill green">Phase 2 — Lead Management</div><div class="phase-line"></div></div>
+
+  <div class="step-row">
+    <div class="spine"><div class="spine-dot sd-green">A3</div><div class="spine-line"></div></div>
+    <div class="step-card admin">
+      <div class="step-header"><div class="step-title">New Lead Arrives — Real-Time Notification</div><div class="step-emoji">📩</div></div>
+      <div class="step-desc">Every time a client submits an inquiry, a new lead card appears instantly in the dashboard. Admin gets an in-app notification and optionally a WhatsApp alert. The lead is already auto-tagged with all the key info — no manual data entry needed.</div>
+      <div class="step-tags">
+        <span class="tag tag-blue">Client Name + Mobile</span>
+        <span class="tag tag-blue">Plot ID + Project</span>
+        <span class="tag tag-blue">Inquiry Type Badge</span>
+        <span class="tag tag-green">WhatsApp Alert (Optional)</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="arrow-connector"><div class="arrow-line"></div><div class="arrow-label">Lead Opened</div></div>
+
+  <div class="step-row">
+    <div class="spine"><div class="spine-dot sd-green">A4</div><div class="spine-line"></div></div>
+    <div class="step-card admin">
+      <div class="step-header"><div class="step-title">Review Lead &amp; Assign to Sales Team</div><div class="step-emoji">👥</div></div>
+      <div class="step-desc">Admin opens the lead to see the full picture: which client expressed interest, which exact plot they liked, whether they ran the 3D house preview, and what kind of inquiry they submitted. Admin assigns it to the right sales team member and adds internal notes.</div>
+      <div class="step-tags">
+        <span class="tag tag-green">Assign to Sales Rep</span>
+        <span class="tag tag-green">Add Private Notes</span>
+        <span class="tag tag-navy">Filter by Project / Type / Date</span>
+        <span class="tag tag-navy">Search by Name or Number</span>
+        <span class="tag tag-navy">Export as Excel</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="arrow-connector"><div class="arrow-line"></div><div class="arrow-label">Sales Team Takes Over</div></div>
+
+  <div class="decision-block">
+    <div class="decision-title">📋 Lead Status Pipeline — Track Every Lead's Progress</div>
+    <div class="status-row">
+      <span class="status-node" style="background:#EBF0F8;color:var(--navy2);">🆕 New</span>
+      <span class="status-arrow">→</span>
+      <span class="status-node" style="background:var(--amber-light);color:var(--amber);">📞 Contacted</span>
+      <span class="status-arrow">→</span>
+      <span class="status-node" style="background:#E2F0FA;color:#2B6FA0;">🏗️ Site Visit Scheduled</span>
+      <span class="status-arrow">→</span>
+      <span class="status-node" style="background:#FBF3DC;color:#8A6800;">🤝 In Negotiation</span>
+      <span class="status-arrow">→</span>
+      <span class="status-node" style="background:var(--green-light);color:var(--green);">✅ Won</span>
+      <span style="color:var(--muted);font-size:12px;">or</span>
+      <span class="status-node" style="background:var(--red-light);color:var(--red);">❌ Lost</span>
+    </div>
+  </div>
+
+  <div class="arrow-connector"><div class="arrow-line"></div><div class="arrow-label">Ongoing Management</div></div>
+
+  <!-- PHASE 3 -->
+  <div class="phase-header"><div class="phase-pill blue">Phase 3 — Analytics &amp; Insights</div><div class="phase-line"></div></div>
+
+  <div class="step-row">
+    <div class="spine"><div class="spine-dot sd-blue">A5</div><div class="spine-line"></div></div>
+    <div class="step-card system">
+      <div class="step-header"><div class="step-title">Check Project Performance Analytics</div><div class="step-emoji">📈</div></div>
+      <div class="step-desc">Admin views a visual dashboard showing which township project is generating the most leads, which inquiry type is most common, and how performance has changed over time. All shown as clear charts and summary cards — no spreadsheet knowledge needed.</div>
+      <div class="step-tags">
+        <span class="tag tag-blue">Leads per Project</span>
+        <span class="tag tag-blue">Call vs Quote vs Visit Split</span>
+        <span class="tag tag-blue">Weekly &amp; Monthly Trend Charts</span>
+        <span class="tag tag-blue">Lead → Won Conversion Rate</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="arrow-connector"><div class="arrow-line"></div><div class="arrow-label">Plot-Level View</div></div>
+
+  <div class="step-row">
+    <div class="spine"><div class="spine-dot sd-blue">A6</div><div class="spine-line"></div></div>
+    <div class="step-card system">
+      <div class="step-header"><div class="step-title">View Plot Engagement Heatmap</div><div class="step-emoji">🔥</div></div>
+      <div class="step-desc">The township layout is shown to the admin with a live colour heatmap overlaid on it. Plots with more client attention glow red/orange. Ignored plots appear cool blue. Admin instantly knows which plots are hot and which need attention — could be a pricing issue, a Vastu issue, or something else the team needs to address.</div>
+      <div class="step-tags">
+        <span class="tag tag-amber">🔥 Most Clicked Plots</span>
+        <span class="tag tag-blue">⏱️ Avg. Time Spent on Each Plot</span>
+        <span class="tag tag-blue">🏠 How Many Clients Used 3D Preview</span>
+        <span class="tag tag-navy">Cold Plots — Needs Attention</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="arrow-connector"><div class="arrow-line"></div><div class="arrow-label">Client Feedback Review</div></div>
+
+  <div class="step-row">
+    <div class="spine"><div class="spine-dot sd-green">A7</div><div class="spine-line"></div></div>
+    <div class="step-card admin">
+      <div class="step-header"><div class="step-title">Review Client Feedback &amp; Sentiment</div><div class="step-emoji">⭐</div></div>
+      <div class="step-desc">All star ratings and comments from clients — neatly organised by plot and project. Admin sees average ratings, the most commonly mentioned topics (e.g. "clients love the Vastu but mention the road access"), and can read individual comments to understand client sentiment at a deeper level.</div>
+      <div class="step-tags">
+        <span class="tag tag-green">Average Rating per Plot</span>
+        <span class="tag tag-green">Positive / Neutral / Negative Split</span>
+        <span class="tag tag-green">Most-Mentioned Feedback Topics</span>
+        <span class="tag tag-navy">Export Feedback Data</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="arrow-connector"><div class="arrow-line"></div><div class="arrow-label">Ongoing Admin Operations</div></div>
+
+  <!-- PHASE 4 -->
+  <div class="phase-header"><div class="phase-pill green">Phase 4 — Ongoing Operations</div><div class="phase-line"></div></div>
+
+  <div class="parallel-block">
+    <div class="parallel-card pc-gold">
+      <div class="parallel-title">📋 Update Plot Status</div>
+      <div class="parallel-desc">When a deal is confirmed, admin marks a plot as Reserved or Booked. This update reflects immediately on the client-facing map — no plot is ever shown incorrectly to another client.</div>
+    </div>
+    <div class="parallel-card pc-blue">
+      <div class="parallel-title">👁️ Watch Active Sessions</div>
+      <div class="parallel-desc">Admin can see which clients are currently browsing the platform right now — what they're looking at, which plots they've clicked, and how long they've been exploring. Useful for timing follow-up calls.</div>
+    </div>
+    <div class="parallel-card pc-green">
+      <div class="parallel-title">➕ Add New Projects</div>
+      <div class="parallel-desc">When AUGUST launches a new township, admin adds it via the content panel — new map data, plot information, and 3D models. The platform updates immediately. No technical team needed.</div>
+    </div>
+  </div>
+
+  <div class="end-block">
+    <div class="end-icon">🏆</div>
+    <div>
+      <div class="end-title">Admin Has Full Control &amp; Full Visibility</div>
+      <div class="end-sub">Client access → Lead pipeline → Plot analytics → Feedback insights — all in one dashboard, on any device</div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+function showFlow(type, btn) {
+  document.querySelectorAll('.canvas').forEach(c => c.classList.remove('visible'));
+  document.querySelectorAll('.switch-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('flow-' + type).classList.add('visible');
+  btn.classList.add('active');
+}
+</script>
+</body>
+</html>
