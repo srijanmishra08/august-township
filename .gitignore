@@ -1,6 +1,10 @@
 .DS_Store
 *.pdf
 *.png.bak
+css
 css/
+index
 index/
 Screenshot*
+.venv/
+.vercel
