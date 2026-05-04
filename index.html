@@ -2,532 +2,1165 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>AUGUST — User Flow Diagram</title>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>August Township &#8212; Raipur</title>
+<meta name="description" content="Explore and book RERA-approved residential plots in August Township, Raipur, CG.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Gloock&family=Montserrat:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+<script type="importmap">
+{
+  "imports": {
+    "three": "https://cdn.jsdelivr.net/npm/three@0.169.0/build/three.module.js",
+    "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.169.0/examples/jsm/"
+  }
+}
+</script>
 <style>
-* { margin:0; padding:0; box-sizing:border-box; }
-:root {
-  --navy:#0F2340; --navy2:#1B3A5C; --gold:#C9A84C; --gold2:#E8C96A;
-  --cream:#F7F3ED; --blue-light:#D8EAF8; --blue-mid:#5B9EC9;
-  --green:#2D7A52; --green-light:#E0F5EA;
-  --red:#B33A3A; --red-light:#FDEAEA;
-  --amber:#B07820; --amber-light:#FEF3DC;
-  --text:#1A1A2E; --muted:#6B7A8F;
+/* ==========================================
+   RESET & BASE
+   ========================================== */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html,body{width:100%;height:100%;overflow:hidden;background:#1b1b1b;overscroll-behavior:none;-webkit-tap-highlight-color:transparent}
+body{font-family:'Montserrat',sans-serif;-webkit-font-smoothing:antialiased;color:#fff;user-select:none;-webkit-user-select:none}
+
+/* ==========================================
+   CANVAS
+   ========================================== */
+#c{position:fixed;top:0;left:0;width:100%;height:100%;display:block;touch-action:none}
+
+/* ==========================================
+   LOADER
+   ========================================== */
+#loader{
+  position:fixed;inset:0;background:#151515;z-index:200;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:28px;
+  transition:opacity .8s ease;pointer-events:all;
 }
-body { font-family:'DM Sans',sans-serif; background:var(--cream); color:var(--text); min-height:100vh; }
-
-/* HEADER */
-.header { background:var(--navy); padding:24px 40px; display:flex; align-items:center; justify-content:space-between; position:sticky; top:0; z-index:100; box-shadow:0 4px 32px rgba(0,0,0,.25); }
-.logo { font-family:'Playfair Display',serif; font-size:26px; color:var(--gold); letter-spacing:4px; font-weight:900; }
-.tagline { font-size:11px; color:#8AAEC8; letter-spacing:2px; text-transform:uppercase; margin-top:2px; }
-.header-badge { background:rgba(201,168,76,.15); border:1px solid var(--gold); color:var(--gold); font-size:11px; letter-spacing:2px; text-transform:uppercase; padding:6px 14px; border-radius:4px; font-weight:600; }
-
-/* LEGEND */
-.legend { display:flex; gap:20px; padding:14px 40px; background:white; border-bottom:1px solid #E0E8F0; flex-wrap:wrap; align-items:center; }
-.legend-label { font-size:11px; color:var(--muted); letter-spacing:1.5px; text-transform:uppercase; font-weight:600; }
-.legend-item { display:flex; align-items:center; gap:7px; font-size:12px; color:var(--text); font-weight:500; }
-.legend-dot { width:13px; height:13px; border-radius:50%; flex-shrink:0; }
-.l-client{background:var(--navy2);} .l-action{background:var(--gold);} .l-admin{background:var(--green);} .l-decision{background:var(--amber);} .l-system{background:var(--blue-mid);}
-
-/* SWITCHER */
-.switcher { display:flex; padding:20px 40px 0; }
-.switch-btn { padding:10px 26px; font-family:'DM Sans',sans-serif; font-size:13px; font-weight:600; letter-spacing:1px; text-transform:uppercase; border:2px solid var(--navy2); background:white; color:var(--navy2); cursor:pointer; transition:all .2s; }
-.switch-btn:first-child{border-radius:6px 0 0 6px;} .switch-btn:last-child{border-radius:0 6px 6px 0;}
-.switch-btn.active{background:var(--navy);color:var(--gold);border-color:var(--navy);}
-
-/* CANVAS */
-.canvas { padding:32px 40px 60px; display:none; animation:fadeIn .4s ease; }
-.canvas.visible { display:block; }
-@keyframes fadeIn { from{opacity:0;transform:translateY(10px);} to{opacity:1;transform:translateY(0);} }
-
-/* SUMMARY BANNER */
-.summary-banner { background:linear-gradient(135deg,var(--navy) 0%,var(--navy2) 100%); border-radius:14px; padding:22px 28px; margin-bottom:32px; display:flex; align-items:center; gap:14px; flex-wrap:wrap; }
-.summary-step { display:flex; flex-direction:column; align-items:center; gap:4px; }
-.summary-step-icon { font-size:20px; }
-.summary-step-label { font-size:10px; letter-spacing:1px; text-transform:uppercase; color:rgba(255,255,255,.6); text-align:center; max-width:60px; line-height:1.3; }
-.summary-arrow { color:var(--gold); font-size:16px; }
-
-/* SECTION INTRO */
-.section-intro { display:flex; align-items:center; gap:16px; margin-bottom:28px; }
-.section-icon { width:48px; height:48px; border-radius:12px; display:flex; align-items:center; justify-content:center; font-size:22px; flex-shrink:0; }
-.si-client{background:var(--navy2);} .si-admin{background:var(--green);}
-.section-title { font-family:'Playfair Display',serif; font-size:21px; color:var(--navy); font-weight:700; }
-.section-sub { font-size:13px; color:var(--muted); margin-top:3px; }
-
-/* PHASE HEADER */
-.phase-header { display:flex; align-items:center; gap:12px; margin:28px 0 16px; }
-.phase-pill { background:var(--navy); color:var(--gold); font-size:10px; font-weight:700; letter-spacing:2px; text-transform:uppercase; padding:4px 12px; border-radius:20px; white-space:nowrap; }
-.phase-pill.green{background:var(--green);color:white;} .phase-pill.blue{background:var(--blue-mid);color:white;}
-.phase-line { flex:1; height:1px; background:linear-gradient(to right,#CBD5E0,transparent); }
-
-/* STEP ROW */
-.step-row { display:flex; align-items:stretch; gap:0; }
-.spine { display:flex; flex-direction:column; align-items:center; flex-shrink:0; width:56px; }
-.spine-dot { width:36px; height:36px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:13px; font-weight:700; color:white; flex-shrink:0; z-index:1; box-shadow:0 0 0 4px var(--cream); }
-.spine-line { width:2px; flex:1; min-height:20px; background:linear-gradient(to bottom,#B8CDE0,#D8E8F0); }
-.sd-navy{background:var(--navy2);} .sd-gold{background:var(--gold);} .sd-blue{background:var(--blue-mid);} .sd-green{background:var(--green);} .sd-amber{background:var(--amber);}
-
-/* STEP CARD */
-.step-card { flex:1; background:white; border-radius:12px; border:1.5px solid #E0ECF5; padding:18px 22px; margin-bottom:12px; box-shadow:0 2px 12px rgba(0,0,0,.04); transition:box-shadow .2s,transform .2s; position:relative; overflow:hidden; }
-.step-card::before { content:''; position:absolute; left:0;top:0;bottom:0; width:4px; border-radius:12px 0 0 12px; }
-.step-card.client::before{background:var(--navy2);} .step-card.action::before{background:var(--gold);} .step-card.system::before{background:var(--blue-mid);} .step-card.admin::before{background:var(--green);}
-.step-card:hover { box-shadow:0 6px 24px rgba(0,0,0,.10); transform:translateX(3px); }
-.step-header { display:flex; align-items:flex-start; justify-content:space-between; gap:12px; }
-.step-title { font-size:15px; font-weight:700; color:var(--navy); line-height:1.3; }
-.step-emoji { font-size:22px; flex-shrink:0; }
-.step-desc { font-size:13px; color:var(--muted); margin-top:6px; line-height:1.6; }
-.step-tags { display:flex; flex-wrap:wrap; gap:6px; margin-top:10px; }
-.tag { font-size:11px; font-weight:600; padding:3px 10px; border-radius:20px; letter-spacing:.5px; }
-.tag-navy{background:#EBF0F8;color:var(--navy2);} .tag-gold{background:#FBF3DC;color:#8A6800;}
-.tag-green{background:var(--green-light);color:var(--green);} .tag-blue{background:#E2F0FA;color:#2B6FA0;}
-.tag-amber{background:var(--amber-light);color:var(--amber);}
-
-/* ARROW CONNECTOR */
-.arrow-connector { display:flex; align-items:center; gap:10px; padding:4px 0 4px 56px; margin-bottom:4px; }
-.arrow-line { width:36px; height:1.5px; background:linear-gradient(to right,#B8CDE0,#D8E8F0); }
-.arrow-label { font-size:11px; color:var(--muted); font-weight:600; letter-spacing:1px; text-transform:uppercase; display:flex; align-items:center; gap:6px; }
-.arrow-label::after { content:'↓'; font-size:14px; color:var(--gold); }
-
-/* DECISION BLOCK */
-.decision-block { background:var(--amber-light); border:2px dashed var(--amber); border-radius:12px; padding:14px 20px; margin-bottom:12px; margin-left:56px; }
-.decision-title { font-size:13px; font-weight:700; color:var(--amber); margin-bottom:8px; }
-.decision-paths { display:flex; gap:10px; flex-wrap:wrap; }
-.decision-path { flex:1; min-width:140px; border-radius:8px; padding:10px 14px; font-size:12px; font-weight:600; display:flex; align-items:center; gap:8px; }
-.path-yes{background:var(--green-light);color:var(--green);border:1.5px solid #A8DBC0;}
-.path-no{background:var(--red-light);color:var(--red);border:1.5px solid #F0B8B8;}
-
-/* PARALLEL BLOCK */
-.parallel-block { display:flex; gap:14px; margin-bottom:12px; margin-left:56px; flex-wrap:wrap; }
-.parallel-card { flex:1; min-width:180px; background:white; border:1.5px solid #E0ECF5; border-radius:10px; padding:14px 16px; position:relative; overflow:hidden; box-shadow:0 2px 8px rgba(0,0,0,.04); }
-.parallel-card::before { content:''; position:absolute; top:0;left:0;right:0; height:3px; border-radius:10px 10px 0 0; }
-.pc-gold::before{background:var(--gold);} .pc-blue::before{background:var(--blue-mid);} .pc-green::before{background:var(--green);}
-.parallel-title { font-size:13px; font-weight:700; color:var(--navy); margin-bottom:6px; }
-.parallel-desc { font-size:12px; color:var(--muted); line-height:1.5; }
-
-/* END BLOCK */
-.end-block { background:var(--navy); border-radius:12px; padding:20px 28px; margin-left:56px; display:flex; align-items:center; gap:16px; }
-.end-icon { font-size:28px; }
-.end-title { font-family:'Playfair Display',serif; font-size:18px; color:var(--gold); font-weight:700; }
-.end-sub { font-size:12px; color:#8AAEC8; margin-top:3px; }
-
-/* ADMIN HEADER */
-.admin-header { background:linear-gradient(135deg,var(--green) 0%,#1E5A3C 100%); border-radius:12px; padding:20px 24px; margin-bottom:28px; display:flex; align-items:center; gap:16px; }
-.admin-header-icon { font-size:32px; }
-.admin-header-title { font-family:'Playfair Display',serif; font-size:19px; color:white; font-weight:700; }
-.admin-header-sub { font-size:13px; color:rgba(255,255,255,.7); margin-top:3px; }
-
-/* STATUS ROW */
-.status-row { display:flex; align-items:center; flex-wrap:wrap; gap:6px; margin-top:8px; }
-.status-node { font-size:11px; font-weight:700; padding:5px 12px; border-radius:20px; white-space:nowrap; }
-.status-arrow { color:var(--muted); font-size:14px; }
-
-@media(max-width:600px){
-  .header{padding:16px 20px;} .legend{padding:12px 20px;gap:10px;} .switcher{padding:14px 20px 0;} .canvas{padding:20px 20px 40px;}
-  .switch-btn{padding:8px 12px;font-size:11px;} .summary-banner{gap:8px;} .logo{font-size:20px;}
+#loader.out{opacity:0;pointer-events:none}
+.ld-brand{text-align:center}
+.ld-brand h1{
+  font-family:'Gloock',serif;font-size:clamp(36px,6vw,60px);font-weight:400;
+  letter-spacing:10px;color:#fff;
 }
+.ld-brand p{
+  font-size:8px;font-weight:600;letter-spacing:5px;text-transform:uppercase;
+  color:rgba(255,255,255,.22);margin-top:8px;
+}
+.ld-ring{
+  width:44px;height:44px;
+  border:1.5px solid rgba(255,255,255,.08);
+  border-top-color:rgba(255,255,255,.55);
+  border-radius:50%;
+  animation:ring-spin 1s linear infinite;
+}
+.ld-msg{font-size:8px;letter-spacing:3px;text-transform:uppercase;color:rgba(255,255,255,.18)}
+
+/* ==========================================
+   FOOTER / BOTTOM NAV
+   ========================================== */
+#footer{
+  position:fixed;bottom:22px;left:0;right:0;
+  display:flex;flex-direction:column;align-items:center;gap:7px;
+  z-index:50;pointer-events:none;
+}
+#footer>*{pointer-events:auto}
+.bottom-nav{display:flex;gap:8px;align-items:center}
+.glass-pill{
+  height:42px;min-width:42px;padding:0;
+  display:inline-flex;align-items:center;justify-content:center;
+  gap:0;overflow:hidden;
+  background:rgba(255,255,255,.09);
+  backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);
+  border:1px solid rgba(255,255,255,.14);
+  border-radius:50px;
+  color:rgba(255,255,255,.8);
+  font-family:'Montserrat',sans-serif;
+  font-size:8px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;
+  cursor:pointer;white-space:nowrap;
+  transition:background .25s,
+             padding .3s cubic-bezier(.4,0,.2,1),
+             gap .3s cubic-bezier(.4,0,.2,1),
+             min-width .3s cubic-bezier(.4,0,.2,1);
+}
+.glass-pill:hover{
+  background:rgba(255,255,255,.17);
+  padding:0 18px;gap:9px;min-width:auto;
+}
+.glass-pill svg{flex-shrink:0;width:15px;height:15px}
+.pill-lbl{
+  max-width:0;overflow:hidden;opacity:0;
+  transition:max-width .4s ease,opacity .25s ease .12s;
+}
+.glass-pill:hover .pill-lbl{max-width:120px;opacity:1}
+.footer-wordmark{
+  font-size:8px;font-weight:600;letter-spacing:3px;text-transform:uppercase;
+  color:rgba(255,255,255,.12);margin-top:2px;
+}
+
+/* ==========================================
+   COMPASS
+   ========================================== */
+#compass{
+  position:fixed;top:22px;left:22px;
+  width:50px;height:50px;
+  opacity:.12;pointer-events:none;z-index:40;
+  transition:opacity .3s;
+}
+
+/* ==========================================
+   HOVER TOOLTIP
+   ========================================== */
+#tooltip{
+  position:fixed;z-index:80;
+  background:rgba(10,8,6,.94);
+  backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);
+  border:1px solid rgba(255,255,255,.09);
+  border-radius:8px;padding:14px 18px;
+  pointer-events:none;min-width:210px;
+  opacity:0;transform:translateY(4px);
+  transition:opacity .12s,transform .12s;
+}
+#tooltip.on{opacity:1;transform:translateY(0)}
+.tt-eyebrow{font-size:7px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:rgba(255,255,255,.28);margin-bottom:4px}
+.tt-name{font-family:'Gloock',serif;font-size:17px;color:#fff;margin-bottom:10px;line-height:1.15}
+.tt-row{display:flex;gap:18px;margin-bottom:8px}
+.tt-item{display:flex;flex-direction:column;gap:2px}
+.tt-lbl{font-size:7px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,.28)}
+.tt-val{font-size:11px;font-weight:500;color:rgba(255,255,255,.65)}
+.tt-price{
+  font-family:'Gloock',serif;font-size:15px;color:#E8956D;
+  padding-top:8px;border-top:1px solid rgba(255,255,255,.07);
+  display:flex;align-items:center;gap:8px;
+}
+.tt-badge{
+  font-size:7px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;
+  padding:3px 8px;border-radius:100px;
+}
+.tb-av{background:rgba(200,96,42,.18);color:#E8956D}
+.tb-bk{background:rgba(212,168,32,.18);color:#D4A820}
+.tb-sd{background:rgba(80,72,64,.25);color:#7A7060}
+
+/* ==========================================
+   OVERLAY
+   ========================================== */
+#overlay{
+  position:fixed;inset:0;z-index:55;
+  background:rgba(0,0,0,0);pointer-events:none;
+  transition:background .3s;
+}
+#overlay.dim{background:rgba(0,0,0,.55);pointer-events:all}
+
+/* ==========================================
+   UNIT DETAIL PANEL
+   ========================================== */
+#detail{
+  position:fixed;top:0;right:0;bottom:0;
+  width:400px;max-width:100vw;
+  background:rgba(16,13,10,.96);
+  backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);
+  border-left:1px solid rgba(255,255,255,.07);
+  z-index:60;
+  transform:translateX(100%);
+  transition:transform .42s cubic-bezier(.4,0,.2,1);
+  overflow-y:auto;overflow-x:hidden;
+}
+#detail.on{transform:translateX(0)}
+/* mobile: bottom sheet */
+@media(max-width:768px){
+  #detail{
+    top:auto;left:0;right:0;
+    width:100%;height:80vh;
+    border-left:none;border-top:1px solid rgba(255,255,255,.07);
+    border-radius:16px 16px 0 0;
+    transform:translateY(100%);
+  }
+  #detail.on{transform:translateY(0)}
+}
+.det-drag-handle{
+  display:none;
+  width:36px;height:3px;
+  background:rgba(255,255,255,.15);border-radius:100px;
+  margin:12px auto 0;
+}
+@media(max-width:768px){.det-drag-handle{display:block}}
+.det-hdr{
+  padding:30px 28px 24px;
+  border-bottom:1px solid rgba(255,255,255,.06);
+  position:relative;
+}
+@media(max-width:768px){.det-hdr{padding:20px 20px 18px}}
+.det-close{
+  position:absolute;top:18px;right:18px;
+  width:30px;height:30px;border-radius:50%;
+  background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);
+  display:flex;align-items:center;justify-content:center;
+  cursor:pointer;color:rgba(255,255,255,.45);font-size:11px;
+  transition:all .2s;
+}
+.det-close:hover{background:rgba(255,255,255,.13);color:#fff}
+.det-pre{font-size:7px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:rgba(255,255,255,.28);margin-bottom:5px}
+.det-title{font-family:'Gloock',serif;font-size:40px;font-weight:400;color:#fff;line-height:1;margin-bottom:4px}
+.det-sub{font-size:11px;color:rgba(255,255,255,.32);margin-bottom:14px;letter-spacing:.05em}
+.det-badge{
+  display:inline-flex;align-items:center;gap:6px;
+  font-size:7px;font-weight:700;letter-spacing:2px;text-transform:uppercase;
+  padding:5px 12px;border-radius:100px;
+}
+.db-av{background:rgba(200,96,42,.14);color:#E8956D;border:1px solid rgba(200,96,42,.28)}
+.db-bk{background:rgba(212,168,32,.14);color:#D4A820;border:1px solid rgba(212,168,32,.28)}
+.db-sd{background:rgba(80,72,64,.2);color:#7A7060;border:1px solid rgba(80,72,64,.35)}
+.det-body{padding:22px 28px 32px}
+@media(max-width:768px){.det-body{padding:16px 20px 24px}}
+.det-grid{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-bottom:18px}
+.det-cell{
+  background:rgba(255,255,255,.04);
+  border:1px solid rgba(255,255,255,.06);
+  border-radius:6px;padding:13px;
+}
+.det-cl{font-size:7px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,.28);margin-bottom:4px}
+.det-cv{font-size:17px;font-weight:600;color:rgba(255,255,255,.88)}
+.det-price-box{
+  background:rgba(200,96,42,.07);
+  border:1px solid rgba(200,96,42,.2);
+  border-radius:8px;padding:18px;margin-bottom:16px;
+}
+.det-pl{font-size:7px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:rgba(200,96,42,.65);margin-bottom:5px}
+.det-pv{font-family:'Gloock',serif;font-size:42px;font-weight:400;color:#E8956D;line-height:1}
+.det-ps{font-size:9px;color:rgba(255,255,255,.28);margin-top:4px;letter-spacing:.05em}
+.det-emi{font-size:10px;color:rgba(255,255,255,.35);margin-top:8px;padding-top:8px;border-top:1px solid rgba(255,255,255,.06)}
+.det-actions{display:flex;flex-direction:column;gap:7px;margin-top:14px}
+.det-btn{
+  width:100%;padding:13px;border-radius:6px;
+  font-family:'Montserrat',sans-serif;font-size:9px;font-weight:700;
+  letter-spacing:.14em;text-transform:uppercase;cursor:pointer;
+  transition:all .2s;
+}
+.det-btn-primary{background:#C8602A;color:#fff;border:none}
+.det-btn-primary:hover{background:#A84E22;transform:translateY(-1px)}
+.det-btn-ghost{background:transparent;color:rgba(255,255,255,.45);border:1px solid rgba(255,255,255,.1)}
+.det-btn-ghost:hover{border-color:rgba(255,255,255,.3);color:rgba(255,255,255,.75)}
+/* interest mini-form */
+.det-form{display:none;margin-top:14px}
+.det-form.on{display:block;animation:fadeUp .3s ease}
+.det-fi{
+  width:100%;padding:10px 13px;margin-bottom:7px;
+  background:rgba(255,255,255,.05);
+  border:1px solid rgba(255,255,255,.1);
+  border-radius:6px;color:rgba(255,255,255,.8);
+  font-family:'Montserrat',sans-serif;font-size:12px;outline:none;
+  transition:border-color .2s;
+}
+.det-fi:focus{border-color:rgba(200,96,42,.5)}
+.det-fi::placeholder{color:rgba(255,255,255,.22)}
+textarea.det-fi{min-height:65px;resize:vertical}
+.det-confirm{display:none;text-align:center;padding:20px 10px}
+.det-confirm.on{display:block;animation:fadeUp .3s ease}
+.det-confirm-ico{font-size:30px;margin-bottom:8px}
+.det-confirm-msg{font-size:11px;color:rgba(255,255,255,.4);line-height:1.65}
+
+/* ==========================================
+   FILTER PANEL
+   ========================================== */
+#filter-panel{
+  position:fixed;bottom:0;left:50%;
+  transform:translate(-50%,100%);
+  width:min(500px,96vw);
+  background:rgba(16,13,10,.97);
+  backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);
+  border:1px solid rgba(255,255,255,.08);
+  border-radius:16px 16px 0 0;
+  z-index:60;
+  transition:transform .42s cubic-bezier(.4,0,.2,1);
+  padding:0 22px 28px;
+  max-height:70vh;overflow-y:auto;
+}
+#filter-panel.on{transform:translate(-50%,0)}
+.fp-handle{
+  width:36px;height:3px;background:rgba(255,255,255,.13);
+  border-radius:100px;margin:13px auto 18px;cursor:pointer;
+}
+.fp-title{font-family:'Gloock',serif;font-size:20px;color:#fff;margin-bottom:18px}
+.fp-sec{margin-bottom:16px}
+.fp-lbl{font-size:7px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:rgba(255,255,255,.28);margin-bottom:9px}
+.fp-pills{display:flex;gap:5px;flex-wrap:wrap}
+.fp-pill{
+  padding:6px 14px;
+  background:rgba(255,255,255,.06);
+  border:1px solid rgba(255,255,255,.09);
+  border-radius:100px;
+  color:rgba(255,255,255,.5);
+  font-size:9px;font-weight:600;letter-spacing:.05em;
+  cursor:pointer;transition:all .2s;
+}
+.fp-pill:hover{border-color:rgba(255,255,255,.22);color:rgba(255,255,255,.75)}
+.fp-pill.on{background:rgba(200,96,42,.18);border-color:rgba(200,96,42,.45);color:#E8956D}
+.fp-summary{font-size:10px;color:rgba(255,255,255,.28);text-align:center;margin-top:14px}
+.fp-summary strong{color:rgba(255,255,255,.55)}
+.fp-reset{
+  margin-top:8px;display:block;width:100%;text-align:center;
+  font-size:8px;font-weight:700;letter-spacing:2px;text-transform:uppercase;
+  color:rgba(255,255,255,.2);background:none;border:none;cursor:pointer;
+  text-decoration:underline;text-underline-offset:3px;transition:color .2s;
+}
+.fp-reset:hover{color:rgba(255,255,255,.5)}
+
+/* ==========================================
+   LEGEND
+   ========================================== */
+#legend{
+  position:fixed;bottom:22px;left:22px;
+  background:rgba(16,13,10,.8);
+  backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
+  border:1px solid rgba(255,255,255,.07);
+  border-radius:8px;padding:11px 15px;
+  z-index:40;pointer-events:none;
+}
+.lg-row{
+  display:flex;align-items:center;gap:7px;
+  font-size:8px;font-weight:600;letter-spacing:1px;text-transform:uppercase;
+  color:rgba(255,255,255,.35);margin-bottom:5px;
+}
+.lg-row:last-child{margin-bottom:0}
+.lg-dot{width:10px;height:8px;border-radius:2px;flex-shrink:0}
+.l-av{background:#C8602A}
+.l-bk{background:#D4A820}
+.l-sd{background:#3A3530}
+@media(max-width:768px){#legend{display:none}}
+
+/* ==========================================
+   TOAST
+   ========================================== */
+#toast{
+  position:fixed;bottom:88px;left:50%;
+  transform:translateX(-50%) translateY(16px);
+  background:rgba(16,13,10,.96);
+  border:1px solid rgba(255,255,255,.1);
+  border-radius:8px;padding:11px 22px;
+  font-size:11px;font-weight:500;color:rgba(255,255,255,.65);
+  z-index:90;opacity:0;pointer-events:none;
+  transition:all .3s;white-space:nowrap;
+}
+#toast.on{opacity:1;transform:translateX(-50%) translateY(0)}
+
+/* ==========================================
+   STATS BADGE (top right)
+   ========================================== */
+#stats-badge{
+  position:fixed;top:22px;right:22px;
+  display:flex;gap:1px;
+  background:rgba(255,255,255,.07);
+  backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+  border:1px solid rgba(255,255,255,.1);
+  border-radius:8px;overflow:hidden;
+  z-index:40;
+}
+.sb-item{padding:10px 16px;text-align:center;border-right:1px solid rgba(255,255,255,.08)}
+.sb-item:last-child{border-right:none}
+.sb-val{font-family:'Gloock',serif;font-size:20px;font-weight:400;line-height:1;color:#fff}
+.sb-lbl{font-size:7px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,.3);margin-top:3px}
+.sb-av{color:#E8956D}
+.sb-bk{color:#D4A820}
+@media(max-width:768px){#stats-badge{display:none}}
+
+/* ==========================================
+   ANIMATIONS
+   ========================================== */
+@keyframes ring-spin{to{transform:rotate(360deg)}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+
+/* ==========================================
+   SCROLLBAR
+   ========================================== */
+*{scrollbar-width:thin;scrollbar-color:rgba(255,255,255,.08) transparent}
+::-webkit-scrollbar{width:3px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:rgba(255,255,255,.08);border-radius:100px}
 </style>
 </head>
 <body>
+<canvas id="c"></canvas>
 
-<!-- HEADER -->
-<div class="header">
-  <div>
-    <div class="logo">AUGUST</div>
-    <div class="tagline">Property Visualization &amp; Lead Management</div>
+<!-- LOADER -->
+<div id="loader">
+  <div class="ld-brand">
+    <h1>AUGUST</h1>
+    <p>Township &bull; Raipur, Chhattisgarh</p>
   </div>
-  <div class="header-badge">User Flow Diagram</div>
+  <div class="ld-ring"></div>
+  <div class="ld-msg" id="ld-msg">Preparing experience&hellip;</div>
+</div>
+
+<!-- COMPASS -->
+<div id="compass" title="Compass">
+  <svg viewBox="0 0 52 52" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <circle cx="26" cy="26" r="23.5" stroke="rgba(255,255,255,0.7)" stroke-width=".7"/>
+    <path d="M26 5 L29.5 26 L26 22.5 L22.5 26 Z" fill="white"/>
+    <path d="M26 47 L29.5 26 L26 29.5 L22.5 26 Z" fill="rgba(255,255,255,0.25)"/>
+    <text x="26" y="2.5" text-anchor="middle" font-family="Montserrat,sans-serif" font-size="5.5" font-weight="700" fill="white" letter-spacing="0.5">N</text>
+    <text x="26" y="52" text-anchor="middle" dominant-baseline="auto" font-family="Montserrat,sans-serif" font-size="5.5" font-weight="700" fill="rgba(255,255,255,0.35)">S</text>
+    <text x="50" y="27.5" text-anchor="end" font-family="Montserrat,sans-serif" font-size="5.5" font-weight="700" fill="rgba(255,255,255,0.35)">E</text>
+    <text x="2" y="27.5" text-anchor="start" font-family="Montserrat,sans-serif" font-size="5.5" font-weight="700" fill="rgba(255,255,255,0.35)">W</text>
+  </svg>
+</div>
+
+<!-- STATS BADGE -->
+<div id="stats-badge">
+  <div class="sb-item"><div class="sb-val sb-av" id="sb-av">0</div><div class="sb-lbl">Available</div></div>
+  <div class="sb-item"><div class="sb-val sb-bk" id="sb-bk">0</div><div class="sb-lbl">Booked</div></div>
+  <div class="sb-item"><div class="sb-val" style="color:#7A7060" id="sb-sd">0</div><div class="sb-lbl">Sold</div></div>
+</div>
+
+<!-- TOOLTIP -->
+<div id="tooltip">
+  <div class="tt-eyebrow" id="tt-id"></div>
+  <div class="tt-name" id="tt-name"></div>
+  <div class="tt-row">
+    <div class="tt-item"><div class="tt-lbl">Size</div><div class="tt-val" id="tt-sz"></div></div>
+    <div class="tt-item"><div class="tt-lbl">Area</div><div class="tt-val" id="tt-sqft"></div></div>
+    <div class="tt-item"><div class="tt-lbl">Facing</div><div class="tt-val" id="tt-facing"></div></div>
+  </div>
+  <div class="tt-price" id="tt-price"></div>
+</div>
+
+<!-- OVERLAY -->
+<div id="overlay" id="overlay"></div>
+
+<!-- UNIT DETAIL PANEL -->
+<div id="detail" role="dialog" aria-modal="true" aria-label="Plot Details">
+  <div class="det-drag-handle"></div>
+  <div class="det-hdr">
+    <button class="det-close" id="det-close" aria-label="Close">&#10005;</button>
+    <div class="det-pre" id="det-block">Block &mdash;</div>
+    <div class="det-title" id="det-id">P-000</div>
+    <div class="det-sub" id="det-sub">27&#215;18 ft &bull; East Facing</div>
+    <span class="det-badge db-av" id="det-badge">Available</span>
+  </div>
+  <div class="det-body">
+    <div class="det-grid">
+      <div class="det-cell"><div class="det-cl">Area (sqft)</div><div class="det-cv" id="det-sqft">&#8212;</div></div>
+      <div class="det-cell"><div class="det-cl">Sq. Yards</div><div class="det-cv" id="det-sqyd">&#8212;</div></div>
+      <div class="det-cell"><div class="det-cl">Facing</div><div class="det-cv" id="det-facing">&#8212;</div></div>
+      <div class="det-cell"><div class="det-cl">Block</div><div class="det-cv" id="det-blk">&#8212;</div></div>
+    </div>
+    <div class="det-price-box">
+      <div class="det-pl">Starting Price</div>
+      <div class="det-pv" id="det-price">&#8377;00 L</div>
+      <div class="det-ps" id="det-rate">&#8212; per sqft</div>
+      <div class="det-emi" id="det-emi">EMI from &#8212;</div>
+    </div>
+    <div class="det-actions">
+      <button class="det-btn det-btn-primary" id="det-interest">Express Interest</button>
+      <button class="det-btn det-btn-ghost" id="det-visit">Schedule Site Visit</button>
+    </div>
+    <div class="det-form" id="det-form">
+      <div style="height:1px;background:rgba(255,255,255,.06);margin:16px 0 14px"></div>
+      <p style="font-size:7px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:rgba(255,255,255,.28);margin-bottom:11px">Your Details</p>
+      <input class="det-fi" id="df-name" type="text" placeholder="Full Name *">
+      <input class="det-fi" id="df-phone" type="tel" placeholder="Phone Number * (+91)" maxlength="10">
+      <input class="det-fi" id="df-email" type="email" placeholder="Email (optional)">
+      <textarea class="det-fi" id="df-msg" placeholder="Message (optional)"></textarea>
+      <button class="det-btn det-btn-primary" id="df-submit">Submit Interest</button>
+    </div>
+    <div class="det-confirm" id="det-confirm">
+      <div class="det-confirm-ico">&#10003;</div>
+      <div class="det-confirm-msg">Your interest in <strong id="det-confirm-plot"></strong> has been noted.<br>We will reach out to you shortly.</div>
+    </div>
+  </div>
+</div>
+
+<!-- FILTER PANEL -->
+<div id="filter-panel" role="dialog" aria-label="Filter Plots">
+  <div class="fp-handle" id="fp-handle"></div>
+  <div class="fp-title">Find Your Plot</div>
+  <div class="fp-sec">
+    <div class="fp-lbl">Status</div>
+    <div class="fp-pills" id="fp-status">
+      <button class="fp-pill on" data-v="all">All</button>
+      <button class="fp-pill" data-v="available">Available</button>
+      <button class="fp-pill" data-v="booked">Booked</button>
+      <button class="fp-pill" data-v="sold">Sold</button>
+    </div>
+  </div>
+  <div class="fp-sec">
+    <div class="fp-lbl">Size (ft)</div>
+    <div class="fp-pills" id="fp-size">
+      <button class="fp-pill on" data-v="all">All</button>
+      <button class="fp-pill" data-v="27x30">27&#215;30</button>
+      <button class="fp-pill" data-v="27x45">27&#215;45</button>
+      <button class="fp-pill" data-v="30x45">30&#215;45</button>
+      <button class="fp-pill" data-v="30x54">30&#215;54</button>
+      <button class="fp-pill" data-v="30x36">30&#215;36</button>
+      <button class="fp-pill" data-v="40x60">40&#215;60 Luxury</button>
+    </div>
+  </div>
+  <div class="fp-sec">
+    <div class="fp-lbl">Facing</div>
+    <div class="fp-pills" id="fp-facing">
+      <button class="fp-pill on" data-v="all">All</button>
+      <button class="fp-pill" data-v="North">North</button>
+      <button class="fp-pill" data-v="East">East</button>
+      <button class="fp-pill" data-v="South">South</button>
+      <button class="fp-pill" data-v="West">West</button>
+    </div>
+  </div>
+  <div class="fp-summary" id="fp-summary">Showing all 204 plots</div>
+  <button class="fp-reset" id="fp-reset">Reset all filters</button>
 </div>
 
 <!-- LEGEND -->
-<div class="legend">
-  <span class="legend-label">Legend:</span>
-  <div class="legend-item"><div class="legend-dot l-client"></div> Client Action</div>
-  <div class="legend-item"><div class="legend-dot l-action"></div> Key Moment / Choice</div>
-  <div class="legend-item"><div class="legend-dot l-admin"></div> Admin Action</div>
-  <div class="legend-item"><div class="legend-dot l-system"></div> System / Automatic</div>
-  <div class="legend-item"><div class="legend-dot l-decision"></div> Decision Point</div>
+<div id="legend">
+  <div class="lg-row"><div class="lg-dot l-av"></div>Available</div>
+  <div class="lg-row"><div class="lg-dot l-bk"></div>Booked</div>
+  <div class="lg-row"><div class="lg-dot l-sd"></div>Sold</div>
 </div>
 
-<!-- SWITCHER -->
-<div class="switcher">
-  <button class="switch-btn active" onclick="showFlow('client',this)">🏠 Client Journey</button>
-  <button class="switch-btn" onclick="showFlow('admin',this)">📊 Admin Journey</button>
+<!-- TOAST -->
+<div id="toast"></div>
+
+<!-- BOTTOM FOOTER NAV -->
+<div id="footer">
+  <div class="bottom-nav">
+    <button class="glass-pill" id="btn-filter" aria-label="Filter plots">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/>
+      </svg>
+      <span class="pill-lbl">Filter</span>
+    </button>
+    <button class="glass-pill" id="btn-home" aria-label="Reset view">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/>
+      </svg>
+      <span class="pill-lbl">Reset View</span>
+    </button>
+    <button class="glass-pill" id="btn-legend" aria-label="Legend">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>
+      </svg>
+      <span class="pill-lbl">Legend</span>
+    </button>
+    <a href="https://wa.me/919999999999?text=Hi%2C+I'm+interested+in+August+Township+plots." class="glass-pill" style="text-decoration:none;color:inherit" aria-label="WhatsApp">
+      <svg viewBox="0 0 24 24" fill="currentColor" width="15" height="15">
+        <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/>
+        <path d="M12 0C5.373 0 0 5.373 0 12c0 2.094.539 4.059 1.48 5.767L.052 23.948 6.32 22.52A11.94 11.94 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818a9.818 9.818 0 01-5.015-1.374l-.359-.213-3.73.978.995-3.645-.234-.374A9.818 9.818 0 1112 21.818z"/>
+      </svg>
+      <span class="pill-lbl">WhatsApp</span>
+    </a>
+  </div>
+  <div class="footer-wordmark">August Township &bull; Raipur, CG &bull; RERA: CGRERA/2024/PRJ/00472</div>
 </div>
+<script type="module">
+import * as THREE from 'three';
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 
-<!-- ═══════════════ CLIENT FLOW ═══════════════ -->
-<div class="canvas visible" id="flow-client">
+const CFG = { wa: '919999999999', rera: 'CGRERA/2024/PRJ/00472' };
 
-  <div class="summary-banner">
-    <div class="summary-step"><div class="summary-step-icon">🔗</div><div class="summary-step-label">Receive Link</div></div>
-    <div class="summary-arrow">→</div>
-    <div class="summary-step"><div class="summary-step-icon">🔐</div><div class="summary-step-label">OTP Login</div></div>
-    <div class="summary-arrow">→</div>
-    <div class="summary-step"><div class="summary-step-icon">🗺️</div><div class="summary-step-label">Explore Map</div></div>
-    <div class="summary-arrow">→</div>
-    <div class="summary-step"><div class="summary-step-icon">📍</div><div class="summary-step-label">Pick Project</div></div>
-    <div class="summary-arrow">→</div>
-    <div class="summary-step"><div class="summary-step-icon">🏙️</div><div class="summary-step-label">Choose Plot</div></div>
-    <div class="summary-arrow">→</div>
-    <div class="summary-step"><div class="summary-step-icon">🏠</div><div class="summary-step-label">Preview House</div></div>
-    <div class="summary-arrow">→</div>
-    <div class="summary-step"><div class="summary-step-icon">📩</div><div class="summary-step-label">Submit Inquiry</div></div>
-    <div class="summary-arrow">→</div>
-    <div class="summary-step"><div class="summary-step-icon">⭐</div><div class="summary-step-label">Leave Feedback</div></div>
-  </div>
+/* ============================================================
+   HASH UTIL
+   ============================================================ */
+function h(n){n=((n>>>16)^n)*0x45d9f3b|0;n=((n>>>16)^n)*0x45d9f3b|0;return((n>>>16)^n)>>>0;}
 
-  <div class="section-intro">
-    <div class="section-icon si-client">🏠</div>
-    <div>
-      <div class="section-title">Client's Journey — Step by Step</div>
-      <div class="section-sub">How a client goes from receiving a link → to submitting an inquiry for their dream plot</div>
-    </div>
-  </div>
+/* ============================================================
+   REAL PLOT DATA — extracted from Apurva Amin Architects PDF
+   Fields: [displayNum, id, cx, cz, sqft, sqyd, priceBase, pw, pd, key, sector]
+   Sectors: D=Diagonal  A=UpperGrid  B=Middle  C=Right  E=Lower  L=Luxury
+   ============================================================ */
+const RAW = [
+  // ── Sector D – Diagonal road plots (27×30 ft each) ──
+  [1,'P001',26.899,-14.663,810,90,35,1.9,1.7,'27x30','C'],
+  [2,'P002',-5.808,5.514,810,90,32,1.9,1.7,'27x30','D'],
+  [3,'P003',-7.237,3.679,810,90,32,1.9,1.7,'27x30','D'],
+  [4,'P004',-8.666,1.843,810,90,32,1.9,1.7,'27x30','D'],
+  [5,'P005',-10.095,0.005,810,90,32,1.9,1.7,'27x30','D'],
+  [6,'P006',-11.524,-1.831,810,90,32,1.9,1.7,'27x30','D'],
+  [7,'P007',-12.956,-3.666,810,90,32,1.9,1.7,'27x30','D'],
+  [8,'P008',-14.385,-5.501,810,90,32,1.9,1.7,'27x30','D'],
+  [9,'P009',-15.814,-7.340,810,90,32,1.9,1.7,'27x30','D'],
+  [10,'P010',-17.244,-9.176,810,90,32,1.9,1.7,'27x30','D'],
+  [11,'P011',-18.673,-11.011,810,90,32,1.9,1.7,'27x30','D'],
+  [12,'P012',-20.102,-12.846,810,90,32,1.9,1.7,'27x30','D'],
+  [13,'P013',-21.531,-14.685,810,90,32,1.9,1.7,'27x30','D'],
+  [14,'P014',-23.685,-17.164,810,90,32,1.9,1.7,'27x30','D'],
+  // ── Sector A – Upper residential grid (27×45 ft) ──
+  [15,'P015',-18.159,-19.473,1215,135,42,2.3,1.2,'27x45','A'],
+  [16,'P016',-18.159,-17.556,1215,135,42,2.3,1.2,'27x45','A'],
+  [17,'P017',-15.145,-13.280,1215,135,42,2.3,1.2,'27x45','A'],
+  [18,'P018',-15.145,-14.868,1215,135,42,2.3,1.2,'27x45','A'],
+  [19,'P019',-15.145,-16.456,1215,135,42,2.3,1.2,'27x45','A'],
+  [20,'P020',-15.145,-18.047,1215,135,42,2.3,1.2,'27x45','A'],
+  [21,'P021',-15.145,-19.639,1215,135,42,2.3,1.2,'27x45','A'],
+  [22,'P022',-10.990,-19.639,1215,135,42,2.3,1.2,'27x45','A'],
+  [23,'P023',-10.990,-18.047,1215,135,42,2.3,1.2,'27x45','A'],
+  [24,'P024',-10.990,-16.456,1215,135,42,2.3,1.2,'27x45','A'],
+  [25,'P025',-10.990,-14.868,1215,135,42,2.3,1.2,'27x45','A'],
+  [26,'P026',-10.990,-13.276,1215,135,42,2.3,1.2,'27x45','A'],
+  [27,'P027',-8.017,-13.276,1215,135,42,2.3,1.2,'27x45','A'],
+  [28,'P028',-8.017,-14.868,1215,135,42,2.3,1.2,'27x45','A'],
+  [29,'P029',-8.017,-16.456,1215,135,42,2.3,1.2,'27x45','A'],
+  [30,'P030',-8.017,-18.047,1215,135,42,2.3,1.2,'27x45','A'],
+  [31,'P031',-8.017,-19.639,1215,135,42,2.3,1.2,'27x45','A'],
+  [32,'P032',-3.544,-20.106,1215,135,42,2.3,1.2,'27x45','A'],
+  [33,'P033',-3.564,-18.136,1215,135,42,2.3,1.2,'27x45','A'],
+  [34,'P034',-3.635,-16.337,1215,135,42,2.3,1.2,'27x45','A'],
+  [35,'P035',-3.784,-14.505,1215,135,42,2.3,1.2,'27x45','A'],
+  [36,'P036',-3.784,-12.582,1215,135,42,2.3,1.2,'27x45','A'],
+  // ── Sector B – Middle blocks (30×45 ft) ──
+  [37,'P037',-3.520,-7.130,1350,150,48,2.4,2.2,'30x45','B'],
+  [38,'P038',-3.523,-4.458,1350,150,48,2.4,2.2,'30x45','B'],
+  [39,'P039',-3.523,-2.000,1350,150,48,2.4,2.2,'30x45','B'],
+  [40,'P040',-3.523,0.617,1350,150,48,2.4,2.2,'30x45','B'],
+  [41,'P041',-0.550,0.617,1350,150,48,2.4,2.2,'30x45','B'],
+  [42,'P042',-0.550,-2.000,1350,150,48,2.4,2.2,'30x45','B'],
+  [43,'P043',-0.550,-4.458,1350,150,48,2.4,2.2,'30x45','B'],
+  [44,'P044',-0.564,-7.123,1350,150,48,2.4,2.2,'30x45','B'],
+  [45,'P045',3.632,-6.981,1350,150,48,2.4,2.2,'30x45','B'],
+  [46,'P046',3.652,-4.458,1350,150,48,2.4,2.2,'30x45','B'],
+  [47,'P047',3.652,-2.000,1350,150,48,2.4,2.2,'30x45','B'],
+  [48,'P048',3.652,0.617,1350,150,48,2.4,2.2,'30x45','B'],
+  [49,'P049',6.754,0.617,1350,150,48,2.4,2.2,'30x45','B'],
+  [50,'P050',6.754,-2.000,1350,150,48,2.4,2.2,'30x45','B'],
+  [51,'P051',6.754,-4.458,1350,150,48,2.4,2.2,'30x45','B'],
+  [52,'P052',6.866,-7.215,1350,150,48,2.4,2.2,'30x45','B'],
+  [53,'P053',10.993,-7.215,1350,150,48,2.4,2.2,'30x45','B'],
+  [54,'P054',11.021,-4.458,1350,150,48,2.4,2.2,'30x45','B'],
+  [55,'P055',11.021,-2.000,1350,150,48,2.4,2.2,'30x45','B'],
+  [56,'P056',11.021,0.617,1350,150,48,2.4,2.2,'30x45','B'],
+  [57,'P057',14.122,0.617,1350,150,48,2.4,2.2,'30x45','B'],
+  [58,'P058',14.122,-2.000,1350,150,48,2.4,2.2,'30x45','B'],
+  [59,'P059',14.122,-4.458,1350,150,48,2.4,2.2,'30x45','B'],
+  [60,'P060',14.810,-7.201,1350,150,48,2.4,2.2,'30x45','B'],
+  // ── Sector C – Right residential bands (30×54 ft) ──
+  [61,'P061',18.552,-1.540,1620,180,55,2.6,1.9,'30x54','C'],
+  [62,'P062',18.552,0.797,1620,180,55,2.6,1.9,'30x54','C'],
+  [63,'P063',18.552,3.137,1620,180,55,2.6,1.9,'30x54','C'],
+  [64,'P064',18.552,5.477,1620,180,55,2.6,1.9,'30x54','C'],
+  [65,'P065',18.552,7.817,1620,180,55,2.6,1.9,'30x54','C'],
+  [66,'P066',21.975,7.817,1620,180,55,2.6,1.9,'30x54','C'],
+  [67,'P067',21.975,5.477,1620,180,55,2.6,1.9,'30x54','C'],
+  [68,'P068',21.975,3.137,1620,180,55,2.6,1.9,'30x54','C'],
+  [69,'P069',21.975,0.797,1620,180,55,2.6,1.9,'30x54','C'],
+  [70,'P070',21.975,-1.540,1620,180,55,2.6,1.9,'30x54','C'],
+  [71,'P071',27.109,-1.221,1620,180,55,2.3,1.9,'30x54','C'],
+  [72,'P072',27.109,1.102,1620,180,55,2.3,1.9,'30x54','C'],
+  [73,'P073',27.109,3.299,1620,180,55,2.3,1.9,'30x54','C'],
+  [74,'P074',27.109,5.497,1620,180,55,2.3,1.9,'30x54','C'],
+  [75,'P075',27.109,7.793,1620,180,55,2.3,1.9,'30x54','C'],
+  [76,'P076',30.464,8.101,1215,135,43,2.2,1.3,'27x45','C'],
+  [77,'P077',30.464,6.428,1215,135,43,2.2,1.3,'27x45','C'],
+  [78,'P078',30.464,4.850,1215,135,43,2.2,1.3,'27x45','C'],
+  [79,'P079',30.464,3.272,1215,135,43,2.2,1.3,'27x45','C'],
+  [80,'P080',30.464,1.698,1215,135,43,2.2,1.3,'27x45','C'],
+  [81,'P081',30.464,0.120,1215,135,43,2.2,1.3,'27x45','C'],
+  [82,'P082',30.464,-1.560,1215,135,43,2.2,1.3,'27x45','C'],
+  // ── Sector E – Lower / south plots (30×36 ft) ──
+  [83,'P083',34.731,18.646,1080,120,38,1.9,1.4,'30x36','E'],
+  [84,'P084',32.039,18.304,1080,120,38,1.9,1.4,'30x36','E'],
+  [85,'P085',29.784,17.992,1080,120,38,1.9,1.4,'30x36','E'],
+  [86,'P086',27.552,17.935,1080,120,38,1.9,1.4,'30x36','E'],
+  [87,'P087',25.449,17.935,1080,120,38,1.9,1.4,'30x36','E'],
+  [88,'P088',26.418,20.048,1080,120,38,1.9,1.4,'30x36','E'],
+  [89,'P089',26.211,22.022,1080,120,38,1.9,1.4,'30x36','E'],
+  [90,'P090',25.463,24.064,1080,120,38,1.9,1.4,'30x36','E'],
+  [91,'P091',22.148,23.129,1080,120,38,1.9,1.4,'30x36','E'],
+  [92,'P092',20.353,22.967,1080,120,38,1.9,1.4,'30x36','E'],
+  [93,'P093',18.565,22.828,1080,120,38,1.9,1.4,'30x36','E'],
+  [94,'P094',16.655,22.750,1080,120,38,1.9,1.4,'30x36','E'],
+  [95,'P095',21.491,18.101,1080,120,38,1.9,1.4,'30x36','E'],
+  [96,'P096',21.491,16.468,1080,120,38,1.9,1.4,'30x36','E'],
+  [97,'P097',21.491,14.887,1080,120,38,1.9,1.4,'30x36','E'],
+  [98,'P098',21.491,13.302,1080,120,38,1.9,1.4,'30x36','E'],
+  [99,'P099',21.491,11.718,1080,120,38,1.9,1.4,'30x36','E'],
+  [100,'P100',18.388,11.718,1080,120,38,1.9,1.4,'30x36','E'],
+  [101,'P101',18.388,13.302,1080,120,38,1.9,1.4,'30x36','E'],
+  [102,'P102',18.388,14.887,1080,120,38,1.9,1.4,'30x36','E'],
+  [103,'P103',18.388,16.468,1080,120,38,1.9,1.4,'30x36','E'],
+  [104,'P104',18.388,18.101,1080,120,38,1.9,1.4,'30x36','E'],
+  [105,'P105',14.142,18.984,1080,120,38,1.9,1.4,'30x36','E'],
+  [106,'P106',14.121,17.095,1080,120,38,1.9,1.4,'30x36','E'],
+  [107,'P107',14.121,15.351,1080,120,38,1.9,1.4,'30x36','E'],
+  [108,'P108',14.121,13.607,1080,120,38,1.9,1.4,'30x36','E'],
+  [109,'P109',14.121,11.829,1080,120,38,1.9,1.4,'30x36','E'],
+  [110,'P110',11.019,11.829,1080,120,38,1.9,1.4,'30x36','E'],
+  [111,'P111',11.019,13.607,1080,120,38,1.9,1.4,'30x36','E'],
+  [112,'P112',11.019,15.351,1080,120,38,1.9,1.4,'30x36','E'],
+  [113,'P113',11.019,17.095,1080,120,38,1.9,1.4,'30x36','E'],
+  [114,'P114',11.040,18.930,1080,120,38,1.9,1.4,'30x36','E'],
+  [115,'P115',6.631,17.427,1080,120,38,1.9,1.4,'30x36','E'],
+  [116,'P116',6.729,15.541,1080,120,38,1.9,1.4,'30x36','E'],
+  [117,'P117',6.821,13.702,1080,120,38,1.9,1.4,'30x36','E'],
+  [118,'P118',6.915,11.846,1080,120,38,1.9,1.4,'30x36','E'],
+  // ── Luxury L-lots (40×60 ft) ──
+  [null,'L001',30.088,14.714,2400,267,88,2.8,2.2,'40x60','L'],
+  [null,'L002',30.840,14.786,2400,267,88,2.8,2.2,'40x60','L'],
+  [null,'L003',31.602,14.901,2400,267,88,2.8,2.2,'40x60','L'],
+  [null,'L004',32.381,15.019,2400,267,88,2.8,2.2,'40x60','L'],
+  [null,'L005',33.176,15.141,2400,267,88,2.8,2.2,'40x60','L'],
+  [null,'L006',33.986,15.266,2400,267,88,2.8,2.2,'40x60','L'],
+  [null,'L007',-4.235,-11.475,2400,267,88,2.8,2.2,'40x60','L'],
+];
 
-  <!-- PHASE 1 -->
-  <div class="phase-header"><div class="phase-pill">Phase 1 — Entry &amp; Access</div><div class="phase-line"></div></div>
+const FACING_LIST=['North','East','South','West'];
 
-  <div class="step-row">
-    <div class="spine"><div class="spine-dot sd-navy">1</div><div class="spine-line"></div></div>
-    <div class="step-card client">
-      <div class="step-header"><div class="step-title">Client Receives the Platform Link</div><div class="step-emoji">🔗</div></div>
-      <div class="step-desc">AUGUST sends a personalised link to the client via WhatsApp, SMS, or Email. The client taps the link on their phone or tablet — no app download needed. It opens instantly in the browser.</div>
-      <div class="step-tags"><span class="tag tag-navy">WhatsApp</span><span class="tag tag-navy">SMS</span><span class="tag tag-navy">Email</span><span class="tag tag-gold">Mobile &amp; Tablet</span></div>
-    </div>
-  </div>
+const PLOTS=[];
+const PMAP={};
 
-  <div class="arrow-connector"><div class="arrow-line"></div><div class="arrow-label">Link Opens</div></div>
+RAW.forEach((r,i)=>{
+  const [dnum,id,cx,cz,sqft,sqyd,pb,pw,pd,key,sector]=r;
+  const n=i+1;
+  const hr=h(n*7)%100;
+  const status=hr<52?'available':hr<78?'booked':'sold';
+  const price=parseFloat((pb+(h(n*13)%100)/100).toFixed(2));
+  const rate=Math.round(price*100000/sqft);
+  const emi=Math.round((price*100000)*(0.085/12)*Math.pow(1+0.085/12,240)/(Math.pow(1+0.085/12,240)-1));
+  // Facing: edge plots face outward, interior use hash
+  let facing;
+  if(sector==='D') facing=FACING_LIST[(i)%4];
+  else if(sector==='L') facing='East';
+  else facing=FACING_LIST[h(n*31)%4];
+  const plot={
+    id, dnum, sqft, sqyd, key, sector,
+    status, price, rate, emi,
+    facing,
+    priceLabel:'\u20b9'+price+' L',
+    sectorName:({A:'Upper Block',B:'Central Block',C:'East Block',D:'Diagonal Zone',E:'South Block',L:'Luxury Lot'})[sector],
+    cx, cz, pw, pd
+  };
+  PLOTS.push(plot);
+  PMAP[id]=plot;
+});
 
-  <div class="step-row">
-    <div class="spine"><div class="spine-dot sd-navy">2</div><div class="spine-line"></div></div>
-    <div class="step-card client">
-      <div class="step-header"><div class="step-title">Enter Mobile Number → Request OTP</div><div class="step-emoji">📱</div></div>
-      <div class="step-desc">Client sees a clean login screen. They enter their mobile number and tap "Get OTP". The system sends a request to the AUGUST admin to approve the access. No password needed — just a one-time code.</div>
-      <div class="step-tags"><span class="tag tag-blue">System Sends OTP Request</span><span class="tag tag-amber">Awaiting Admin Approval</span></div>
-    </div>
-  </div>
+/* ============================================================
+   AMENITY DATA (positions from PDF)
+   ============================================================ */
+const AMENITIES=[
+  {name:'Box Cricket',cx:-17.43,cz:-22.15,color:0x2A6E2A,icon:'\u26be'},
+  {name:'Kids Play',cx:-7.70,cz:-3.95,color:0xE8A020,icon:'\u25b2'},
+  {name:'Skating Rink',cx:19.98,cz:19.38,color:0x4088CC,icon:'\u25c6'},
+  {name:'Sit Out Park',cx:24.48,cz:13.58,color:0x2A7A2A,icon:'\u25cf'},
+  {name:'Zen Garden',cx:27.46,cz:15.18,color:0x3A8A3A,icon:'\u273f'},
+  {name:'Pickle Ball',cx:26.97,cz:-4.26,color:0xCC6030,icon:'\u25a0'},
+  {name:'M-Purpose Court',cx:29.36,cz:-4.37,color:0xCC6030,icon:'\u25a1'},
+  {name:'Green Gym',cx:31.20,cz:-3.78,color:0x50AA50,icon:'\u25b3'},
+  {name:'Lawn & Plaza',cx:2.0,cz:6.5,color:0x3A8040,icon:'\u2605'},
+  {name:'Cobble Walk',cx:2.59,cz:14.53,color:0x888060,icon:'\u2219'},
+];
 
-  <div class="arrow-connector"><div class="arrow-line"></div><div class="arrow-label">Admin Reviews Request</div></div>
+/* ============================================================
+   THREE.JS SETUP
+   ============================================================ */
+const canvas=document.getElementById('c');
+const renderer=new THREE.WebGLRenderer({canvas,antialias:true,powerPreference:'high-performance'});
+renderer.setPixelRatio(Math.min(devicePixelRatio,2));
+renderer.setSize(innerWidth,innerHeight);
+renderer.shadowMap.enabled=true;
+renderer.shadowMap.type=THREE.PCFSoftShadowMap;
+renderer.outputColorSpace=THREE.SRGBColorSpace;
+renderer.toneMapping=THREE.ACESFilmicToneMapping;
+renderer.toneMappingExposure=1.05;
 
-  <div class="decision-block">
-    <div class="decision-title">⚖️ Admin Decision — Approve or Reject Client Access?</div>
-    <div class="decision-paths">
-      <div class="decision-path path-yes">✅ Approved → Client receives OTP on their phone, enters it, and gains full access to the platform</div>
-      <div class="decision-path path-no">❌ Rejected → Client is notified. Access is blocked. AUGUST team can follow up directly.</div>
-    </div>
-  </div>
+const scene=new THREE.Scene();
+scene.background=new THREE.Color(0x12100E);
+scene.fog=new THREE.FogExp2(0x12100E,0.008);
 
-  <div class="arrow-connector"><div class="arrow-line"></div><div class="arrow-label">Access Granted</div></div>
+const PDF_W=2835,PDF_H=2004;
+const W3D=80,H3D=W3D*PDF_H/PDF_W; // ~56.57
 
-  <!-- PHASE 2 -->
-  <div class="phase-header"><div class="phase-pill">Phase 2 — Exploration</div><div class="phase-line"></div></div>
+const camera=new THREE.PerspectiveCamera(52,innerWidth/innerHeight,0.1,500);
+camera.position.set(5,64,58);
 
-  <div class="step-row">
-    <div class="spine"><div class="spine-dot sd-blue">3</div><div class="spine-line"></div></div>
-    <div class="step-card system">
-      <div class="step-header"><div class="step-title">See Raipur City Map — 3 Township Locations Pinned</div><div class="step-emoji">🗺️</div></div>
-      <div class="step-desc">Client lands on an interactive city map of Raipur. Three colourful pins mark the township locations. Tapping any pin shows a quick preview card with the project name, photo, and a "Explore" button. The AI chatbot is available in the corner to answer any questions.</div>
-      <div class="step-tags"><span class="tag tag-navy">📍 Water Lilly — Kachna</span><span class="tag tag-navy">📍 Silver Stone — Labhandi</span><span class="tag tag-navy">📍 White Lotus — VIP Road</span><span class="tag tag-blue">🤖 AI Chatbot Available</span></div>
-    </div>
-  </div>
+const controls=new OrbitControls(camera,renderer.domElement);
+controls.enableDamping=true;
+controls.dampingFactor=0.045;
+controls.minPolarAngle=0.12;
+controls.maxPolarAngle=Math.PI/2-0.06;
+controls.minDistance=6;
+controls.maxDistance=180;
+controls.screenSpacePanning=false;
+controls.target.set(5,0,2);
+controls.update();
 
-  <div class="arrow-connector"><div class="arrow-line"></div><div class="arrow-label">Client Taps a Project Pin</div></div>
+/* ============================================================
+   LIGHTS
+   ============================================================ */
+scene.add(new THREE.AmbientLight(0xffffff,0.6));
+const sun=new THREE.DirectionalLight(0xFFF5E0,2.0);
+sun.position.set(20,60,25);
+sun.castShadow=true;
+sun.shadow.mapSize.set(2048,2048);
+sun.shadow.camera.left=-80;sun.shadow.camera.right=80;
+sun.shadow.camera.top=60;sun.shadow.camera.bottom=-60;
+sun.shadow.camera.far=200;sun.shadow.bias=-0.001;
+scene.add(sun);
+const fillLight=new THREE.DirectionalLight(0xC8DAFF,0.45);fillLight.position.set(-25,40,-20);scene.add(fillLight);
 
-  <div class="step-row">
-    <div class="spine"><div class="spine-dot sd-blue">4</div><div class="spine-line"></div></div>
-    <div class="step-card system">
-      <div class="step-header"><div class="step-title">Zoom into the Township — See All Plot Cutouts</div><div class="step-emoji">🏙️</div></div>
-      <div class="step-desc">The map smoothly zooms into the selected township. Client sees the full geo-coded layout with roads, zones, and every individual plot drawn to scale. Each plot is colour-coded so the client instantly knows what's available.</div>
-      <div class="step-tags">
-        <span class="tag tag-green">🟢 Available Plots</span>
-        <span class="tag tag-amber">🟡 Reserved</span>
-        <span class="tag" style="background:#FDEAEA;color:#B33A3A;">🔴 Booked / Sold</span>
-      </div>
-    </div>
-  </div>
+/* ============================================================
+   GROUND — plan PNG inverted to dark
+   ============================================================ */
+const baseGeo=new THREE.PlaneGeometry(400,400);
+const baseMat=new THREE.MeshStandardMaterial({color:0x141210,roughness:1});
+const base=new THREE.Mesh(baseGeo,baseMat);
+base.rotation.x=-Math.PI/2;base.position.y=-0.05;base.receiveShadow=true;
+scene.add(base);
 
-  <div class="arrow-connector"><div class="arrow-line"></div><div class="arrow-label">Client Taps a Plot</div></div>
+// Load plan image, invert on canvas, use as ground overlay
+const planOverlay=(()=>{
+  const geo=new THREE.PlaneGeometry(W3D,H3D);
+  const mat=new THREE.MeshBasicMaterial({transparent:true,opacity:0,depthWrite:false});
+  const mesh=new THREE.Mesh(geo,mat);
+  mesh.rotation.x=-Math.PI/2;mesh.position.y=0.01;
+  scene.add(mesh);
+  const img=new Image();
+  img.crossOrigin='anonymous';
+  img.onload=()=>{
+    const cv=document.createElement('canvas');
+    cv.width=img.width;cv.height=img.height;
+    const ctx=cv.getContext('2d');
+    ctx.drawImage(img,0,0);
+    const d=ctx.getImageData(0,0,cv.width,cv.height);
+    const px=d.data;
+    for(let i=0;i<px.length;i+=4){
+      // Invert and tint dark ochre
+      px[i]=Math.floor((255-px[i])*0.22+8);     // R
+      px[i+1]=Math.floor((255-px[i+1])*0.18+6); // G
+      px[i+2]=Math.floor((255-px[i+2])*0.12+4); // B
+      // Boost contrast: if original was dark line → bright
+      if(px[i]>30){px[i]=Math.min(255,px[i]*1.6|0);px[i+1]=Math.min(255,px[i+1]*1.5|0);}
+    }
+    ctx.putImageData(d,0,0);
+    const tex=new THREE.CanvasTexture(cv);
+    mat.map=tex;mat.opacity=0.85;mat.needsUpdate=true;
+  };
+  img.onerror=()=>{ mat.color=new THREE.Color(0x1c1812);mat.opacity=1;mat.needsUpdate=true; };
+  img.src='plan_bg.png';
+  return mesh;
+})();
 
-  <!-- PHASE 3 -->
-  <div class="phase-header"><div class="phase-pill">Phase 3 — Plot Discovery</div><div class="phase-line"></div></div>
+/* ============================================================
+   MATERIALS
+   ============================================================ */
+const MAT={
+  available:new THREE.MeshStandardMaterial({color:0xC8602A,roughness:.5,metalness:.1}),
+  booked:new THREE.MeshStandardMaterial({color:0xE0A800,roughness:.5,metalness:.1}),
+  sold:new THREE.MeshStandardMaterial({color:0x5A5048,roughness:.9,metalness:.02}),
+  luxury:new THREE.MeshStandardMaterial({color:0x8B6C2A,roughness:.45,metalness:.25,emissive:new THREE.Color(0x3A2A08),emissiveIntensity:.2}),
+  hover:new THREE.MeshStandardMaterial({color:0xFF7840,roughness:.4,emissive:new THREE.Color(0xCC3800),emissiveIntensity:.4}),
+  selected:new THREE.MeshStandardMaterial({color:0x4A90FF,roughness:.4,emissive:new THREE.Color(0x1A44CC),emissiveIntensity:.5}),
+  ghost:new THREE.MeshStandardMaterial({color:0x2A2218,roughness:1,transparent:true,opacity:.15}),
+  amenity:new THREE.MeshStandardMaterial({color:0x2E6B2E,roughness:.6,emissive:new THREE.Color(0x0E3A0E),emissiveIntensity:.3}),
+};
 
-  <div class="step-row">
-    <div class="spine"><div class="spine-dot sd-gold">5</div><div class="spine-line"></div></div>
-    <div class="step-card action">
-      <div class="step-header"><div class="step-title">View Detailed Plot Information</div><div class="step-emoji">📐</div></div>
-      <div class="step-desc">A detail panel slides up showing everything about the selected plot — visually presented with icons and clean layout. The client doesn't need to ask any questions. All the key info they'd care about is right there.</div>
-      <div class="step-tags">
-        <span class="tag tag-navy">📏 Plot Size (sq.ft / sq.yards)</span>
-        <span class="tag tag-navy">🧭 Facing Direction</span>
-        <span class="tag tag-navy">🪷 Vastu Details &amp; Score</span>
-        <span class="tag tag-navy">🌳 Nearby Amenities</span>
-        <span class="tag tag-navy">🏘️ Neighbour Plot Availability</span>
-        <span class="tag tag-gold">💰 Price (if admin enabled)</span>
-      </div>
-    </div>
-  </div>
+/* ============================================================
+   PLOT MESHES
+   ============================================================ */
+const PLOT_H=0.32;
+const plotMeshes=[];
+const plotMeshRef={};
 
-  <div class="arrow-connector"><div class="arrow-line"></div><div class="arrow-label">Client Wants to Visualise</div></div>
+PLOTS.forEach(p=>{
+  const matKey=p.sector==='L'?'luxury':p.status;
+  const geo=new THREE.BoxGeometry(p.pw,PLOT_H,p.pd);
+  const mesh=new THREE.Mesh(geo,MAT[matKey]);
+  mesh.position.set(p.cx,PLOT_H/2,p.cz);
+  mesh.castShadow=true;mesh.receiveShadow=true;
+  mesh.userData={plotId:p.id,status:p.status,sector:p.sector,filtered:false};
+  scene.add(mesh);
+  plotMeshes.push(mesh);
+  plotMeshRef[p.id]=mesh;
+});
 
-  <!-- PHASE 4 -->
-  <div class="phase-header"><div class="phase-pill">Phase 4 — 3D House Visualisation</div><div class="phase-line"></div></div>
+/* ============================================================
+   AMENITY MARKERS
+   ============================================================ */
+AMENITIES.forEach(a=>{
+  // Cylinder marker
+  const mat=new THREE.MeshStandardMaterial({
+    color:a.color,roughness:.6,
+    emissive:new THREE.Color(a.color).multiplyScalar(0.3),emissiveIntensity:.5
+  });
+  const cyl=new THREE.Mesh(new THREE.CylinderGeometry(0.35,0.45,0.45,6),mat);
+  cyl.position.set(a.cx,0.22,a.cz);
+  cyl.castShadow=true;
+  scene.add(cyl);
+  // Label sprite
+  const cv=document.createElement('canvas');cv.width=256;cv.height=80;
+  const ctx=cv.getContext('2d');
+  ctx.fillStyle='rgba(0,0,0,0)';ctx.clearRect(0,0,256,80);
+  ctx.fillStyle='rgba(20,18,14,0.82)';
+  roundRect(ctx,4,10,248,60,8);ctx.fill();
+  ctx.strokeStyle='rgba(255,255,255,0.18)';ctx.lineWidth=1;
+  roundRect(ctx,4,10,248,60,8);ctx.stroke();
+  ctx.fillStyle='rgba(255,255,255,0.92)';
+  ctx.font='bold 22px sans-serif';ctx.textAlign='center';
+  ctx.fillText(a.name,128,50);
+  const tex=new THREE.CanvasTexture(cv);
+  const sp=new THREE.Sprite(new THREE.SpriteMaterial({map:tex,transparent:true,depthTest:false}));
+  sp.scale.set(4.5,1.4,1);sp.position.set(a.cx,1.6,a.cz);
+  scene.add(sp);
+});
 
-  <div class="step-row">
-    <div class="spine"><div class="spine-dot sd-gold">6</div><div class="spine-line"></div></div>
-    <div class="step-card action">
-      <div class="step-header"><div class="step-title">Pick a House Design &amp; See it on the Plot</div><div class="step-emoji">🏠</div></div>
-      <div class="step-desc">Client browses a gallery of 5–10 pre-loaded house designs. They tap one — and instantly see a 3D model of that house sitting right on their selected plot. They can rotate, zoom in, and switch between day and night lighting. If they love how it looks, they can share a screenshot via WhatsApp.</div>
-      <div class="step-tags">
-        <span class="tag tag-gold">5–10 House Designs</span>
-        <span class="tag tag-gold">Modern / Traditional / Contemporary</span>
-        <span class="tag tag-gold">Rotate &amp; Zoom</span>
-        <span class="tag tag-gold">🌙 Day / Night Toggle</span>
-        <span class="tag tag-blue">Share Screenshot</span>
-      </div>
-    </div>
-  </div>
-
-  <div class="arrow-connector"><div class="arrow-line"></div><div class="arrow-label">Client is Interested — Ready to Enquire</div></div>
-
-  <!-- PHASE 5 -->
-  <div class="phase-header"><div class="phase-pill">Phase 5 — Inquiry Submission</div><div class="phase-line"></div></div>
-
-  <div class="decision-block">
-    <div class="decision-title">📩 Client chooses how they want to connect with AUGUST:</div>
-    <div class="decision-paths">
-      <div class="decision-path path-yes">📞 Request a Call — "Call me at my preferred time"</div>
-      <div class="decision-path" style="background:#EBF0F8;color:var(--navy2);border:1.5px solid #B8CDE0;flex:1;min-width:140px;border-radius:8px;padding:10px 14px;font-size:12px;font-weight:600;">💰 Get a Quote — "Send me a price breakdown"</div>
-      <div class="decision-path" style="background:#FBF3DC;color:#8A6800;border:1.5px solid #E8C96A;flex:1;min-width:140px;border-radius:8px;padding:10px 14px;font-size:12px;font-weight:600;">🏗️ Book Site Visit — "I want to visit in person"</div>
-    </div>
-  </div>
-
-  <div class="arrow-connector"><div class="arrow-line"></div><div class="arrow-label">Short Form Submitted</div></div>
-
-  <div class="step-row">
-    <div class="spine"><div class="spine-dot sd-blue">7</div><div class="spine-line"></div></div>
-    <div class="step-card system">
-      <div class="step-header"><div class="step-title">System Automatically Creates a Lead &amp; Alerts Admin</div><div class="step-emoji">⚡</div></div>
-      <div class="step-desc">The moment the client submits, the system does everything automatically — a new lead card appears in the AUGUST admin dashboard, tagged with the client's name, plot ID, project, inquiry type, and timestamp. Admin is notified instantly. Client receives a confirmation message.</div>
-      <div class="step-tags">
-        <span class="tag tag-blue">Auto Lead Created in Dashboard</span>
-        <span class="tag tag-green">Admin Notified Instantly</span>
-        <span class="tag tag-blue">Client Gets Confirmation</span>
-      </div>
-    </div>
-  </div>
-
-  <div class="arrow-connector"><div class="arrow-line"></div><div class="arrow-label">After Submission</div></div>
-
-  <!-- PHASE 6 -->
-  <div class="phase-header"><div class="phase-pill">Phase 6 — Feedback &amp; Continued Use</div><div class="phase-line"></div></div>
-
-  <div class="parallel-block">
-    <div class="parallel-card pc-gold">
-      <div class="parallel-title">⭐ Rate This Plot</div>
-      <div class="parallel-desc">Client gives 1–5 stars and selects feedback tags (Vastu, Size, Location, Price…). Optional short comment. All of this goes into the admin's feedback analytics — helping AUGUST understand what clients love and what they don't.</div>
-    </div>
-    <div class="parallel-card pc-blue">
-      <div class="parallel-title">🤖 Ask the AI Chatbot</div>
-      <div class="parallel-desc">Available throughout the entire journey. Client can ask: "Which project is closer to my office?", "Which project has a park nearby?", "What's the largest plot in Silver Stone?", "Tell me about Vastu compliance here."</div>
-    </div>
-    <div class="parallel-card pc-green">
-      <div class="parallel-title">🔁 Keep Exploring</div>
-      <div class="parallel-desc">Client can go back to the map at any time, explore other plots or other projects, switch between townships, and submit multiple inquiries — all in one session without losing their place.</div>
-    </div>
-  </div>
-
-  <div class="end-block">
-    <div class="end-icon">🎯</div>
-    <div>
-      <div class="end-title">Client Journey Complete</div>
-      <div class="end-sub">From a link on their phone → to a personalised plot inquiry → in under 10 minutes, no confusion</div>
-    </div>
-  </div>
-
-</div>
-
-<!-- ═══════════════ ADMIN FLOW ═══════════════ -->
-<div class="canvas" id="flow-admin">
-
-  <div class="admin-header">
-    <div class="admin-header-icon">📊</div>
-    <div>
-      <div class="admin-header-title">Admin's Internal Dashboard — How AUGUST Manages Everything</div>
-      <div class="admin-header-sub">The complete daily workflow of the AUGUST team — from approving clients to closing deals, all in one place</div>
-    </div>
-  </div>
-
-  <!-- PHASE 1 -->
-  <div class="phase-header"><div class="phase-pill green">Phase 1 — Access Control</div><div class="phase-line"></div></div>
-
-  <div class="step-row">
-    <div class="spine"><div class="spine-dot sd-green">A1</div><div class="spine-line"></div></div>
-    <div class="step-card admin">
-      <div class="step-header"><div class="step-title">Admin Logs into the Dashboard</div><div class="step-emoji">🖥️</div></div>
-      <div class="step-desc">Admin opens the internal dashboard on any device — desktop, tablet, or phone. The home screen shows a live overview of everything happening: new leads today, active client sessions right now, and which project is getting the most attention this week.</div>
-      <div class="step-tags"><span class="tag tag-green">Desktop / Tablet / Phone</span><span class="tag tag-green">Live Summary Cards</span><span class="tag tag-blue">Real-Time Updates</span></div>
-    </div>
-  </div>
-
-  <div class="arrow-connector"><div class="arrow-line"></div><div class="arrow-label">First Thing Each Day</div></div>
-
-  <div class="step-row">
-    <div class="spine"><div class="spine-dot sd-green">A2</div><div class="spine-line"></div></div>
-    <div class="step-card admin">
-      <div class="step-header"><div class="step-title">Review &amp; Approve OTP Login Requests</div><div class="step-emoji">🔐</div></div>
-      <div class="step-desc">The admin sees a list of clients who are waiting for approval before they can enter the platform. One tap approves or rejects each request. Approved clients immediately receive their OTP and gain access — the admin is always in full control of who enters.</div>
-      <div class="step-tags">
-        <span class="tag tag-green">✅ One-Tap Approve</span>
-        <span class="tag" style="background:#FDEAEA;color:#B33A3A;">❌ Reject &amp; Block</span>
-        <span class="tag tag-amber">Revoke Access Anytime</span>
-        <span class="tag tag-navy">Bulk Invite Clients via Link</span>
-      </div>
-    </div>
-  </div>
-
-  <div class="arrow-connector"><div class="arrow-line"></div><div class="arrow-label">Clients Now Exploring</div></div>
-
-  <!-- PHASE 2 -->
-  <div class="phase-header"><div class="phase-pill green">Phase 2 — Lead Management</div><div class="phase-line"></div></div>
-
-  <div class="step-row">
-    <div class="spine"><div class="spine-dot sd-green">A3</div><div class="spine-line"></div></div>
-    <div class="step-card admin">
-      <div class="step-header"><div class="step-title">New Lead Arrives — Real-Time Notification</div><div class="step-emoji">📩</div></div>
-      <div class="step-desc">Every time a client submits an inquiry, a new lead card appears instantly in the dashboard. Admin gets an in-app notification and optionally a WhatsApp alert. The lead is already auto-tagged with all the key info — no manual data entry needed.</div>
-      <div class="step-tags">
-        <span class="tag tag-blue">Client Name + Mobile</span>
-        <span class="tag tag-blue">Plot ID + Project</span>
-        <span class="tag tag-blue">Inquiry Type Badge</span>
-        <span class="tag tag-green">WhatsApp Alert (Optional)</span>
-      </div>
-    </div>
-  </div>
-
-  <div class="arrow-connector"><div class="arrow-line"></div><div class="arrow-label">Lead Opened</div></div>
-
-  <div class="step-row">
-    <div class="spine"><div class="spine-dot sd-green">A4</div><div class="spine-line"></div></div>
-    <div class="step-card admin">
-      <div class="step-header"><div class="step-title">Review Lead &amp; Assign to Sales Team</div><div class="step-emoji">👥</div></div>
-      <div class="step-desc">Admin opens the lead to see the full picture: which client expressed interest, which exact plot they liked, whether they ran the 3D house preview, and what kind of inquiry they submitted. Admin assigns it to the right sales team member and adds internal notes.</div>
-      <div class="step-tags">
-        <span class="tag tag-green">Assign to Sales Rep</span>
-        <span class="tag tag-green">Add Private Notes</span>
-        <span class="tag tag-navy">Filter by Project / Type / Date</span>
-        <span class="tag tag-navy">Search by Name or Number</span>
-        <span class="tag tag-navy">Export as Excel</span>
-      </div>
-    </div>
-  </div>
-
-  <div class="arrow-connector"><div class="arrow-line"></div><div class="arrow-label">Sales Team Takes Over</div></div>
-
-  <div class="decision-block">
-    <div class="decision-title">📋 Lead Status Pipeline — Track Every Lead's Progress</div>
-    <div class="status-row">
-      <span class="status-node" style="background:#EBF0F8;color:var(--navy2);">🆕 New</span>
-      <span class="status-arrow">→</span>
-      <span class="status-node" style="background:var(--amber-light);color:var(--amber);">📞 Contacted</span>
-      <span class="status-arrow">→</span>
-      <span class="status-node" style="background:#E2F0FA;color:#2B6FA0;">🏗️ Site Visit Scheduled</span>
-      <span class="status-arrow">→</span>
-      <span class="status-node" style="background:#FBF3DC;color:#8A6800;">🤝 In Negotiation</span>
-      <span class="status-arrow">→</span>
-      <span class="status-node" style="background:var(--green-light);color:var(--green);">✅ Won</span>
-      <span style="color:var(--muted);font-size:12px;">or</span>
-      <span class="status-node" style="background:var(--red-light);color:var(--red);">❌ Lost</span>
-    </div>
-  </div>
-
-  <div class="arrow-connector"><div class="arrow-line"></div><div class="arrow-label">Ongoing Management</div></div>
-
-  <!-- PHASE 3 -->
-  <div class="phase-header"><div class="phase-pill blue">Phase 3 — Analytics &amp; Insights</div><div class="phase-line"></div></div>
-
-  <div class="step-row">
-    <div class="spine"><div class="spine-dot sd-blue">A5</div><div class="spine-line"></div></div>
-    <div class="step-card system">
-      <div class="step-header"><div class="step-title">Check Project Performance Analytics</div><div class="step-emoji">📈</div></div>
-      <div class="step-desc">Admin views a visual dashboard showing which township project is generating the most leads, which inquiry type is most common, and how performance has changed over time. All shown as clear charts and summary cards — no spreadsheet knowledge needed.</div>
-      <div class="step-tags">
-        <span class="tag tag-blue">Leads per Project</span>
-        <span class="tag tag-blue">Call vs Quote vs Visit Split</span>
-        <span class="tag tag-blue">Weekly &amp; Monthly Trend Charts</span>
-        <span class="tag tag-blue">Lead → Won Conversion Rate</span>
-      </div>
-    </div>
-  </div>
-
-  <div class="arrow-connector"><div class="arrow-line"></div><div class="arrow-label">Plot-Level View</div></div>
-
-  <div class="step-row">
-    <div class="spine"><div class="spine-dot sd-blue">A6</div><div class="spine-line"></div></div>
-    <div class="step-card system">
-      <div class="step-header"><div class="step-title">View Plot Engagement Heatmap</div><div class="step-emoji">🔥</div></div>
-      <div class="step-desc">The township layout is shown to the admin with a live colour heatmap overlaid on it. Plots with more client attention glow red/orange. Ignored plots appear cool blue. Admin instantly knows which plots are hot and which need attention — could be a pricing issue, a Vastu issue, or something else the team needs to address.</div>
-      <div class="step-tags">
-        <span class="tag tag-amber">🔥 Most Clicked Plots</span>
-        <span class="tag tag-blue">⏱️ Avg. Time Spent on Each Plot</span>
-        <span class="tag tag-blue">🏠 How Many Clients Used 3D Preview</span>
-        <span class="tag tag-navy">Cold Plots — Needs Attention</span>
-      </div>
-    </div>
-  </div>
-
-  <div class="arrow-connector"><div class="arrow-line"></div><div class="arrow-label">Client Feedback Review</div></div>
-
-  <div class="step-row">
-    <div class="spine"><div class="spine-dot sd-green">A7</div><div class="spine-line"></div></div>
-    <div class="step-card admin">
-      <div class="step-header"><div class="step-title">Review Client Feedback &amp; Sentiment</div><div class="step-emoji">⭐</div></div>
-      <div class="step-desc">All star ratings and comments from clients — neatly organised by plot and project. Admin sees average ratings, the most commonly mentioned topics (e.g. "clients love the Vastu but mention the road access"), and can read individual comments to understand client sentiment at a deeper level.</div>
-      <div class="step-tags">
-        <span class="tag tag-green">Average Rating per Plot</span>
-        <span class="tag tag-green">Positive / Neutral / Negative Split</span>
-        <span class="tag tag-green">Most-Mentioned Feedback Topics</span>
-        <span class="tag tag-navy">Export Feedback Data</span>
-      </div>
-    </div>
-  </div>
-
-  <div class="arrow-connector"><div class="arrow-line"></div><div class="arrow-label">Ongoing Admin Operations</div></div>
-
-  <!-- PHASE 4 -->
-  <div class="phase-header"><div class="phase-pill green">Phase 4 — Ongoing Operations</div><div class="phase-line"></div></div>
-
-  <div class="parallel-block">
-    <div class="parallel-card pc-gold">
-      <div class="parallel-title">📋 Update Plot Status</div>
-      <div class="parallel-desc">When a deal is confirmed, admin marks a plot as Reserved or Booked. This update reflects immediately on the client-facing map — no plot is ever shown incorrectly to another client.</div>
-    </div>
-    <div class="parallel-card pc-blue">
-      <div class="parallel-title">👁️ Watch Active Sessions</div>
-      <div class="parallel-desc">Admin can see which clients are currently browsing the platform right now — what they're looking at, which plots they've clicked, and how long they've been exploring. Useful for timing follow-up calls.</div>
-    </div>
-    <div class="parallel-card pc-green">
-      <div class="parallel-title">➕ Add New Projects</div>
-      <div class="parallel-desc">When AUGUST launches a new township, admin adds it via the content panel — new map data, plot information, and 3D models. The platform updates immediately. No technical team needed.</div>
-    </div>
-  </div>
-
-  <div class="end-block">
-    <div class="end-icon">🏆</div>
-    <div>
-      <div class="end-title">Admin Has Full Control &amp; Full Visibility</div>
-      <div class="end-sub">Client access → Lead pipeline → Plot analytics → Feedback insights — all in one dashboard, on any device</div>
-    </div>
-  </div>
-
-</div>
-
-<script>
-function showFlow(type, btn) {
-  document.querySelectorAll('.canvas').forEach(c => c.classList.remove('visible'));
-  document.querySelectorAll('.switch-btn').forEach(b => b.classList.remove('active'));
-  document.getElementById('flow-' + type).classList.add('visible');
-  btn.classList.add('active');
+function roundRect(ctx,x,y,w,h,r){
+  ctx.beginPath();ctx.moveTo(x+r,y);ctx.lineTo(x+w-r,y);
+  ctx.quadraticCurveTo(x+w,y,x+w,y+r);ctx.lineTo(x+w,y+h-r);
+  ctx.quadraticCurveTo(x+w,y+h,x+w-r,y+h);ctx.lineTo(x+r,y+h);
+  ctx.quadraticCurveTo(x,y+h,x,y+h-r);ctx.lineTo(x,y+r);
+  ctx.quadraticCurveTo(x,y,x+r,y);ctx.closePath();
 }
+
+/* ============================================================
+   INTERACTION STATE
+   ============================================================ */
+const raycaster=new THREE.Raycaster();
+const pointer=new THREE.Vector2(-9,-9);
+let hoveredMesh=null,selectedMesh=null;
+let ptrDownX=0,ptrDownY=0,didDrag=false;
+
+function getMatKey(mesh){
+  if(mesh.userData.sector==='L') return 'luxury';
+  return mesh.userData.status;
+}
+function setHover(mesh){
+  if(hoveredMesh&&hoveredMesh!==selectedMesh) hoveredMesh.material=MAT[getMatKey(hoveredMesh)];
+  hoveredMesh=mesh;
+  if(mesh&&mesh!==selectedMesh) mesh.material=MAT.hover;
+}
+function setSelected(mesh){
+  if(selectedMesh&&selectedMesh!==hoveredMesh) selectedMesh.material=MAT[getMatKey(selectedMesh)];
+  selectedMesh=mesh;
+  if(mesh) mesh.material=MAT.selected;
+}
+
+/* ============================================================
+   FILTER ENGINE
+   ============================================================ */
+const FS={status:'all',size:'all',facing:'all'};
+function applyFilters(){
+  let shown=0,av=0,bk=0,sd=0;
+  PLOTS.forEach(p=>{
+    const mesh=plotMeshRef[p.id];
+    if(!mesh)return;
+    const match=(FS.status==='all'||p.status===FS.status)&&
+                (FS.size==='all'||p.key===FS.size)&&
+                (FS.facing==='all'||p.facing===FS.facing);
+    mesh.userData.filtered=!match;
+    if(match){
+      shown++;
+      if(p.status==='available') av++;
+      else if(p.status==='booked') bk++;
+      else sd++;
+      if(mesh!==selectedMesh&&mesh!==hoveredMesh) mesh.material=MAT[getMatKey(mesh)];
+    } else {
+      if(mesh!==selectedMesh&&mesh!==hoveredMesh) mesh.material=MAT.ghost;
+    }
+  });
+  const sum=document.getElementById('fp-summary');
+  if(sum) sum.innerHTML=`Showing <strong>${shown}</strong> of <strong>${PLOTS.length}</strong> &bull; `+
+    `<span style="color:#E8956D">${av} avail</span> &bull; `+
+    `<span style="color:#D4A820">${bk} booked</span> &bull; `+
+    `<span style="color:#7A7060">${sd} sold</span>`;
+  const el=id=>document.getElementById(id);
+  if(el('sb-av')) el('sb-av').textContent=av;
+  if(el('sb-bk')) el('sb-bk').textContent=bk;
+  if(el('sb-sd')) el('sb-sd').textContent=sd;
+}
+
+/* ============================================================
+   TOOLTIP
+   ============================================================ */
+const tooltip=document.getElementById('tooltip');
+function showTooltip(p,x,y){
+  document.getElementById('tt-id').textContent=p.id;
+  document.getElementById('tt-name').textContent=`${p.sectorName} \u2014 ${p.key} ft`;
+  document.getElementById('tt-sz').textContent=`${p.key} ft`;
+  document.getElementById('tt-sqft').textContent=`${p.sqft.toLocaleString()} sqft`;
+  document.getElementById('tt-facing').textContent=p.facing;
+  const prEl=document.getElementById('tt-price');
+  if(p.status==='sold'){
+    prEl.innerHTML='<span style="color:#7A7060;font-size:12px">SOLD</span>';
+  } else {
+    prEl.innerHTML=`${p.priceLabel} <span class="tt-badge tb-${p.status==='available'?'av':'bk'}">${p.status}</span>`;
+  }
+  const vw=innerWidth,vh=innerHeight,tw=220,th=145;
+  let lx=x+18,ly=y-th-12;
+  if(lx+tw>vw-10) lx=x-tw-12;
+  if(ly<10) ly=y+22;
+  tooltip.style.left=lx+'px';tooltip.style.top=ly+'px';
+  tooltip.classList.add('on');
+}
+function hideTooltip(){tooltip.classList.remove('on');}
+
+/* ============================================================
+   DETAIL PANEL
+   ============================================================ */
+let toastTimer=null;
+function toast(msg){
+  const el=document.getElementById('toast');
+  el.textContent=msg;el.classList.add('on');
+  clearTimeout(toastTimer);toastTimer=setTimeout(()=>el.classList.remove('on'),3000);
+}
+
+function openDetail(p){
+  const el=id=>document.getElementById(id);
+  el('det-block').textContent=`${p.sectorName}`;
+  el('det-id').textContent=p.dnum?`Plot #${p.dnum}`:p.id;
+  el('det-sub').textContent=`${p.key} ft \u2022 ${p.facing} Facing`;
+  el('det-sqft').textContent=p.sqft.toLocaleString();
+  el('det-sqyd').textContent=p.sqyd.toLocaleString();
+  el('det-facing').textContent=p.facing;
+  el('det-blk').textContent=p.sectorName;
+  el('det-price').textContent=`\u20b9${p.price} L`;
+  el('det-rate').textContent=`\u20b9${p.rate.toLocaleString()} per sqft`;
+  el('det-emi').textContent=`EMI from \u20b9${Math.round(p.emi).toLocaleString()}/mo (20yr @8.5%)`;
+  const badge=el('det-badge');
+  badge.textContent=p.sector==='L'?'Luxury':(p.status.charAt(0).toUpperCase()+p.status.slice(1));
+  badge.className='det-badge '+(p.sector==='L'?'db-lux':p.status==='available'?'db-av':p.status==='booked'?'db-bk':'db-sd');
+  el('det-form').classList.remove('on');
+  el('det-confirm').classList.remove('on');
+  el('det-interest').style.display='';
+  el('detail').classList.add('on');
+  el('overlay').classList.add('dim');
+}
+function closeDetail(){
+  document.getElementById('detail').classList.remove('on');
+  document.getElementById('overlay').classList.remove('dim');
+  setSelected(null);
+}
+
+/* ============================================================
+   CANVAS EVENTS
+   ============================================================ */
+canvas.addEventListener('pointermove',e=>{
+  const rect=canvas.getBoundingClientRect();
+  pointer.x=((e.clientX-rect.left)/rect.width)*2-1;
+  pointer.y=-((e.clientY-rect.top)/rect.height)*2+1;
+  if(Math.hypot(e.clientX-ptrDownX,e.clientY-ptrDownY)>5) didDrag=true;
+  raycaster.setFromCamera(pointer,camera);
+  const hits=raycaster.intersectObjects(plotMeshes);
+  if(hits.length&&!hits[0].object.userData.filtered){
+    const mesh=hits[0].object;
+    setHover(mesh);canvas.style.cursor='pointer';
+    showTooltip(PMAP[mesh.userData.plotId],e.clientX,e.clientY);
+  } else {
+    setHover(null);canvas.style.cursor='';hideTooltip();
+  }
+},{passive:true});
+
+canvas.addEventListener('pointerdown',e=>{ptrDownX=e.clientX;ptrDownY=e.clientY;didDrag=false;});
+
+canvas.addEventListener('pointerup',e=>{
+  if(didDrag)return;
+  const rect=canvas.getBoundingClientRect();
+  const clickPtr=new THREE.Vector2(
+    ((e.clientX-rect.left)/rect.width)*2-1,
+    -((e.clientY-rect.top)/rect.height)*2+1
+  );
+  raycaster.setFromCamera(clickPtr,camera);
+  const hits=raycaster.intersectObjects(plotMeshes);
+  if(hits.length&&!hits[0].object.userData.filtered){
+    const mesh=hits[0].object;
+    const p=PMAP[mesh.userData.plotId];
+    if(p.status==='sold'){toast('This plot has been sold.');return;}
+    setSelected(mesh);openDetail(p);hideTooltip();
+  } else {
+    if(selectedMesh){setSelected(null);closeDetail();}
+  }
+});
+canvas.addEventListener('mouseleave',()=>{setHover(null);hideTooltip();});
+
+/* ============================================================
+   UI EVENTS
+   ============================================================ */
+document.getElementById('det-close').addEventListener('click',closeDetail);
+let filterOpen=false;
+document.getElementById('overlay').addEventListener('click',()=>{
+  if(filterOpen){filterOpen=false;document.getElementById('filter-panel').classList.remove('on');document.getElementById('overlay').classList.remove('dim');}
+  else closeDetail();
+});
+document.addEventListener('keydown',e=>{
+  if(e.key==='Escape'){
+    if(filterOpen){filterOpen=false;document.getElementById('filter-panel').classList.remove('on');}
+    else if(document.getElementById('detail').classList.contains('on')) closeDetail();
+  }
+});
+document.getElementById('det-interest').addEventListener('click',()=>{
+  document.getElementById('det-form').classList.add('on');
+  document.getElementById('det-interest').style.display='none';
+  document.getElementById('df-name').focus();
+});
+document.getElementById('det-visit').addEventListener('click',()=>{
+  closeDetail();
+  window.open(`https://wa.me/${CFG.wa}?text=Hi%2C+I'd+like+to+schedule+a+site+visit+for+August+Township.`,'_blank');
+});
+document.getElementById('df-submit').addEventListener('click',()=>{
+  const name=document.getElementById('df-name').value.trim();
+  const phone=document.getElementById('df-phone').value.trim();
+  if(!name){toast('Please enter your name');return;}
+  if(!/^[6-9]\d{9}$/.test(phone)){toast('Enter valid 10-digit mobile number');return;}
+  document.getElementById('det-form').classList.remove('on');
+  const cp=selectedMesh?PMAP[selectedMesh.userData.plotId]:null;
+  document.getElementById('det-confirm-plot').textContent=cp?(cp.dnum?`Plot #${cp.dnum}`:cp.id):'this plot';
+  document.getElementById('det-confirm').classList.add('on');
+});
+
+document.getElementById('btn-filter').addEventListener('click',()=>{
+  filterOpen=!filterOpen;
+  document.getElementById('filter-panel').classList.toggle('on',filterOpen);
+  document.getElementById('overlay').classList.toggle('dim',filterOpen);
+});
+document.getElementById('fp-handle').addEventListener('click',()=>{
+  filterOpen=false;
+  document.getElementById('filter-panel').classList.remove('on');
+  document.getElementById('overlay').classList.remove('dim');
+});
+document.getElementById('fp-reset').addEventListener('click',()=>{
+  FS.status='all';FS.size='all';FS.facing='all';
+  document.querySelectorAll('.fp-pill').forEach(p=>p.classList.toggle('on',p.dataset.v==='all'));
+  applyFilters();
+});
+function bindPills(groupId,key){
+  const group=document.getElementById(groupId);
+  if(!group)return;
+  group.querySelectorAll('.fp-pill').forEach(pill=>{
+    pill.addEventListener('click',()=>{
+      group.querySelectorAll('.fp-pill').forEach(p=>p.classList.remove('on'));
+      pill.classList.add('on');
+      FS[key]=pill.dataset.v;
+      applyFilters();
+    });
+  });
+}
+bindPills('fp-status','status');
+bindPills('fp-size','size');
+bindPills('fp-facing','facing');
+document.getElementById('btn-home').addEventListener('click',()=>{
+  controls.target.set(5,0,2);camera.position.set(5,64,58);controls.update();
+});
+document.getElementById('btn-legend').addEventListener('click',()=>{
+  const lg=document.getElementById('legend');
+  lg.style.display=lg.style.display==='none'?'':'none';
+});
+
+/* ============================================================
+   RESIZE
+   ============================================================ */
+window.addEventListener('resize',()=>{
+  camera.aspect=innerWidth/innerHeight;camera.updateProjectionMatrix();
+  renderer.setSize(innerWidth,innerHeight);renderer.setPixelRatio(Math.min(devicePixelRatio,2));
+});
+
+/* ============================================================
+   ANIMATE + INIT
+   ============================================================ */
+function animate(){requestAnimationFrame(animate);controls.update();renderer.render(scene,camera);}
+
+(function init(){
+  applyFilters();
+  animate();
+  let fc=0;
+  const wait=()=>{fc++;if(fc<4){requestAnimationFrame(wait);return;}
+    document.getElementById('ld-msg').textContent='Ready';
+    setTimeout(()=>{const l=document.getElementById('loader');l.classList.add('out');setTimeout(()=>l.style.display='none',900);},400);
+  };
+  requestAnimationFrame(wait);
+})();
 </script>
 </body>
 </html>
