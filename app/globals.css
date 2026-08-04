@@ -1,0 +1,22 @@
+@import "tailwindcss";
+
+@theme {
+  --color-brand-primary: #C9A96E;
+  --color-brand-secondary: #8B7355;
+  --color-surface-dark: #0A0A0A;
+  --color-surface-card: #141414;
+  --color-surface-overlay: #1E1E1E;
+  --color-text-primary: #F5F0E8;
+  --color-text-muted: #9C9589;
+  --color-text-subtle: #6B6560;
+}
+
+body {
+  background-color: #0A0A0A;
+  color: #F5F0E8;
+}
+
+@keyframes august-fade-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}

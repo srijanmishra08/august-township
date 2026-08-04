@@ -1,0 +1,52 @@
+[
+  {
+    "plot_number": "P2-001",
+    "geometry_ref": "plot-p2-001",
+    "area_sqft": 1100,
+    "type": "residential",
+    "facing": "east",
+    "status": "available",
+    "price": 4200000,
+    "notes": null
+  },
+  {
+    "plot_number": "P2-002",
+    "geometry_ref": "plot-p2-002",
+    "area_sqft": 1800,
+    "type": "residential",
+    "facing": "west",
+    "status": "available",
+    "price": 5600000,
+    "notes": null
+  },
+  {
+    "plot_number": "P2-003",
+    "geometry_ref": "plot-p2-003",
+    "area_sqft": 950,
+    "type": "corner",
+    "facing": "north-east",
+    "status": "reserved",
+    "price": 3700000,
+    "notes": "Held — site visit scheduled"
+  },
+  {
+    "plot_number": "P2-004",
+    "geometry_ref": "plot-p2-004",
+    "area_sqft": 1400,
+    "type": "residential",
+    "facing": "south",
+    "status": "available",
+    "price": 4900000,
+    "notes": null
+  },
+  {
+    "plot_number": "P2-005",
+    "geometry_ref": "plot-p2-005",
+    "area_sqft": 2000,
+    "type": "premium",
+    "facing": "north-west",
+    "status": "booked",
+    "price": 6500000,
+    "notes": "Booked Apr 2026"
+  }
+]

@@ -1,0 +1,204 @@
+{
+  "_readme": [
+    "Scroll-driven masterplan flyover. Edit this file to retune the experience —",
+    "no component code needs to change.",
+    "",
+    "x / y are normalized plan-image coordinates: 0-1, origin at the image's",
+    "top-left. The seed values below were eyeballed from plan_bg.png. To retune",
+    "them, open the flyover with ?wp appended to the URL and click any point —",
+    "the normalized coordinate is copied to your clipboard and logged.",
+    "",
+    "zoom 1 = the plan exactly covers the viewport. Zoom is clamped at runtime",
+    "to maxUpscale so the camera can never push past what the source resolves;",
+    "on this 1418x1002 CAD plan that ceiling is reached at roughly zoom 2.4.",
+    "Supplying a 4000px+ rendered masterplan is what would lift it.",
+    "",
+    "duration = length of the travel leg INTO this waypoint (unitless).",
+    "hold = extra scroll held with the camera still, for reading and video."
+  ],
+
+  "planImage": "assets/plan_bg.png",
+  "planSources": {
+    "avif": "assets/plan_bg.avif",
+    "webp": "assets/plan_bg.webp"
+  },
+  "planPixelSize": { "width": 1418, "height": 1002 },
+  "maxUpscale": 2.6,
+  "scrollPerUnit": 0.9,
+
+  "waypoints": [
+    {
+      "id": "entrance",
+      "label": "Entrance",
+      "x": 0.313,
+      "y": 0.681,
+      "zoom": 2.15,
+      "rotation": -1.4,
+      "duration": 0,
+      "ease": "none",
+      "hold": 0.7,
+      "title": "The Arrival",
+      "description": "A landscaped boulevard sets the tone from the moment you turn in off the highway.",
+      "hotspot": true
+    },
+    {
+      "id": "reveal",
+      "label": "The Masterplan",
+      "x": 0.5,
+      "y": 0.5,
+      "zoom": 1.0,
+      "rotation": 0,
+      "duration": 1.6,
+      "ease": "power3.inOut",
+      "hold": 0.6,
+      "title": "One Hundred and Eighteen Plots",
+      "description": "Every home sited around a central spine of open green, clubhouse and sport."
+    },
+    {
+      "id": "road",
+      "label": "The Spine",
+      "x": 0.435,
+      "y": 0.556,
+      "zoom": 1.7,
+      "rotation": 1.8,
+      "duration": 1.5,
+      "ease": "power2.inOut",
+      "hold": 0.35,
+      "title": "The Central Spine",
+      "description": "A tree-lined nine-metre road threads the township from the entrance to the far quarter."
+    },
+    {
+      "id": "clubhouse",
+      "label": "Clubhouse",
+      "x": 0.601,
+      "y": 0.604,
+      "zoom": 2.35,
+      "rotation": -1.1,
+      "duration": 1.5,
+      "ease": "power3.inOut",
+      "hold": 1.35,
+      "amenityId": "mf-hall",
+      "hotspot": true,
+      "showVideo": true
+    },
+    {
+      "id": "garden",
+      "label": "Gardens",
+      "x": 0.547,
+      "y": 0.598,
+      "zoom": 2.2,
+      "rotation": 0.9,
+      "duration": 1.2,
+      "ease": "power2.inOut",
+      "hold": 0.8,
+      "title": "The Central Green",
+      "description": "Lawn, shaded walks and seating pockets running the length of the clubhouse frontage.",
+      "hotspot": true
+    },
+    {
+      "id": "children-park",
+      "label": "Children's Park",
+      "x": 0.401,
+      "y": 0.423,
+      "zoom": 2.25,
+      "rotation": -1.6,
+      "duration": 1.3,
+      "ease": "power2.inOut",
+      "hold": 0.8,
+      "title": "Children's Park",
+      "description": "An amphitheatre, play equipment and a sand pit set within the northern green pocket.",
+      "hotspot": true
+    },
+    {
+      "id": "game-room",
+      "label": "Game Room",
+      "x": 0.617,
+      "y": 0.601,
+      "zoom": 2.4,
+      "rotation": 1.2,
+      "duration": 1.4,
+      "ease": "power3.inOut",
+      "hold": 1.35,
+      "amenityId": "game-room",
+      "hotspot": true,
+      "showVideo": true
+    },
+    {
+      "id": "exit",
+      "label": "Explore",
+      "x": 0.5,
+      "y": 0.5,
+      "zoom": 1.05,
+      "rotation": 0,
+      "duration": 1.5,
+      "ease": "power3.inOut",
+      "hold": 0.5,
+      "title": "Walk the Plots Yourself",
+      "description": "Step into the interactive 3D township to check availability, facing and pricing plot by plot.",
+      "isExit": true
+    }
+  ],
+
+  "_moreStops": [
+    "Four more amenities already have video on disk and are one entry away:",
+    "gym, cricket, pickleball, lounge. Copy a waypoint block, set amenityId to",
+    "the id from amenities.json, set showVideo true, and place x/y with ?wp.",
+    "",
+    "garden and children-park currently have no video asset, so they run as",
+    "scenic beats with copy only. Add a videoPath + scrubVideoPath entry to",
+    "amenities.json and set amenityId here to give them one."
+  ],
+
+  "layers": [
+    {
+      "id": "sky",
+      "kind": "grade",
+      "depth": 0.25,
+      "opacity": 1,
+      "options": {
+        "from": "#0d1117",
+        "to": "#1b2430"
+      }
+    },
+    {
+      "id": "plan",
+      "kind": "image",
+      "src": "assets/plan_bg.png",
+      "depth": 1,
+      "opacity": 1
+    },
+    {
+      "id": "water",
+      "kind": "water",
+      "depth": 1,
+      "opacity": 0.55,
+      "options": {
+        "rects": "0.596,0.606,0.030,0.020",
+        "speed": 0.35,
+        "tint": "#4aa3c7"
+      }
+    },
+    {
+      "id": "cloud-shadows",
+      "kind": "clouds",
+      "depth": 1.14,
+      "opacity": 0.16,
+      "blendMode": "multiply",
+      "options": { "speed": 0.02, "scale": 1.8 }
+    },
+    {
+      "id": "motes",
+      "kind": "particles",
+      "depth": 1.35,
+      "opacity": 0.5,
+      "options": { "count": 46, "speed": 0.16, "tint": "#ffffff" }
+    },
+    {
+      "id": "grade",
+      "kind": "grade",
+      "depth": 0,
+      "opacity": 1,
+      "options": { "vignette": 0.55, "warm": 0.06 }
+    }
+  ]
+}

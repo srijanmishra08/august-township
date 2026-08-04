@@ -1,0 +1,98 @@
+[
+  {
+    "id": "gym",
+    "name": "Gym & Fitness",
+    "displayMode": "card",
+    "scrollStageRange": [
+      0.0,
+      0.17
+    ],
+    "anchor": [
+      73.4074,
+      18.7535
+    ],
+    "videoPath": "assets/amenities/gym.mp4",
+    "scrubVideoPath": "assets/amenities/gym-scrub.mp4",
+    "description": "State-of-the-art equipment, a dedicated free-weights zone, and a mirrored studio for personal training and group classes."
+  },
+  {
+    "id": "cricket",
+    "name": "Cricket Ground",
+    "displayMode": "card",
+    "scrollStageRange": [
+      0.17,
+      0.34
+    ],
+    "anchor": [
+      73.4068,
+      18.7545
+    ],
+    "videoPath": "assets/amenities/cricket.mp4",
+    "scrubVideoPath": "assets/amenities/cricket-scrub.mp4",
+    "description": "A full-length turf pitch with floodlights, tiered resident seating, and a dedicated practice net zone."
+  },
+  {
+    "id": "game-room",
+    "name": "Game Room",
+    "displayMode": "card",
+    "scrollStageRange": [
+      0.34,
+      0.51
+    ],
+    "anchor": [
+      73.4083,
+      18.7528
+    ],
+    "videoPath": "assets/amenities/gameroom.mp4",
+    "scrubVideoPath": "assets/amenities/gameroom-scrub.mp4",
+    "description": "Pool tables, air hockey, console stations, and a lounge bar \u2014 the perfect retreat for every age."
+  },
+  {
+    "id": "pickleball",
+    "name": "Pickleball Courts",
+    "displayMode": "card",
+    "scrollStageRange": [
+      0.51,
+      0.68
+    ],
+    "anchor": [
+      73.4071,
+      18.7532
+    ],
+    "videoPath": "assets/amenities/pickleball.mp4",
+    "scrubVideoPath": "assets/amenities/pickleball-scrub.mp4",
+    "description": "Regulation all-weather courts with professional-grade surfaces and landscaped courtside seating."
+  },
+  {
+    "id": "mf-hall",
+    "name": "Multi-Functional Hall",
+    "displayMode": "card",
+    "scrollStageRange": [
+      0.68,
+      0.84
+    ],
+    "anchor": [
+      73.4077,
+      18.7543
+    ],
+    "videoPath": "assets/amenities/multifunctionalhall.mp4",
+    "scrubVideoPath": "assets/amenities/multifunctionalhall-scrub.mp4",
+    "description": "A grand event hall accommodating up to 400 guests with a stage, full AV system, and dedicated catering access."
+  },
+  {
+    "id": "lounge",
+    "name": "Members' Lounge",
+    "displayMode": "card",
+    "scrollStageRange": [
+      0.84,
+      1.0
+    ],
+    "anchor": [
+      73.4065,
+      18.7537
+    ],
+    "videoPath": "assets/amenities/waitingroom.mp4",
+    "scrubVideoPath": "assets/amenities/waitingroom-scrub.mp4",
+    "description": "A curated relaxation lounge with premium seating, library nooks, and concierge service \u2014 exclusively for residents."
+  }
+]

@@ -1,0 +1,120 @@
+{
+  "generatedBy": "scripts/panorama/build_panoramas.py",
+  "assumedSourceHfovDeg": 70.0,
+  "equirectWidth": 4096,
+  "note": "real_coverage_pct is the share of the sphere backed by actual footage; the remainder is synthesised continuation.",
+  "panoramas": [
+    {
+      "clip": "cricket.mp4",
+      "output": "assets/amenities/panorama/cricket.jpg",
+      "strategy": "single",
+      "real_hfov_deg": 70.0,
+      "real_vfov_deg": 43.0,
+      "real_coverage_pct": 4.24,
+      "frames_used": 1,
+      "motion": {
+        "frames": 121,
+        "net_pan": -0.5907400264323334,
+        "abs_pan": 0.5907400264323334,
+        "net_tilt": -0.6397196202866401,
+        "total_zoom": 3.1271420544725297
+      }
+    },
+    {
+      "clip": "gameroom.mp4",
+      "output": "assets/amenities/panorama/gameroom.jpg",
+      "strategy": "single",
+      "real_hfov_deg": 70.0,
+      "real_vfov_deg": 43.0,
+      "real_coverage_pct": 4.24,
+      "frames_used": 1,
+      "motion": {
+        "frames": 169,
+        "net_pan": 1.1344481692210657,
+        "abs_pan": 1.6365878713618909,
+        "net_tilt": 0.7737072687198646,
+        "total_zoom": 0.7361729299494348
+      }
+    },
+    {
+      "clip": "gym.mp4",
+      "output": "assets/amenities/panorama/gym.jpg",
+      "strategy": "single",
+      "real_hfov_deg": 70.0,
+      "real_vfov_deg": 43.0,
+      "real_coverage_pct": 4.24,
+      "frames_used": 1,
+      "motion": {
+        "frames": 169,
+        "net_pan": 0.27266084023374676,
+        "abs_pan": 0.3548579388320514,
+        "net_tilt": -0.1371200601645527,
+        "total_zoom": 1.7710493231323308
+      }
+    },
+    {
+      "clip": "multifunctionalhall.mp4",
+      "output": "assets/amenities/panorama/multifunctionalhall.jpg",
+      "strategy": "single",
+      "real_hfov_deg": 70.0,
+      "real_vfov_deg": 43.0,
+      "real_coverage_pct": 4.24,
+      "frames_used": 1,
+      "motion": {
+        "frames": 169,
+        "net_pan": -0.6623615906654057,
+        "abs_pan": 0.7992467127712423,
+        "net_tilt": -1.1115601206182364,
+        "total_zoom": 8.113184619137773
+      }
+    },
+    {
+      "clip": "pickleball.mp4",
+      "output": "assets/amenities/panorama/pickleball.jpg",
+      "strategy": "single",
+      "real_hfov_deg": 70.0,
+      "real_vfov_deg": 43.0,
+      "real_coverage_pct": 4.24,
+      "frames_used": 1,
+      "motion": {
+        "frames": 169,
+        "net_pan": -0.9567334228062669,
+        "abs_pan": 0.9567334228062669,
+        "net_tilt": -1.1341072146217224,
+        "total_zoom": 6.586956204735953
+      }
+    },
+    {
+      "clip": "swimmingpool.mp4",
+      "output": "assets/amenities/panorama/swimmingpool.jpg",
+      "strategy": "single",
+      "real_hfov_deg": 70.0,
+      "real_vfov_deg": 43.0,
+      "real_coverage_pct": 4.24,
+      "frames_used": 1,
+      "motion": {
+        "frames": 145,
+        "net_pan": -2.548070424026352,
+        "abs_pan": 2.5545900776671298,
+        "net_tilt": -1.8448012852489992,
+        "total_zoom": 53.45960687115035
+      }
+    },
+    {
+      "clip": "waitingroom.mp4",
+      "output": "assets/amenities/panorama/waitingroom.jpg",
+      "strategy": "stitch",
+      "real_hfov_deg": 101.86,
+      "real_vfov_deg": 42.51,
+      "real_coverage_pct": 6.28,
+      "frames_used": 36,
+      "motion": {
+        "frames": 145,
+        "net_pan": 0.7649350773305537,
+        "abs_pan": 0.7756491313018498,
+        "net_tilt": -0.01763287369860254,
+        "total_zoom": 1.062531603816802
+      }
+    }
+  ]
+}

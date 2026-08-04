@@ -1,0 +1,16 @@
+**/.DS_Store
+tsconfig.tsbuildinfo
+/.claude
+/.next
+/.paul
+/Implementation-Plan.md
+/node_modules
+/package-lock.json
+/.env.local
+/supabase/.temp
+# Local secrets. The underscore variant is the one actually used here, and the
+# dotted rule above does not match it.
+_env.local
+.env
+.env.*
+!.env.local.example

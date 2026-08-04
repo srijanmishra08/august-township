@@ -1,0 +1,29 @@
+{
+  "slug": "august-township",
+  "name": "August Township",
+  "tagline": "Where Legacy Meets Living",
+  "location": "Raipur, Chhattisgarh",
+  "rera": "CGRERA/2024/PRJ/00472",
+  "mapboxStyle": "mapbox://styles/mapbox/satellite-streets-v12",
+  "masterPlan": {
+    "desktop": "assets/master-plan.png",
+    "mobile": "assets/master-plan-mobile.png",
+    "georef": null
+  },
+  "cameraStages": [],
+  "initialCamera": {
+    "center": [
+      73.4076,
+      18.7537
+    ],
+    "zoom": 17.5,
+    "pitch": 55,
+    "bearing": -20
+  },
+  "landingLoop": "",
+  "showcaseVideo": "assets/walkthrough.mp4",
+  "cta": {
+    "label": "Schedule a Site Visit",
+    "whatsappNumber": "+919999000111"
+  }
+}

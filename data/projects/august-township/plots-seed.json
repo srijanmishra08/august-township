@@ -1,0 +1,502 @@
+[
+  {
+    "plot_number": "P001",
+    "geometry_ref": "plot-p001",
+    "area_sqft": 1850,
+    "type": "corner",
+    "facing": "north-west",
+    "status": "available",
+    "price": 9250000,
+    "notes": null
+  },
+  {
+    "plot_number": "P002",
+    "geometry_ref": "plot-p002",
+    "area_sqft": 1050,
+    "type": "residential",
+    "facing": "north",
+    "status": "available",
+    "price": 4200000,
+    "notes": null
+  },
+  {
+    "plot_number": "P003",
+    "geometry_ref": "plot-p003",
+    "area_sqft": 1150,
+    "type": "residential",
+    "facing": "north",
+    "status": "available",
+    "price": 4830000,
+    "notes": null
+  },
+  {
+    "plot_number": "P004",
+    "geometry_ref": "plot-p004",
+    "area_sqft": 1250,
+    "type": "residential",
+    "facing": "north",
+    "status": "available",
+    "price": 4880000,
+    "notes": null
+  },
+  {
+    "plot_number": "P005",
+    "geometry_ref": "plot-p005",
+    "area_sqft": 1600,
+    "type": "premium",
+    "facing": "north",
+    "status": "available",
+    "price": 8480000,
+    "notes": null
+  },
+  {
+    "plot_number": "P006",
+    "geometry_ref": "plot-p006",
+    "area_sqft": 1100,
+    "type": "residential",
+    "facing": "north",
+    "status": "available",
+    "price": 4180000,
+    "notes": null
+  },
+  {
+    "plot_number": "P007",
+    "geometry_ref": "plot-p007",
+    "area_sqft": 1200,
+    "type": "residential",
+    "facing": "north",
+    "status": "available",
+    "price": 4800000,
+    "notes": null
+  },
+  {
+    "plot_number": "P008",
+    "geometry_ref": "plot-p008",
+    "area_sqft": 950,
+    "type": "residential",
+    "facing": "north",
+    "status": "available",
+    "price": 3990000,
+    "notes": null
+  },
+  {
+    "plot_number": "P009",
+    "geometry_ref": "plot-p009",
+    "area_sqft": 1050,
+    "type": "residential",
+    "facing": "north",
+    "status": "available",
+    "price": 4100000,
+    "notes": null
+  },
+  {
+    "plot_number": "P010",
+    "geometry_ref": "plot-p010",
+    "area_sqft": 2050,
+    "type": "corner",
+    "facing": "north-east",
+    "status": "available",
+    "price": 10870000,
+    "notes": null
+  },
+  {
+    "plot_number": "P011",
+    "geometry_ref": "plot-p011",
+    "area_sqft": 1250,
+    "type": "residential",
+    "facing": "west",
+    "status": "available",
+    "price": 4750000,
+    "notes": null
+  },
+  {
+    "plot_number": "P012",
+    "geometry_ref": "plot-p012",
+    "area_sqft": 1000,
+    "type": "residential",
+    "facing": "south",
+    "status": "available",
+    "price": 4000000,
+    "notes": null
+  },
+  {
+    "plot_number": "P013",
+    "geometry_ref": "plot-p013",
+    "area_sqft": 1100,
+    "type": "residential",
+    "facing": "west",
+    "status": "available",
+    "price": 4620000,
+    "notes": null
+  },
+  {
+    "plot_number": "P014",
+    "geometry_ref": "plot-p014",
+    "area_sqft": 1200,
+    "type": "residential",
+    "facing": "north",
+    "status": "available",
+    "price": 4680000,
+    "notes": null
+  },
+  {
+    "plot_number": "P015",
+    "geometry_ref": "plot-p015",
+    "area_sqft": 950,
+    "type": "residential",
+    "facing": "east",
+    "status": "available",
+    "price": 3900000,
+    "notes": null
+  },
+  {
+    "plot_number": "P016",
+    "geometry_ref": "plot-p016",
+    "area_sqft": 1050,
+    "type": "residential",
+    "facing": "south",
+    "status": "available",
+    "price": 3990000,
+    "notes": null
+  },
+  {
+    "plot_number": "P017",
+    "geometry_ref": "plot-p017",
+    "area_sqft": 1150,
+    "type": "residential",
+    "facing": "west",
+    "status": "available",
+    "price": 4600000,
+    "notes": null
+  },
+  {
+    "plot_number": "P018",
+    "geometry_ref": "plot-p018",
+    "area_sqft": 1250,
+    "type": "residential",
+    "facing": "north",
+    "status": "available",
+    "price": 5250000,
+    "notes": null
+  },
+  {
+    "plot_number": "P019",
+    "geometry_ref": "plot-p019",
+    "area_sqft": 1000,
+    "type": "residential",
+    "facing": "east",
+    "status": "available",
+    "price": 3900000,
+    "notes": null
+  },
+  {
+    "plot_number": "P020",
+    "geometry_ref": "plot-p020",
+    "area_sqft": 1100,
+    "type": "residential",
+    "facing": "east",
+    "status": "available",
+    "price": 4510000,
+    "notes": null
+  },
+  {
+    "plot_number": "P021",
+    "geometry_ref": "plot-p021",
+    "area_sqft": 1200,
+    "type": "residential",
+    "facing": "west",
+    "status": "available",
+    "price": 4560000,
+    "notes": null
+  },
+  {
+    "plot_number": "P022",
+    "geometry_ref": "plot-p022",
+    "area_sqft": 950,
+    "type": "residential",
+    "facing": "west",
+    "status": "available",
+    "price": 3800000,
+    "notes": null
+  },
+  {
+    "plot_number": "P023",
+    "geometry_ref": "plot-p023",
+    "area_sqft": 1650,
+    "type": "premium",
+    "facing": "north",
+    "status": "available",
+    "price": 8910000,
+    "notes": null
+  },
+  {
+    "plot_number": "P024",
+    "geometry_ref": "plot-p024",
+    "area_sqft": 1150,
+    "type": "residential",
+    "facing": "east",
+    "status": "available",
+    "price": 4490000,
+    "notes": null
+  },
+  {
+    "plot_number": "P025",
+    "geometry_ref": "plot-p025",
+    "area_sqft": 1250,
+    "type": "residential",
+    "facing": "south",
+    "status": "available",
+    "price": 5130000,
+    "notes": null
+  },
+  {
+    "plot_number": "P026",
+    "geometry_ref": "plot-p026",
+    "area_sqft": 1000,
+    "type": "residential",
+    "facing": "west",
+    "status": "available",
+    "price": 3800000,
+    "notes": null
+  },
+  {
+    "plot_number": "P027",
+    "geometry_ref": "plot-p027",
+    "area_sqft": 1100,
+    "type": "residential",
+    "facing": "north",
+    "status": "available",
+    "price": 4400000,
+    "notes": null
+  },
+  {
+    "plot_number": "P028",
+    "geometry_ref": "plot-p028",
+    "area_sqft": 1800,
+    "type": "premium",
+    "facing": "east",
+    "status": "available",
+    "price": 9720000,
+    "notes": null
+  },
+  {
+    "plot_number": "P029",
+    "geometry_ref": "plot-p029",
+    "area_sqft": 950,
+    "type": "residential",
+    "facing": "south",
+    "status": "available",
+    "price": 3710000,
+    "notes": null
+  },
+  {
+    "plot_number": "P030",
+    "geometry_ref": "plot-p030",
+    "area_sqft": 1050,
+    "type": "residential",
+    "facing": "east",
+    "status": "available",
+    "price": 4310000,
+    "notes": null
+  },
+  {
+    "plot_number": "P031",
+    "geometry_ref": "plot-p031",
+    "area_sqft": 1150,
+    "type": "residential",
+    "facing": "west",
+    "status": "reserved",
+    "price": 4370000,
+    "notes": "Held — site visit scheduled"
+  },
+  {
+    "plot_number": "P032",
+    "geometry_ref": "plot-p032",
+    "area_sqft": 1250,
+    "type": "residential",
+    "facing": "north",
+    "status": "reserved",
+    "price": 5000000,
+    "notes": "Held — site visit scheduled"
+  },
+  {
+    "plot_number": "P033",
+    "geometry_ref": "plot-p033",
+    "area_sqft": 1000,
+    "type": "residential",
+    "facing": "east",
+    "status": "reserved",
+    "price": 4200000,
+    "notes": "Held — site visit scheduled"
+  },
+  {
+    "plot_number": "P034",
+    "geometry_ref": "plot-p034",
+    "area_sqft": 1100,
+    "type": "residential",
+    "facing": "south",
+    "status": "reserved",
+    "price": 4290000,
+    "notes": "Held — site visit scheduled"
+  },
+  {
+    "plot_number": "P035",
+    "geometry_ref": "plot-p035",
+    "area_sqft": 1200,
+    "type": "residential",
+    "facing": "west",
+    "status": "reserved",
+    "price": 4920000,
+    "notes": "Held — site visit scheduled"
+  },
+  {
+    "plot_number": "P036",
+    "geometry_ref": "plot-p036",
+    "area_sqft": 950,
+    "type": "residential",
+    "facing": "north",
+    "status": "reserved",
+    "price": 3610000,
+    "notes": "Held — site visit scheduled"
+  },
+  {
+    "plot_number": "P037",
+    "geometry_ref": "plot-p037",
+    "area_sqft": 1050,
+    "type": "residential",
+    "facing": "east",
+    "status": "reserved",
+    "price": 4200000,
+    "notes": "Held — site visit scheduled"
+  },
+  {
+    "plot_number": "P038",
+    "geometry_ref": "plot-p038",
+    "area_sqft": 1150,
+    "type": "residential",
+    "facing": "south",
+    "status": "reserved",
+    "price": 4830000,
+    "notes": "Held — site visit scheduled"
+  },
+  {
+    "plot_number": "P039",
+    "geometry_ref": "plot-p039",
+    "area_sqft": 1250,
+    "type": "residential",
+    "facing": "west",
+    "status": "reserved",
+    "price": 4880000,
+    "notes": "Held — site visit scheduled"
+  },
+  {
+    "plot_number": "P040",
+    "geometry_ref": "plot-p040",
+    "area_sqft": 1000,
+    "type": "residential",
+    "facing": "east",
+    "status": "reserved",
+    "price": 4100000,
+    "notes": "Held — site visit scheduled"
+  },
+  {
+    "plot_number": "P041",
+    "geometry_ref": "plot-p041",
+    "area_sqft": 2000,
+    "type": "corner",
+    "facing": "south-west",
+    "status": "reserved",
+    "price": 10000000,
+    "notes": "Held — site visit scheduled"
+  },
+  {
+    "plot_number": "P042",
+    "geometry_ref": "plot-p042",
+    "area_sqft": 1200,
+    "type": "residential",
+    "facing": "south",
+    "status": "reserved",
+    "price": 4800000,
+    "notes": "Held — site visit scheduled"
+  },
+  {
+    "plot_number": "P043",
+    "geometry_ref": "plot-p043",
+    "area_sqft": 950,
+    "type": "residential",
+    "facing": "south",
+    "status": "sold",
+    "price": 3990000,
+    "notes": "Sold via direct walk-in"
+  },
+  {
+    "plot_number": "P044",
+    "geometry_ref": "plot-p044",
+    "area_sqft": 1050,
+    "type": "residential",
+    "facing": "south",
+    "status": "sold",
+    "price": 4100000,
+    "notes": "Sold via direct walk-in"
+  },
+  {
+    "plot_number": "P045",
+    "geometry_ref": "plot-p045",
+    "area_sqft": 1150,
+    "type": "residential",
+    "facing": "south",
+    "status": "sold",
+    "price": 4720000,
+    "notes": "Sold via direct walk-in"
+  },
+  {
+    "plot_number": "P046",
+    "geometry_ref": "plot-p046",
+    "area_sqft": 1850,
+    "type": "premium",
+    "facing": "south",
+    "status": "sold",
+    "price": 9250000,
+    "notes": "Sold via direct walk-in"
+  },
+  {
+    "plot_number": "P047",
+    "geometry_ref": "plot-p047",
+    "area_sqft": 1000,
+    "type": "residential",
+    "facing": "south",
+    "status": "sold",
+    "price": 4000000,
+    "notes": "Sold via direct walk-in"
+  },
+  {
+    "plot_number": "P048",
+    "geometry_ref": "plot-p048",
+    "area_sqft": 1100,
+    "type": "residential",
+    "facing": "south",
+    "status": "sold",
+    "price": 4620000,
+    "notes": "Sold via direct walk-in"
+  },
+  {
+    "plot_number": "P049",
+    "geometry_ref": "plot-p049",
+    "area_sqft": 1200,
+    "type": "residential",
+    "facing": "south",
+    "status": "blocked",
+    "price": 4680000,
+    "notes": "Reserved for utility easement"
+  },
+  {
+    "plot_number": "P050",
+    "geometry_ref": "plot-p050",
+    "area_sqft": 1850,
+    "type": "corner",
+    "facing": "south-east",
+    "status": "blocked",
+    "price": 9810000,
+    "notes": "Reserved for utility easement"
+  }
+]

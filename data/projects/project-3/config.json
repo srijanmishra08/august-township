@@ -1,0 +1,17 @@
+{
+  "slug": "project-3",
+  "name": "Lakeside Greens",
+  "tagline": "Wake to water, walk to woods",
+  "mapboxStyle": "mapbox://styles/mapbox/satellite-streets-v12",
+  "masterPlan": {
+    "desktop": "assets/master-plan.png",
+    "mobile": "assets/master-plan-mobile.png",
+    "georef": null
+  },
+  "cameraStages": [],
+  "landingLoop": "",
+  "cta": {
+    "label": "Schedule a Site Visit",
+    "whatsappNumber": ""
+  }
+}

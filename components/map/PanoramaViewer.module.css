@@ -1,0 +1,197 @@
+.backdrop {
+  position: absolute;
+  inset: 0;
+  z-index: 120;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  padding: 40px 32px;
+  background: rgba(6, 5, 4, 0.94);
+  backdrop-filter: blur(22px);
+  -webkit-backdrop-filter: blur(22px);
+  animation: panoIn 0.35s ease;
+}
+@media (max-width: 768px) {
+  .backdrop {
+    padding: 20px 14px;
+  }
+}
+
+.dismiss {
+  position: absolute;
+  top: 22px;
+  right: 22px;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 13px;
+  cursor: pointer;
+  z-index: 3;
+  transition: background 0.2s, color 0.2s;
+}
+.dismiss:hover {
+  background: rgba(255, 255, 255, 0.16);
+  color: #fff;
+}
+
+/* Fills remaining height so the sphere gets a real viewport to render into. */
+.stage {
+  position: relative;
+  flex: 1;
+  min-height: 0;
+  border-radius: 14px;
+  overflow: hidden;
+  background: #0b0a09;
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  box-shadow: 0 40px 90px -20px rgba(0, 0, 0, 0.85);
+  cursor: grab;
+  touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
+}
+.stageDragging {
+  cursor: grabbing;
+}
+.stageInert {
+  cursor: default;
+}
+
+.canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+/* Positioned per frame from the projected 3D point; translate re-centres it. */
+.hotspot {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  padding: 7px 14px 7px 9px;
+  border-radius: 100px;
+  background: rgba(10, 8, 6, 0.72);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid rgba(232, 149, 109, 0.45);
+  color: rgba(255, 255, 255, 0.85);
+  font-family: inherit;
+  font-size: 8px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background 0.2s, transform 0.2s;
+}
+.hotspot:hover {
+  background: rgba(200, 96, 42, 0.55);
+  transform: translate(-50%, -50%) scale(1.05);
+}
+.hotspotDot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: #e8956d;
+  box-shadow: 0 0 0 4px rgba(232, 149, 109, 0.22);
+  animation: panoPulse 2s ease-in-out infinite;
+}
+.hotspotLabel {
+  line-height: 1;
+}
+
+.status {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  background: #0b0a09;
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.3);
+  text-align: center;
+  padding: 0 24px;
+}
+.ring {
+  width: 34px;
+  height: 34px;
+  border: 1.5px solid rgba(255, 255, 255, 0.08);
+  border-top-color: rgba(255, 255, 255, 0.5);
+  border-radius: 50%;
+  animation: panoSpin 1s linear infinite;
+}
+
+.hint {
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 9px 18px;
+  border-radius: 100px;
+  background: rgba(10, 8, 6, 0.7);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  font-size: 8px;
+  font-weight: 700;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.55);
+  pointer-events: none;
+  animation: panoHint 2.4s ease-in-out infinite;
+}
+
+.caption {
+  text-align: center;
+  flex-shrink: 0;
+}
+.eyebrow {
+  font-size: 7px;
+  font-weight: 700;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.28);
+  margin-bottom: 8px;
+}
+.title {
+  font-family: var(--font-gloock), Georgia, serif;
+  font-size: clamp(24px, 3.4vw, 36px);
+  font-weight: 400;
+  color: #fff;
+  line-height: 1.1;
+}
+.body {
+  margin: 10px auto 0;
+  max-width: 620px;
+  font-size: 12px;
+  line-height: 1.7;
+  color: rgba(255, 255, 255, 0.4);
+}
+
+@keyframes panoIn {
+  from { opacity: 0; transform: scale(0.985); }
+  to   { opacity: 1; transform: scale(1); }
+}
+@keyframes panoSpin {
+  to { transform: rotate(360deg); }
+}
+@keyframes panoHint {
+  0%, 100% { opacity: 0.5; }
+  50%      { opacity: 1; }
+}
+@keyframes panoPulse {
+  0%, 100% { box-shadow: 0 0 0 4px rgba(232, 149, 109, 0.22); }
+  50%      { box-shadow: 0 0 0 8px rgba(232, 149, 109, 0.05); }
+}
