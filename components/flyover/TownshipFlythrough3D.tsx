@@ -204,91 +204,169 @@ export default function TownshipFlythrough3D({
     const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches
     const lookAhead = config.lookAhead ?? 0.06
 
-    const first = stations[0]
-    const cam: FlyCam = {
-      px: first.at?.[0] ?? 0, py: first.eye, pz: first.at?.[1] ?? 0,
-      tx: first.lookAt?.[0] ?? (first.at?.[0] ?? 0),
-      ty: first.lookHeight ?? first.eye * 0.55,
-      tz: first.lookAt?.[1] ?? ((first.at?.[1] ?? 0) - 12), fov: first.fov ?? 56,
+    /**
+     * The timeline drives one monotonic playhead, measured in station-time
+     * units. The camera is derived from that playhead in `push`, and nothing
+     * else ever writes it.
+     *
+     * The earlier shape had each leg's tween write the camera from its own
+     * onUpdate. GSAP renders tweens that sit outside the playhead during some
+     * passes — notably the invalidate that `invalidateOnRefresh` triggers — and
+     * any such stray render slammed the camera to that leg's first point.
+     * The first leg starts at the entrance, which is why the opening aerial
+     * never appeared and the shot sat frozen on the arrival.
+     */
+    interface Segment {
+      station: FlythroughStation
+      curve: THREE.CatmullRomCurve3 | null
+      start: number
+      arrive: number
+      end: number
     }
 
+    let cursor = 0
+    const segments: Segment[] = stations.map((station, i) => {
+      const start = cursor
+      cursor += i > 0 ? station.duration || 0 : 0
+      const arrive = cursor
+      cursor += station.dwell || 0
+      return { station, curve: curves[i], start, arrive, end: cursor }
+    })
+    const totalUnits = cursor || 1
+
+    const cam: FlyCam = { px: 0, py: 0, pz: 0, tx: 0, ty: 0, tz: 0, fov: 56 }
     const tmpA = new THREE.Vector3()
     const tmpB = new THREE.Vector3()
+    const tmpC = new THREE.Vector3()
 
-    function driveCurve(curve: THREE.CatmullRomCurve3, u: number, eye: number, fov: number) {
-      curve.getPointAt(Math.min(Math.max(u, 0), 1), tmpA)
-      curve.getPointAt(Math.min(u + lookAhead, 1), tmpB)
-      // Looking a little further down the road is what makes this read as
-      // driving rather than sliding sideways.
-      if (tmpB.distanceToSquared(tmpA) < 1e-6) {
-        curve.getPointAt(Math.max(u - lookAhead, 0), tmpB)
-        tmpB.subVectors(tmpA, tmpB).add(tmpA)
+    /** Where the camera comes to rest once it has arrived at a station. */
+    function restPose(i: number): FlyCam {
+      const st = stations[i]
+      const curve = curves[i]
+      const fov = st.fov ?? 56
+      if (curve) {
+        curve.getPointAt(1, tmpC)
+        const target = st.target
+        return {
+          px: tmpC.x, py: st.eye, pz: tmpC.z,
+          tx: target ? target[0] : tmpC.x,
+          ty: st.eye * 1.5,
+          tz: target ? target[1] : tmpC.z,
+          fov,
+        }
       }
-      cam.px = tmpA.x; cam.py = eye; cam.pz = tmpA.z
-      cam.tx = tmpB.x; cam.ty = eye * 0.82; cam.tz = tmpB.z
-      cam.fov = fov
+      const px = st.at?.[0] ?? 0
+      const pz = st.at?.[1] ?? 0
+      return {
+        px, py: st.eye, pz,
+        tx: st.lookAt?.[0] ?? px,
+        ty: st.lookHeight ?? st.eye * 0.55,
+        tz: st.lookAt?.[1] ?? pz - 12,
+        fov,
+      }
     }
 
-    function push(this: gsap.core.Timeline) {
+    function assign(pose: FlyCam) {
+      cam.px = pose.px; cam.py = pose.py; cam.pz = pose.pz
+      cam.tx = pose.tx; cam.ty = pose.ty; cam.tz = pose.tz
+      cam.fov = pose.fov
+    }
+
+    function blend(a: FlyCam, b: FlyCam, u: number) {
+      const k = Math.min(Math.max(u, 0), 1)
+      cam.px = a.px + (b.px - a.px) * k
+      cam.py = a.py + (b.py - a.py) * k
+      cam.pz = a.pz + (b.pz - a.pz) * k
+      cam.tx = a.tx + (b.tx - a.tx) * k
+      cam.ty = a.ty + (b.ty - a.ty) * k
+      cam.tz = a.tz + (b.tz - a.tz) * k
+      cam.fov = a.fov + (b.fov - a.fov) * k
+    }
+
+    /** Pose while travelling along a station's driving path. */
+    function alongCurve(curve: THREE.CatmullRomCurve3, u: number, st: FlythroughStation) {
+      const k = Math.min(Math.max(u, 0), 1)
+      curve.getPointAt(k, tmpA)
+      curve.getPointAt(Math.min(k + lookAhead, 1), tmpB)
+      // Aiming a little further down the road is what makes this read as
+      // driving rather than sliding sideways.
+      if (tmpB.distanceToSquared(tmpA) < 1e-6) {
+        curve.getPointAt(Math.max(k - lookAhead, 0), tmpB)
+        tmpB.subVectors(tmpA, tmpB).add(tmpA)
+      }
+      cam.px = tmpA.x; cam.py = st.eye; cam.pz = tmpA.z
+      cam.tx = tmpB.x; cam.ty = st.eye * 0.82; cam.tz = tmpB.z
+      cam.fov = st.fov ?? 56
+    }
+
+    const playhead = { t: 0 }
+
+    function push() {
+      const t = playhead.t
+      let i = 0
+      for (let k = 0; k < segments.length; k++) {
+        if (t >= segments[k].start) i = k
+        else break
+      }
+      const seg = segments[i]
+
+      if (t < seg.arrive) {
+        const travel = seg.arrive - seg.start
+        const u = travel > 0 ? (t - seg.start) / travel : 1
+        // Stations with a path drive it; stations without one (the opening
+        // aerial, the closing lift) interpolate from the previous rest pose.
+        if (seg.curve) alongCurve(seg.curve, u, seg.station)
+        else blend(restPose(Math.max(i - 1, 0)), restPose(i), u)
+      } else {
+        const span = seg.end - seg.arrive
+        const d = span > 0 ? (t - seg.arrive) / span : 1
+        if (seg.curve) {
+          alongCurve(seg.curve, 1, seg.station)
+          if (seg.station.target) {
+            // Arrive facing down the road, then turn to the subject.
+            const facing: FlyCam = { ...cam }
+            blend(facing, restPose(i), Math.min(d / 0.28, 1))
+          }
+        } else {
+          assign(restPose(i))
+        }
+      }
+
       sceneRef.current?.setCamera([cam.px, cam.py, cam.pz], [cam.tx, cam.ty, cam.tz], cam.fov)
-      const p = this.progress()
+
+      const progress = t / totalUnits
       let cur = ranges[0]
-      for (const r of ranges) { if (p >= r.travelStart) cur = r; else break }
-      const span = cur.depart - cur.arrive
-      const dwell = span <= 0 ? (p >= cur.arrive ? 1 : 0)
-        : Math.min(Math.max((p - cur.arrive) / span, 0), 1)
+      for (const r of ranges) { if (progress >= r.travelStart) cur = r; else break }
+      const dwellSpan = cur.depart - cur.arrive
+      const dwellProgress = dwellSpan <= 0
+        ? (progress >= cur.arrive ? 1 : 0)
+        : Math.min(Math.max((progress - cur.arrive) / dwellSpan, 0), 1)
       if (cur.index !== activeIndexRef.current) {
         activeIndexRef.current = cur.index
         setActiveIndex(cur.index)
       }
-      paint(cur.index, dwell, p >= cur.arrive)
+      paint(cur.index, dwellProgress, progress >= cur.arrive)
     }
 
     const tl = gsap.timeline({ paused: true, onUpdate: push })
 
-    stations.forEach((station, i) => {
-      const fov = station.fov ?? 56
-      const curve = curves[i]
-
-      if (i > 0) {
-        if (curve) {
-          const leg = { u: 0 }
-          tl.to(leg, {
-            u: 1,
-            duration: station.duration || 0.5,
-            ease: station.ease || 'power1.inOut',
-            onUpdate: () => driveCurve(curve, leg.u, station.eye, fov),
-          })
-        } else {
-          // No path — an explicit pose (the closing aerial).
-          tl.to(cam, {
-            px: station.at?.[0] ?? cam.px, py: station.eye, pz: station.at?.[1] ?? cam.pz,
-            tx: station.lookAt?.[0] ?? cam.tx, ty: station.lookHeight ?? 0, tz: station.lookAt?.[1] ?? cam.tz,
-            fov, duration: station.duration || 0.5, ease: station.ease || 'power3.inOut',
-          })
-        }
-      }
-
-      const dwell = station.dwell || 0
-      if (dwell <= 0) return
-
-      // On arrival, turn from the road to face the subject.
-      if (station.target) {
-        tl.to(cam, {
-          // Aim just above eye level, so arriving looks up at the building
-          // rather than down at the marker under it.
-          tx: station.target[0], ty: station.eye * 1.5, tz: station.target[1],
-          duration: dwell * 0.28, ease: 'power2.inOut',
+    // Each segment eases the playhead across its own span, so per-station
+    // easing survives while the camera stays a pure function of the playhead.
+    segments.forEach((seg, i) => {
+      if (i > 0 && seg.arrive > seg.start) {
+        tl.to(playhead, {
+          t: seg.arrive,
+          duration: seg.arrive - seg.start,
+          ease: seg.station.ease || 'power2.inOut',
         })
-        tl.to(cam, { duration: dwell * 0.72 })
-      } else {
-        tl.to(cam, { duration: dwell })
+      }
+      if (seg.end > seg.arrive) {
+        tl.to(playhead, { t: seg.end, duration: seg.end - seg.arrive, ease: 'none' })
       }
     })
 
-    if (curves[0]) driveCurve(curves[0], 0, first.eye, first.fov ?? 56)
-    sceneRef.current?.setCamera([cam.px, cam.py, cam.pz], [cam.tx, cam.ty, cam.tz], cam.fov)
-    paint(0, 0, true)
+    // Paint the opening frame — the aerial — before any scrolling happens.
+    push()
 
     const trigger = ScrollTrigger.create({
       trigger: container, start: 'top top', end: 'bottom bottom',
