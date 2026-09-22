@@ -57,6 +57,19 @@ STOPS = [
      "A curated lounge with premium seating, library nooks and concierge service."),
 ]
 
+# Real equirectangular 360s, by station id. A stop with one of these shows the
+# photographic sphere instead of the clip — the visitor looks around the actual
+# room rather than watching a pan of it.
+PANOS = {
+    "gate":   ("assets/amenities/pano/gate.webp", 150, -75),
+    "kids":   ("assets/amenities/pano/gameroom.webp", 165, -80),
+    "gym":    ("assets/amenities/pano/gym.webp", 160, -80),
+    "garden": ("assets/amenities/pano/pool.webp", 155, -70),
+    "lounge": ("assets/amenities/pano/lounge.webp", 150, -75),
+}
+# A 360 needs longer than a clip: the dwell is what sweeps the yaw.
+PANO_DWELL = 2.2
+
 NEIGHBOURS = [
     (1, 0, 1.0), (-1, 0, 1.0), (0, 1, 1.0), (0, -1, 1.0),
     (1, 1, 1.4142), (1, -1, 1.4142), (-1, 1, 1.4142), (-1, -1, 1.4142),
@@ -182,6 +195,10 @@ def main() -> int:
         "eye": EYE, "lookHeight": EYE,
         "duration": 2.4, "ease": "power3.inOut", "dwell": 0.8,
     }
+    if "gate" in PANOS:
+        src, sweep, start = PANOS["gate"]
+        gate_station.update(panorama=src, panoSweep=sweep, panoStart=start,
+                            dwell=PANO_DWELL)
     stations = [
         {
             "id": "overview", "label": "The Masterplan", "title": "August Township",
@@ -222,6 +239,10 @@ def main() -> int:
         }
         if clip:
             station["fullscreenVideo"] = True
+        if sid in PANOS:
+            src, sweep, start = PANOS[sid]
+            station.update(panorama=src, panoSweep=sweep, panoStart=start,
+                           dwell=PANO_DWELL)
         stations.append(station)
         print(f"  {sid:11} {length:6.1f}u  {len(pts):3d} pts")
         cursor = goal

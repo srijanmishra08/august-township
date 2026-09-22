@@ -491,3 +491,44 @@
 @media (max-width: 900px) {
   .arrivalName { font-size: clamp(1.6rem, 8vw, 2.4rem); }
 }
+
+/* ---------- Panorama stage ---------- */
+
+/* Host for the 360 sphere renderer. Explicit box, because the WebGL renderer
+   reads this element's size rather than inheriting it. */
+.panoHost {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  background: #05070a;
+}
+
+/* Marks a stop that is a real photographic 360 rather than a clip. */
+.panoBadge {
+  position: absolute;
+  right: 2.4vw;
+  bottom: 2.4rem;
+  z-index: 3;
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  padding: 0.5rem 1rem;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  background: rgba(8, 10, 14, 0.55);
+  backdrop-filter: blur(10px);
+  font-size: 0.58rem;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.8);
+  pointer-events: none;
+}
+
+.panoBadge::before {
+  content: '';
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--color-brand-primary, #c9a96e);
+}

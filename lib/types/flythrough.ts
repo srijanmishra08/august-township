@@ -37,6 +37,16 @@ export interface FlythroughStation {
   dwell?: number
   /** Take the whole screen with the amenity clip on arrival. */
   fullscreenVideo?: boolean
+  /**
+   * Equirectangular 360 for this stop, relative to the project asset root.
+   * Takes precedence over the clip: a real photographic sphere the visitor
+   * can look around beats a video pan of the same room.
+   */
+  panorama?: string
+  /** Degrees of yaw swept across the dwell. */
+  panoSweep?: number
+  /** Yaw the sweep starts from, in degrees. */
+  panoStart?: number
   title?: string
   description?: string
   /** Terminal station — reaching it offers the handoff into the explorer. */

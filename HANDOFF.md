@@ -115,6 +115,44 @@ ffmpeg -i input.mp4 -c:v libx264 -g 1 -keyint_min 1 -crf 20 -an output-scrub.mp4
 
 ---
 
+## 360° panoramas
+
+Five real equirectangular renders are wired into the walkthrough. At those
+stops the screen is taken by an actual photographic sphere the visitor looks
+around as they scroll, instead of a video pan.
+
+| station | asset | source |
+|---|---|---|
+| gate | `pano/gate.webp` | entrance gateway |
+| kids (Game Room) | `pano/gameroom.webp` | games room |
+| gym | `pano/gym.webp` | gym interior |
+| garden (Pool) | `pano/pool.webp` | pool + clubhouse |
+| lounge | `pano/lounge.webp` | reception lobby |
+
+`components/flyover/PanoramaStage.tsx` renders an inverted sphere in its own
+canvas; scroll drives the yaw across `panoSweep` degrees from `panoStart`.
+Mapping lives in `PANOS` in `scripts/flythrough/build_route.py` — add an entry
+and re-run to wire a new one.
+
+Tone mapping is deliberately **off** on this renderer. The sources are already
+graded LDR renders; running ACES over them a second time crushes highlights.
+
+### Two problems with the current assets
+
+1. **The entrance render is branded "White Lotus", not August Township.** It is
+   on the gateway signage, centre frame, unmissable. This cannot ship to the
+   client as-is — either get the render re-done with the right branding, or drop
+   the gate panorama and let that stop stay in the 3D drive.
+2. **They are 1774x887, which is low for a 360.** Only about a fifth of the
+   width is on screen at any moment, so the viewer upscales roughly 4x and the
+   result is visibly soft. Ask the visualiser for **4096x2048 minimum**, 8192x4096
+   preferred. Drop-in replacements — same filenames, no code change.
+
+A sixth render (a tree-lined boulevard) is **not** a 360 — it is a flat
+perspective view. Verified by pole-detail collapse: true equirects here measure
+0.01-0.09 top/mid horizontal detail, that one measures 0.44. It is parked at
+`pano/approach-still.webp` and is unused; it would work as a hero still.
+
 ## Known issues / next steps
 
 1. **Amenity ↔ clip mismatches in `plots-3d.json`.** *Zen Garden* points at

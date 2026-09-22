@@ -43,7 +43,10 @@
       "lookHeight": 0.37,
       "duration": 2.4,
       "ease": "power3.inOut",
-      "dwell": 0.8,
+      "dwell": 2.2,
+      "panorama": "assets/amenities/pano/gate.webp",
+      "panoSweep": 150,
+      "panoStart": -75,
       "lookAt": [
         -10.6,
         7.2
@@ -84,8 +87,11 @@
       "eye": 0.37,
       "duration": 2.23,
       "ease": "power1.inOut",
-      "dwell": 1.6,
-      "fullscreenVideo": true
+      "dwell": 2.2,
+      "fullscreenVideo": true,
+      "panorama": "assets/amenities/pano/gameroom.webp",
+      "panoSweep": 165,
+      "panoStart": -80
     },
     {
       "id": "cricket",
@@ -213,8 +219,11 @@
       "eye": 0.37,
       "duration": 3.27,
       "ease": "power1.inOut",
-      "dwell": 1.6,
-      "fullscreenVideo": true
+      "dwell": 2.2,
+      "fullscreenVideo": true,
+      "panorama": "assets/amenities/pano/gym.webp",
+      "panoSweep": 160,
+      "panoStart": -80
     },
     {
       "id": "clubhouse",
@@ -299,8 +308,11 @@
       "eye": 0.37,
       "duration": 1.95,
       "ease": "power1.inOut",
-      "dwell": 1.6,
-      "fullscreenVideo": true
+      "dwell": 2.2,
+      "fullscreenVideo": true,
+      "panorama": "assets/amenities/pano/pool.webp",
+      "panoSweep": 155,
+      "panoStart": -70
     },
     {
       "id": "lounge",
@@ -325,8 +337,11 @@
       "eye": 0.37,
       "duration": 0.5,
       "ease": "power1.inOut",
-      "dwell": 1.6,
-      "fullscreenVideo": true
+      "dwell": 2.2,
+      "fullscreenVideo": true,
+      "panorama": "assets/amenities/pano/lounge.webp",
+      "panoSweep": 150,
+      "panoStart": -75
     },
     {
       "id": "lift",

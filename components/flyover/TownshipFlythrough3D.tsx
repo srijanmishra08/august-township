@@ -5,6 +5,7 @@ import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import * as THREE from 'three'
 import Plot3DScene, { type Plot3DSceneHandle } from '../map/Plot3DScene'
+import PanoramaStage, { type PanoramaHandle } from './PanoramaStage'
 import type { Amenity3D, Plot3D } from '@/lib/types/plot3d'
 import type { FlyCam, FlythroughConfig, FlythroughStation } from '@/lib/types/flythrough'
 import styles from './Flyover.module.css'
@@ -66,6 +67,7 @@ export default function TownshipFlythrough3D({
   // Coalesced video seek target — writing currentTime while a seek is in
   // flight makes the decoder drop frames, which reads as tearing.
   const seekRef = useRef<number | null>(null)
+  const panoRef = useRef<PanoramaHandle>(null)
 
   useEffect(() => {
     const measure = () => setVh(window.innerHeight)
@@ -119,8 +121,13 @@ export default function TownshipFlythrough3D({
   const activeAmenity = active?.amenity ? amenityByName[active.amenity] : undefined
   // The clip is scrubbed, so the all-intra encode is the correct source —
   // that is exactly what plots-3d.json already points at.
+  // A real photographic sphere wins over a pan of the same room, so the
+  // panorama takes the screen and the clip is only the fallback.
+  const panoSrc = active?.panorama
+    ? `/data/projects/${projectSlug}/${active.panorama}`
+    : null
   const filmSrc =
-    active?.fullscreenVideo && activeAmenity?.video
+    !panoSrc && active?.fullscreenVideo && activeAmenity?.video
       ? `/data/projects/${projectSlug}/${activeAmenity.video}`
       : null
 
@@ -146,12 +153,17 @@ export default function TownshipFlythrough3D({
       }
 
       // While a fullscreen clip owns the screen, the 3D copy steps aside.
-      const filmOn = Boolean(station?.fullscreenVideo)
+      const filmOn = Boolean(station?.panorama || station?.fullscreenVideo)
       const film = filmOn ? Math.max(0, ramp(amount, 0.2, 0.36) - ramp(amount, 0.85, 0.97)) : 0
 
       if (filmRef.current) {
         filmRef.current.style.opacity = String(film)
         filmRef.current.style.visibility = film <= 0.01 ? 'hidden' : 'visible'
+      }
+
+      // Scroll sweeps the yaw — that is what turns a still 360 into a beat.
+      if (station?.panorama) {
+        panoRef.current?.setView(ramp(amount, 0.14, 0.92))
       }
 
       const video = videoRef.current
@@ -415,6 +427,20 @@ export default function TownshipFlythrough3D({
         {/* Fullscreen amenity film. Takes the whole screen on arrival and is
             scrubbed by scroll, then hands back to the drive. */}
         <div ref={filmRef} className={styles.film} style={{ opacity: 0, visibility: 'hidden' }}>
+          {panoSrc && (
+            <>
+              <PanoramaStage
+                ref={panoRef}
+                /* Keyed per station so the texture is rebuilt rather than
+                   swapped under a live sphere. */
+                key={active?.id}
+                src={panoSrc}
+                sweep={active?.panoSweep}
+                startYaw={active?.panoStart}
+              />
+              <div className={styles.panoBadge}>360° view</div>
+            </>
+          )}
           {filmSrc && (
             <video
               ref={videoRef}
