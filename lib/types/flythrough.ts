@@ -38,6 +38,12 @@ export interface FlythroughStation {
   /** Take the whole screen with the amenity clip on arrival. */
   fullscreenVideo?: boolean
   /**
+   * A clip that belongs to this stop rather than to an amenity, relative to
+   * the project asset root. Must be an all-intra encode: the dwell scrubs it.
+   * Wins over the amenity clip, loses to a panorama.
+   */
+  video?: string
+  /**
    * Equirectangular 360 for this stop, relative to the project asset root.
    * Takes precedence over the clip: a real photographic sphere the visitor
    * can look around beats a video pan of the same room.

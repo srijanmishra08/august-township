@@ -1,6 +1,6 @@
 # August Township — Handoff
 
-Last updated: 2026-08-04
+Last updated: 2026-09-24
 
 This is the working copy. **`/Users/s/Documents/August` is a stale duplicate** —
 its `node_modules` is a truncated install (389 MB vs 726 MB) left by a disk-full
@@ -117,15 +117,17 @@ ffmpeg -i input.mp4 -c:v libx264 -g 1 -keyint_min 1 -crf 20 -an output-scrub.mp4
 
 ## 360° panoramas
 
-Five real equirectangular renders are wired into the walkthrough. At those
+Seven real equirectangular renders are wired into the walkthrough. At those
 stops the screen is taken by an actual photographic sphere the visitor looks
 around as they scroll, instead of a video pan.
 
 | station | asset | source |
 |---|---|---|
-| gate | `pano/gate.webp` | entrance gateway |
+| gateway | `pano/gate.webp` | entrance gateway |
 | kids (Game Room) | `pano/gameroom.webp` | games room |
 | gym | `pano/gym.webp` | gym interior |
+| clubhouse | `pano/banquet.webp` | banquet / multi-functional hall |
+| theatre | `pano/theatre.webp` | home theatre |
 | garden (Pool) | `pano/pool.webp` | pool + clubhouse |
 | lounge | `pano/lounge.webp` | reception lobby |
 
@@ -137,13 +139,13 @@ and re-run to wire a new one.
 Tone mapping is deliberately **off** on this renderer. The sources are already
 graded LDR renders; running ACES over them a second time crushes highlights.
 
-### Two problems with the current assets
+### Resolution
 
-1. **The entrance render is branded "White Lotus", not August Township.** It is
-   on the gateway signage, centre frame, unmissable. This cannot ship to the
-   client as-is — either get the render re-done with the right branding, or drop
-   the gate panorama and let that stop stay in the 3D drive.
-2. **They are 1774x887, which is low for a 360.** Only about a fifth of the
+The project is **August White Lotus** — the "White Lotus" signage on the gate
+render is the client's own branding and is correct. (An earlier version of this
+file flagged it as another project's name. That was wrong.)
+
+**They are 1774x887, which is low for a 360.** Only about a fifth of the
    width is on screen at any moment, so the viewer upscales roughly 4x and the
    result is visibly soft. Ask the visualiser for **4096x2048 minimum**, 8192x4096
    preferred. Drop-in replacements — same filenames, no code change.
@@ -152,6 +154,37 @@ A sixth render (a tree-lined boulevard) is **not** a 360 — it is a flat
 perspective view. Verified by pole-detail collapse: true equirects here measure
 0.01-0.09 top/mid horizontal detail, that one measures 0.44. It is parked at
 `pano/approach-still.webp` and is unused; it would work as a hero still.
+
+## Exterior films
+
+Three short exterior clips play at stops of their own, independent of any
+amenity. A station's `video` field wins over the amenity clip and loses to a
+panorama.
+
+| station | asset | shows | native size |
+|---|---|---|---|
+| gate | `exterior/arrival-scrub.mp4` | arrival court, water wall, car driving in | 896x512 |
+| plaza | `exterior/green-scrub.mp4` | tree-filled park, sculpture court | 1280x768 |
+| villas | `exterior/villas-scrub.mp4` | pergola plaza, reveals a two-storey villa | 1280x768 |
+
+Each is 5.1 s and re-encoded **all-intra** (153/153 keyframes) because the dwell
+scrubs it. Originals sit beside them without the `-scrub` suffix. The arrival
+clip is only 896x512 and is visibly soft at full screen — worth replacing with a
+higher-resolution cut if one exists.
+
+Every film and 360 carries a small "Artist's impression" note. Renders of an
+unbuilt project are representations, and real-estate advertising has to say so.
+
+### Stops that share a building
+
+`theatre` sits in the same building as `clubhouse`, and `gateway` at the same
+spot as `gate`. A zero-length leg would give the camera a one-point path, which
+cannot be a curve, so the generator emits a *pose* instead: the same position
+and aim as the stop before, making the blend between them a no-op. The camera
+holds still and the beat reads as stepping into the next room.
+
+The villas stop has no amenity; `STOPS` accepts an `(x, z)` world point in place
+of an amenity name, and the route faces the nearest plot to it.
 
 ## Known issues / next steps
 

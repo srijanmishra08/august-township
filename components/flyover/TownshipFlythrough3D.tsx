@@ -126,10 +126,14 @@ export default function TownshipFlythrough3D({
   const panoSrc = active?.panorama
     ? `/data/projects/${projectSlug}/${active.panorama}`
     : null
-  const filmSrc =
-    !panoSrc && active?.fullscreenVideo && activeAmenity?.video
+  // Precedence: a 360 of the room, then a clip made for this stop, then the
+  // amenity's own clip. Only one takes the screen at a time.
+  const stationClip = active?.video ? `/data/projects/${projectSlug}/${active.video}` : null
+  const amenityClip =
+    active?.fullscreenVideo && activeAmenity?.video
       ? `/data/projects/${projectSlug}/${activeAmenity.video}`
       : null
+  const filmSrc = panoSrc ? null : stationClip ?? amenityClip
 
   const paint = useCallback(
     (index: number, dwell: number, settled: boolean) => {
@@ -153,7 +157,7 @@ export default function TownshipFlythrough3D({
       }
 
       // While a fullscreen clip owns the screen, the 3D copy steps aside.
-      const filmOn = Boolean(station?.panorama || station?.fullscreenVideo)
+      const filmOn = Boolean(station?.panorama || station?.video || station?.fullscreenVideo)
       const film = filmOn ? Math.max(0, ramp(amount, 0.2, 0.36) - ramp(amount, 0.85, 0.97)) : 0
 
       if (filmRef.current) {
@@ -459,6 +463,9 @@ export default function TownshipFlythrough3D({
             />
           )}
           <div className={styles.filmVignette} />
+          {/* Renders and films of an unbuilt project are representations, and
+              real-estate advertising has to say so. */}
+          <div className={styles.filmNote}>Artist&rsquo;s impression</div>
         </div>
 
         <div ref={arrivalRef} className={styles.arrival} style={{ opacity: 0, visibility: 'hidden' }}>
