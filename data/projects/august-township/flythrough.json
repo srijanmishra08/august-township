@@ -12,6 +12,7 @@
   "scrollPerUnit": 0.6,
   "lookAhead": 0.06,
   "roadVideo": "assets/exterior/avenue-scrub.mp4",
+  "roadMode": "legs",
   "stations": [
     {
       "id": "overview",

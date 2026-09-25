@@ -175,7 +175,7 @@ higher-resolution cut if one exists.
 Every film and 360 carries a small "Artist's impression" note. Renders of an
 unbuilt project are representations, and real-estate advertising has to say so.
 
-### Road footage on the straights
+### Road footage on the drive
 
 `exterior/avenue-scrub.mp4` — a forward dolly down a tree-lined avenue —
 replaces the 3D drive wherever the route runs straight. The generator treats
@@ -184,6 +184,18 @@ each leg's simplified path as a polyline, and every segment of at least
 off each end so the footage fades out before the bend. The 3D model keeps the
 corners, the aerial descent and the short hops inside buildings. Currently 16
 runs, covering 42% of the driving.
+
+**`roadMode` in `flythrough.json` picks the coverage** (set in
+`build_route.py` as `ROAD_MODE`):
+
+- `legs` (current) — the clip plays across every drive between two locations,
+  one pass per leg, with 8% fades at each end. The aerial zoom, the steps
+  between rooms of one building and the exit lift have no driving path, so they
+  stay in 3D. Covers 74% of all travel. A placeholder until there is footage
+  per road.
+- `straights` — only the straight runs described above, corners left to 3D.
+  The runs are still computed and stored on every leg, so switching back is a
+  one-word change.
 
 In the component the decision is made in `push()`, from the same eased position
 along the curve the camera uses, so the cut lands where the road actually

@@ -96,6 +96,7 @@ VIDEO_DWELL = 1.8
 # and the 3D model takes over again for the turn. The clip is a straight
 # forward dolly, so showing it through a corner would contradict the motion.
 ROAD_VIDEO = "assets/exterior/avenue-scrub.mp4"
+ROAD_MODE = "legs"
 STRAIGHT_MIN = 4.5    # world units, ~20 m: shorter runs flicker rather than read
 CORNER_TRIM = 0.9     # units shaved off each end so the cut clears the turn
 # Travel between two stops in the same building. Short, and the camera does
@@ -377,6 +378,9 @@ def main() -> int:
         "scrollPerUnit": args.scroll_per_unit,
         "lookAhead": 0.06,
         "roadVideo": ROAD_VIDEO,
+        # "legs": footage across every drive between locations (placeholder
+        # until there is footage per road). "straights": straight runs only.
+        "roadMode": ROAD_MODE,
         "stations": stations,
     }
 

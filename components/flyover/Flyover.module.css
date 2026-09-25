@@ -288,6 +288,7 @@
   height: 5px;
   border-radius: 50%;
   background: #fff;
+  box-shadow: 0 0 6px rgba(0, 0, 0, 0.7);
   flex: none;
   transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1), background 0.45s ease;
 }
@@ -303,6 +304,9 @@
   text-transform: uppercase;
   color: #fff;
   white-space: nowrap;
+  /* The rail now sits over bright road footage for most of the drive, not
+     just the dark 3D scene; without a shadow the labels wash out. */
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.75), 0 0 14px rgba(0, 0, 0, 0.55);
 }
 
 /* ---------- Scroll cue + exit ---------- */

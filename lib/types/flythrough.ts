@@ -77,6 +77,12 @@ export interface FlythroughConfig {
    * `straights`. Relative to the project asset root.
    */
   roadVideo?: string
+  /**
+   * Where the road footage plays. `legs`: across every drive between two
+   * locations, start to finish. `straights`: only on each leg's straight runs,
+   * with the corners left to the 3D model. Defaults to `straights`.
+   */
+  roadMode?: 'legs' | 'straights'
   stations: FlythroughStation[]
 }
 

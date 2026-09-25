@@ -358,15 +358,23 @@ export default function TownshipFlythrough3D({
       // cut-out land exactly where the road straightens and bends.
       let road = 0
       let roadK = 0
-      const runs = seg.station.straights
-      if (runs && seg.curve && t < seg.arrive) {
+      // Only legs with a driving path get footage: the aerial descent and the
+      // step between rooms of one building have no curve, so they stay in 3D.
+      if (config.roadVideo && seg.curve && t < seg.arrive) {
         const travel = seg.arrive - seg.start
         const u = travel > 0 ? (t - seg.start) / travel : 1
-        for (const [u0, u1] of runs) {
-          if (u >= u0 && u <= u1) {
-            roadK = (u - u0) / (u1 - u0)
-            road = Math.max(0, ramp(roadK, 0, 0.14) - ramp(roadK, 0.86, 1))
-            break
+        if (config.roadMode === 'legs') {
+          // The whole drive between two locations, one pass of the clip, with
+          // short fades so it hands cleanly to the stops at either end.
+          roadK = u
+          road = Math.max(0, ramp(u, 0, 0.08) - ramp(u, 0.92, 1))
+        } else {
+          for (const [u0, u1] of seg.station.straights ?? []) {
+            if (u >= u0 && u <= u1) {
+              roadK = (u - u0) / (u1 - u0)
+              road = Math.max(0, ramp(roadK, 0, 0.14) - ramp(roadK, 0.86, 1))
+              break
+            }
           }
         }
       }
