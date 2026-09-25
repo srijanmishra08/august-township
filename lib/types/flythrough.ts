@@ -18,6 +18,11 @@ export interface FlythroughStation {
    * Two or more points build a spline the camera travels along.
    */
   points?: Array<[number, number]>
+  /**
+   * Straight runs of this leg as [u0, u1] arc-length fractions. While the
+   * camera is inside one, the road footage replaces the 3D drive.
+   */
+  straights?: Array<[number, number]>
   /** What the camera turns to face once it arrives. */
   target?: [number, number]
   /** Explicit standpoint for stations with no driving path (entry, aerial). */
@@ -67,6 +72,11 @@ export interface FlythroughConfig {
    * Larger looks further down the road and feels calmer through corners.
    */
   lookAhead?: number
+  /**
+   * All-intra clip of a straight forward dolly, scrubbed across each leg's
+   * `straights`. Relative to the project asset root.
+   */
+  roadVideo?: string
   stations: FlythroughStation[]
 }
 

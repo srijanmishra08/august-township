@@ -68,6 +68,8 @@ export default function TownshipFlythrough3D({
   // flight makes the decoder drop frames, which reads as tearing.
   const seekRef = useRef<number | null>(null)
   const panoRef = useRef<PanoramaHandle>(null)
+  const roadRef = useRef<HTMLDivElement>(null)
+  const roadVideoRef = useRef<HTMLVideoElement>(null)
 
   useEffect(() => {
     const measure = () => setVh(window.innerHeight)
@@ -134,6 +136,7 @@ export default function TownshipFlythrough3D({
       ? `/data/projects/${projectSlug}/${activeAmenity.video}`
       : null
   const filmSrc = panoSrc ? null : stationClip ?? amenityClip
+  const roadSrc = config.roadVideo ? `/data/projects/${projectSlug}/${config.roadVideo}` : null
 
   const paint = useCallback(
     (index: number, dwell: number, settled: boolean) => {
@@ -350,6 +353,37 @@ export default function TownshipFlythrough3D({
 
       sceneRef.current?.setCamera([cam.px, cam.py, cam.pz], [cam.tx, cam.ty, cam.tz], cam.fov)
 
+      // On a straight run, real road footage replaces the 3D drive. It uses the
+      // same eased position along the curve as the camera, so the cut-in and
+      // cut-out land exactly where the road straightens and bends.
+      let road = 0
+      let roadK = 0
+      const runs = seg.station.straights
+      if (runs && seg.curve && t < seg.arrive) {
+        const travel = seg.arrive - seg.start
+        const u = travel > 0 ? (t - seg.start) / travel : 1
+        for (const [u0, u1] of runs) {
+          if (u >= u0 && u <= u1) {
+            roadK = (u - u0) / (u1 - u0)
+            road = Math.max(0, ramp(roadK, 0, 0.14) - ramp(roadK, 0.86, 1))
+            break
+          }
+        }
+      }
+      const roadEl = roadRef.current
+      if (roadEl) {
+        roadEl.style.opacity = String(road)
+        roadEl.style.visibility = road <= 0.01 ? 'hidden' : 'visible'
+      }
+      const roadVid = roadVideoRef.current
+      if (roadVid && road > 0 && roadVid.duration) {
+        const target = Math.min(roadK * roadVid.duration, roadVid.duration - 0.03)
+        // Half a source frame (16 fps): finer seeks decode to the same image.
+        if (!roadVid.seeking && Math.abs(roadVid.currentTime - target) > 1 / 32) {
+          roadVid.currentTime = target
+        }
+      }
+
       const progress = t / totalUnits
       let cur = ranges[0]
       for (const r of ranges) { if (progress >= r.travelStart) cur = r; else break }
@@ -427,6 +461,23 @@ export default function TownshipFlythrough3D({
           handleRef={sceneRef}
           className={styles.sceneHost}
         />
+
+        {/* Road footage for the straight runs of the drive. Sits under the
+            station film and the UI; the corners stay in 3D. */}
+        {roadSrc && (
+          <div ref={roadRef} className={styles.roadFilm} style={{ opacity: 0, visibility: 'hidden' }}>
+            <video
+              ref={roadVideoRef}
+              src={roadSrc}
+              muted
+              playsInline
+              preload="auto"
+              disableRemotePlayback
+            />
+            <div className={styles.filmVignette} />
+            <div className={styles.filmNote}>Artist&rsquo;s impression</div>
+          </div>
+        )}
 
         {/* Fullscreen amenity film. Takes the whole screen on arrival and is
             scrubbed by scroll, then hands back to the drive. */}

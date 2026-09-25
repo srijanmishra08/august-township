@@ -11,6 +11,7 @@
   ],
   "scrollPerUnit": 0.6,
   "lookAhead": 0.06,
+  "roadVideo": "assets/exterior/avenue-scrub.mp4",
   "stations": [
     {
       "id": "overview",
@@ -109,6 +110,20 @@
         ]
       ],
       "duration": 2.23,
+      "straights": [
+        [
+          0.0384,
+          0.1935
+        ],
+        [
+          0.2702,
+          0.4668
+        ],
+        [
+          0.6799,
+          0.9616
+        ]
+      ],
       "fullscreenVideo": true,
       "panorama": "assets/amenities/pano/gameroom.webp",
       "panoSweep": 165,
@@ -146,6 +161,20 @@
         ]
       ],
       "duration": 2.17,
+      "straights": [
+        [
+          0.0385,
+          0.2521
+        ],
+        [
+          0.3292,
+          0.7662
+        ],
+        [
+          0.8433,
+          0.9615
+        ]
+      ],
       "fullscreenVideo": true
     },
     {
@@ -196,6 +225,28 @@
         ]
       ],
       "duration": 3.66,
+      "straights": [
+        [
+          0.1441,
+          0.3109
+        ],
+        [
+          0.3564,
+          0.4682
+        ],
+        [
+          0.5138,
+          0.63
+        ],
+        [
+          0.6755,
+          0.8232
+        ],
+        [
+          0.8687,
+          0.9772
+        ]
+      ],
       "fullscreenVideo": true,
       "video": "assets/exterior/green-scrub.mp4"
     },
@@ -268,6 +319,20 @@
         ]
       ],
       "duration": 2.31,
+      "straights": [
+        [
+          0.0358,
+          0.155
+        ],
+        [
+          0.2716,
+          0.3915
+        ],
+        [
+          0.4631,
+          0.9642
+        ]
+      ],
       "fullscreenVideo": true,
       "panorama": "assets/amenities/pano/gym.webp",
       "panoSweep": 160,
@@ -388,6 +453,16 @@
         ]
       ],
       "duration": 1.95,
+      "straights": [
+        [
+          0.1779,
+          0.6838
+        ],
+        [
+          0.7696,
+          0.9571
+        ]
+      ],
       "fullscreenVideo": true,
       "panorama": "assets/amenities/pano/pool.webp",
       "panoSweep": 155,

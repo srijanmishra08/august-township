@@ -90,6 +90,14 @@ STATION_VIDEOS = {
     "villas": "assets/exterior/villas-scrub.mp4",
 }
 VIDEO_DWELL = 1.8
+
+# Real footage for the drive itself. Every leg is a polyline of straight runs
+# joined at corners; runs long enough to read as an avenue cut to this clip,
+# and the 3D model takes over again for the turn. The clip is a straight
+# forward dolly, so showing it through a corner would contradict the motion.
+ROAD_VIDEO = "assets/exterior/avenue-scrub.mp4"
+STRAIGHT_MIN = 4.5    # world units, ~20 m: shorter runs flicker rather than read
+CORNER_TRIM = 0.9     # units shaved off each end so the cut clears the turn
 # Travel between two stops in the same building. Short, and the camera does
 # not move, so the beat reads as stepping into the next room.
 ROOM_STEP = 0.35
@@ -167,6 +175,28 @@ class Grid:
                     came[nxt] = cur
                     heapq.heappush(openh, (g + math.hypot(nxt[0] - goal[0], nxt[1] - goal[1]), nxt))
         return None
+
+
+def straight_runs(points):
+    """Return [u0, u1] arc-length fractions of each qualifying straight.
+
+    Fractions are along the polyline. The camera rides a Catmull-Rom through
+    the same points, which cuts corners slightly, so its arc length differs a
+    little; CORNER_TRIM absorbs that and keeps the footage off the bends.
+    """
+    lens = [math.dist(points[i], points[i + 1]) for i in range(len(points) - 1)]
+    total = sum(lens)
+    if total <= 0:
+        return []
+    runs, acc = [], 0.0
+    for length in lens:
+        if length >= STRAIGHT_MIN:
+            u0 = (acc + CORNER_TRIM) / total
+            u1 = (acc + length - CORNER_TRIM) / total
+            if u1 > u0:
+                runs.append([round(u0, 4), round(u1, 4)])
+        acc += length
+    return runs
 
 
 def simplify(points, eps):
@@ -295,10 +325,14 @@ def main() -> int:
                 duration=ROOM_STEP, ease="none",
             )
         else:
+            rounded = [[round(x, 2), round(z, 2)] for x, z in pts]
             station.update(
-                points=[[round(x, 2), round(z, 2)] for x, z in pts],
+                points=rounded,
                 duration=round(max(0.5, length / SPEED), 2),
             )
+            runs = straight_runs(rounded)
+            if runs:
+                station["straights"] = runs
 
         if clip and amenity_name:
             station["fullscreenVideo"] = True
@@ -309,8 +343,9 @@ def main() -> int:
             station.update(panorama=src, panoSweep=sweep, panoStart=start,
                            dwell=PANO_DWELL)
         stations.append(station)
+        n_runs = len(station.get("straights", []))
         kind = "360" if "panorama" in station else "film" if ("video" in station or station.get("fullscreenVideo")) else "-"
-        print(f"  {sid:11} {length:6.1f}u  {len(pts):3d} pts  {kind}")
+        print(f"  {sid:11} {length:6.1f}u  {len(pts):3d} pts  {kind:5} {n_runs} straight(s)")
         cursor = goal
 
     # Aim the entrance down its own road, so the descent lands already facing
@@ -341,6 +376,7 @@ def main() -> int:
         ],
         "scrollPerUnit": args.scroll_per_unit,
         "lookAhead": 0.06,
+        "roadVideo": ROAD_VIDEO,
         "stations": stations,
     }
 

@@ -175,6 +175,27 @@ higher-resolution cut if one exists.
 Every film and 360 carries a small "Artist's impression" note. Renders of an
 unbuilt project are representations, and real-estate advertising has to say so.
 
+### Road footage on the straights
+
+`exterior/avenue-scrub.mp4` — a forward dolly down a tree-lined avenue —
+replaces the 3D drive wherever the route runs straight. The generator treats
+each leg's simplified path as a polyline, and every segment of at least
+`STRAIGHT_MIN` (4.5 units, ~20 m) becomes a run; `CORNER_TRIM` shaves 0.9 units
+off each end so the footage fades out before the bend. The 3D model keeps the
+corners, the aerial descent and the short hops inside buildings. Currently 16
+runs, covering 42% of the driving.
+
+In the component the decision is made in `push()`, from the same eased position
+along the curve the camera uses, so the cut lands where the road actually
+straightens. The clip fades over the first and last 14% of each run and is
+scrubbed across it.
+
+The source is only **2.56 s, 41 frames at 16 fps, 832x480**, reused on every
+run — it repeats, and on a slow scroll you can see the individual frames.
+Motion interpolation to 48 fps was tried and rejected: it doubled tree trunks
+and smeared foliage. A longer, higher-resolution avenue shot (10-20 s, 1920
+wide) is a drop-in replacement and would fix both.
+
 ### Stops that share a building
 
 `theatre` sits in the same building as `clubhouse`, and `gateway` at the same

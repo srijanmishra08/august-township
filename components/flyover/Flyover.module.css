@@ -545,3 +545,21 @@
   color: rgba(255, 255, 255, 0.5);
   pointer-events: none;
 }
+
+/* ---------- Road footage ---------- */
+
+/* Below the station film (35) and the UI; above the 3D canvas. Transparent
+   until the clip decodes, so a slow load shows the 3D drive, not a black box. */
+.roadFilm {
+  position: absolute;
+  inset: 0;
+  z-index: 8;
+  pointer-events: none;
+}
+
+.roadFilm video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
